@@ -1,4 +1,4 @@
-#include "VPC_top.h"
+#include "Vtop_pc.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h" 
 
@@ -8,12 +8,12 @@ int main(int argc,char **argv, char **env){
 
     Verilated::commandArgs(argc, argv);
     //init top verilog instance 
-    VPC_top* top = new VPC_top;
+    Vtop_pc* top = new Vtop_pc;
     // init trace dump
     Verilated::traceEverOn(true);
     VerilatedVcdC* tfp= new VerilatedVcdC;
     top->trace (tfp,99);
-    tfp->open ("PC_top.vcd");
+    tfp->open ("top_pc.vcd");
 
     // initialize simulation inputs
     top->clk = 1;

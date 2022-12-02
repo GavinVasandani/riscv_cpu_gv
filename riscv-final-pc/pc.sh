@@ -1,5 +1,5 @@
 rm -rf obj_dir
-rm -f PC_top.vcd
-verilator -Wall --cc --trace PC_top.sv pcreg.sv rom.sv --exe pc_tb.cpp
-make -j -C obj_dir/ -f VPC_top.mk VPC_top
-obj_dir/VPC_top
+rm -f top_pc.vcd
+verilator -Wall --cc --trace top_pc.sv pc_reg.sv rom.sv --exe pc_tb.cpp
+make -j -C obj_dir/ -f Vtop_pc.mk Vtop_pc
+obj_dir/Vtop_pc
