@@ -11,7 +11,7 @@ module ram #(
 
 logic [DATA_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0];
 
-assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read
+assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an iisue here, want to confirm with the GTA
 
 always_ff @(posedge clk) begin
     if (WE) // synchronous write
