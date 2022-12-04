@@ -12,10 +12,6 @@ module pcreg #(
     logic [ADDRESS_WIDTH-1:0] branch_PC;
     logic [ADDRESS_WIDTH-1:0] inc_PC;
 
-initial begin
-    PC = {ADDRESS_WIDTH{1'b0}};
-end
-
 // intermediate output from the mux block, should be decided based on the value of PCsrc
 logic [ADDRESS_WIDTH-1:0] next_PC;
 
