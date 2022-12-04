@@ -1,6 +1,6 @@
 module top_pc #(
         parameter ADDRESS_WIDTH = 12,
-    DATA_WIDTH = 32,
+    DATA_WIDTH = 32
 )(
   input logic [DATA_WIDTH-1:0] ImmOp,
   input logic                     PCsrc,
