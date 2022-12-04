@@ -22,7 +22,7 @@ int main(int argc,char **argv, char **env){
     top->ImmOp = 0xFFF; // this should increment by -1 when in branch mode. It is greater than 8 bits and proves that the PC block works.
     
     //run simulation for many clock cycles
-    for (i=0; i<300; i++){ // clock cycles - used only 300 to limit size of VCD file
+    for (i=0; i<64; i++){ // clock cycles - used only 300 to limit size of VCD file
             //dump variables into VCD file and toggle clock
             for (clk=0; clk<2; clk++) {
                 tfp->dump (2*i+clk);
@@ -31,7 +31,7 @@ int main(int argc,char **argv, char **env){
             }
 
             // change input stimuli
-            top->rst = ((i-2) % 10 == 0) | (i<2);   // resets after every 12th clock cycle
+            top->rst = (i % 8 == 0)&&(i>6)&&(i!=0);   // resets after every 12th clock cycle
             if (Verilated::gotFinish())  exit(0);
     }
     tfp->close();

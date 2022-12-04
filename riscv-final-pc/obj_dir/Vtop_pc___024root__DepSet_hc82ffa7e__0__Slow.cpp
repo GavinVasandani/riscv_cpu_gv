@@ -30,7 +30,6 @@ VL_ATTR_COLD void Vtop_pc___024root___eval_initial__TOP(Vtop_pc___024root* vlSel
     // Init
     VlWide<4>/*127:0*/ __Vtemp_he8d6983c__0;
     // Body
-    vlSelf->top_pc__DOT__PC = 0U;
     VL_WRITEF("Loading rom.\n");
     __Vtemp_he8d6983c__0[0U] = 0x2e6d656dU;
     __Vtemp_he8d6983c__0[1U] = 0x696f6e73U;
