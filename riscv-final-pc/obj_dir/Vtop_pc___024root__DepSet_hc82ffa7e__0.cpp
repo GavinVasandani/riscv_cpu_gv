@@ -44,8 +44,16 @@ VL_INLINE_OPT void Vtop_pc___024root___nba_sequent__TOP__0(Vtop_pc___024root* vl
     // Body
     vlSelf->top_pc__DOT__PC = ((IData)(vlSelf->rst)
                                 ? 0U : (IData)(vlSelf->top_pc__DOT__pcReg__DOT__next_PC));
-    vlSelf->instr = vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-        [(0xfffU & ((IData)(3U) + (IData)(vlSelf->top_pc__DOT__PC)))];
+    vlSelf->instr = ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                      [vlSelf->top_pc__DOT__PC] << 0x18U) 
+                     | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                         [(0xfffU & ((IData)(1U) + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                         << 0x10U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                                       [(0xfffU & ((IData)(2U) 
+                                                   + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                                       << 8U) | vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                                      [(0xfffU & ((IData)(3U) 
+                                                  + (IData)(vlSelf->top_pc__DOT__PC)))])));
     vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
                                                 & ((IData)(vlSelf->PCsrc)
                                                     ? 
