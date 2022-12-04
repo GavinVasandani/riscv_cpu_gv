@@ -1,5 +1,5 @@
 module ext(
-    input logic [31:7] imm,
+    input logic [31:7] imm, // why 31:7? 
     input logic [1:0]  ImmSrc,
     output logic[31:0] ImmExt
 );
