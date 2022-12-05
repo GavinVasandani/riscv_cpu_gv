@@ -15,7 +15,7 @@ module topLevelALU# (
     input logic ALUSrc,
     input logic [Data_Width-1:0] ImmOp,
     //input logic [ALU_Instruction_Width-1:0] ALU_ctrl;
-    input logic [2:0] ALU_ctrl,
+    input logic [3:0] ALU_ctrl,
 //Outputs
     //change: output logic [Data_Width-1:0] ALUout, //output of ALU is same size as ALU inputs
     output logic eq,
