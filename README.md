@@ -3,8 +3,8 @@
 
 ---
 - ## Breakdown of tasks:
-    - PC block, instruction memory, data memory, Pipelining (including unit testing suites), Code for F1 light : **Arnav Kohli**
-    - ALU Block, Register Files, Pipelining (including unit testing suites) : **Gavin Vasandani**
+    - PC block, Instruction memory, Data memory, Pipelining (including unit testing suites), Code for F1 light : **Arnav Kohli**
+    - ALU Block, Register Files, Data memory, Pipelining (including unit testing suites) : **Gavin Vasandani**
     - Control Block, Sign extension block, Pipelining (including unit testing suites) : **Harry Pan**
     - Final CPU Assembly, Complete testing suite, Pipelining, Code for F1 light: **Junyi Wu**
 
@@ -40,6 +40,11 @@
     ```
 
   - ### Instruction Memory:
+    The instruction memory module consists of a rom which is loaded with instructions compiled from assembly language using the riscv assembler. The rom used for this CPU has a data width of 8 bits (since each address stores one byte - byte addressing) and an instruction width of 12 bits. This is because the memory map in the project specification demands we use at least 0xFFF or 12 bit-wide instruction addresses. Since the RISC-V ISA uses 32 bit wide instructions, 4 addresses would have to be concatenated to form one instruction.  Apart from this, the memory is allocated using a little endian representation (least significabt byte is stored in the lowest of the 4 allocated addresses). This is implemented using the code below:
+    ```systemverilog
+    assign instr = {rom_array[PC+3], rom_array[PC+2], rom_array[PC+1], rom_array[PC]};
+    ```
+    Note that the assignment is asynchronous as per the specification.
 
 ---
 - ## ALU Block & Register Files:
@@ -52,7 +57,7 @@
   
 ---
 
-- ## Final Design & Testing using code from lab 4:
+- ## Testing suites:
   
 ---
 - ## Pipelining & signal forwarding:
