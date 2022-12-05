@@ -9,7 +9,7 @@ module ram #(
     output logic [DATA_WIDTH-1:0] RD // read output
 );
 
-logic [DATA_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0];
+logic [7:0] ram_array [2**ADDRESS_WIDTH-1:0];
 
 // you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
 
