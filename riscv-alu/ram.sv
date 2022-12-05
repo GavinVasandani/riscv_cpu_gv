@@ -26,8 +26,6 @@ logic [15:0] halfwordAssign;
 //Include signal to differentiate word: 0, byte: 1
 
 //RD is output and is 32 bits so 4 8-bits combined:
-//Check if ordering assignment is correct should it be [A+3], [A+2], ... 
-//LS Byte should be ram_array[A], MS Byte is ram_array[A+3]
 always_comb begin
     case (dataType)
         2'b00: begin
