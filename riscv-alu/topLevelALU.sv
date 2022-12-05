@@ -65,7 +65,10 @@ regFileALU alu1 (
     .eq(eq)
 );
 
-ram ram1 (
+ram ram1 ( /* this works, presumably when doing sw, the address stored in the register
+that is used is such that when added with offset it gives an LS Byte so it corresponds to
+beginning of a word. */
+//need to add signals for WW (Write Word), RB (Read Byte)
     .clk(clk),
     .WE(MemWrite),
     .A(ALUout[Address_Width_RAM-1:0]),
