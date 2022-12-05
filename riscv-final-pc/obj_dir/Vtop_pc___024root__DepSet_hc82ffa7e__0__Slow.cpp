@@ -101,15 +101,18 @@ VL_ATTR_COLD void Vtop_pc___024root___stl_sequent__TOP__0(Vtop_pc___024root* vlS
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop_pc___024root___stl_sequent__TOP__0\n"); );
     // Body
     vlSelf->instr = ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                      [vlSelf->top_pc__DOT__PC] << 0x18U) 
-                     | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                         [(0xfffU & ((IData)(1U) + (IData)(vlSelf->top_pc__DOT__PC)))] 
-                         << 0x10U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                                       [(0xfffU & ((IData)(2U) 
-                                                   + (IData)(vlSelf->top_pc__DOT__PC)))] 
-                                       << 8U) | vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                                      [(0xfffU & ((IData)(3U) 
-                                                  + (IData)(vlSelf->top_pc__DOT__PC)))])));
+                      [(0xfffU & ((IData)(3U) + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                      << 0x18U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                                    [(0xfffU & ((IData)(2U) 
+                                                + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                                    << 0x10U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                                                  [
+                                                  (0xfffU 
+                                                   & ((IData)(1U) 
+                                                      + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                                                  << 8U) 
+                                                 | vlSelf->top_pc__DOT__pcRom__DOT__rom_array
+                                                 [vlSelf->top_pc__DOT__PC])));
     vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
                                                 & ((IData)(vlSelf->PCsrc)
                                                     ? 
