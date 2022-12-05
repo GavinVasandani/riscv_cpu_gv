@@ -110,7 +110,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop_pc___024root___dump_triggers__ico(vlSelf);
 #endif
-                VL_FATAL_MT("top_pc.sv", 1, "", "Input combinational region did not converge.");
+                VL_FATAL_MT("top_pc.sv", 4, "", "Input combinational region did not converge.");
             }
             vlSelf->__VicoIterCount = ((IData)(1U) 
                                        + vlSelf->__VicoIterCount);
@@ -133,7 +133,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                     Vtop_pc___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("top_pc.sv", 1, "", "Active region did not converge.");
+                    VL_FATAL_MT("top_pc.sv", 4, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -148,7 +148,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop_pc___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("top_pc.sv", 1, "", "NBA region did not converge.");
+                VL_FATAL_MT("top_pc.sv", 4, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             Vtop_pc___024root___eval_nba(vlSelf);

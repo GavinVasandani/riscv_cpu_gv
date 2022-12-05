@@ -13,14 +13,14 @@ logic [7:0] ram_array [2**ADDRESS_WIDTH-1:0];
 
 // you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
 
-assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an issue here, want to confirm with the GTA
+assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; // asynchronous read - have an issue here, want to confirm with the GTA
 
 always_ff @(posedge clk) begin
     if (WE) // synchronous write
-        ram_array[A] <= WD[31:24];
-        ram_array[A+1] <= WD[23:16];
-        ram_array[A+2] <= WD[15:8];
-        ram_array[A+3] <= WD[7:0];
+        ram_array[A+3] <= WD[31:24];
+        ram_array[A+2] <= WD[23:16];
+        ram_array[A+1] <= WD[15:8];
+        ram_array[A] <= WD[7:0];
 end
 endmodule
 
