@@ -6,7 +6,7 @@ module ram #(
 )(
     input logic clk,
     input logic WE, //write enable
-    input logic dataType, //input signal, where 0: word, 1: byte
+    input logic [1:0] dataType, //input signal, where 00: word, 01: byte, 10: half word
     //Input signal to determine whether store byte or store word:
     //if store byte then ram_array[A] = rd2 [7:0]
     //input logic WW, //write word
@@ -17,7 +17,8 @@ module ram #(
 );
 
 logic [BYTE_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0]; //each mem location of array stores a byte-width so 8 bits
-logic byteAssign;
+logic [7:0] byteAssign;
+logic [15:0] halfwordAssign;
 
 // you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
 //yeah but need to load in some initial values to the ram so probably do need a loadmemh operation
@@ -27,14 +28,31 @@ logic byteAssign;
 //RD is output and is 32 bits so 4 8-bits combined:
 //Check if ordering assignment is correct should it be [A+3], [A+2], ... 
 //LS Byte should be ram_array[A], MS Byte is ram_array[A+3]
-if (dataType) begin
+always_comb begin
+    case (dataType)
+        2'b00: begin
+            assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an iisue here, want to confirm with the GTA
+        end 
+        2'b01: begin
+            byteAssign = ram_array[A];
+            assign RD = {{24{byteAssign[7]}}, byteAssign};
+        end
+        2'b10: begin
+            halfwordAssign = {ram_array[A], ram_array[A+1]};
+            assign RD = {{16{halfwordAssign[15]}}, halfwordAssign};
+        end
+        default: $display("No dataType selected. Please choose word, byte or halfword.");
+    endcase
+end
+
+/*if (dataType==01) begin
     //sign extend 8 bit output (signed):
     byteAssign = ram_array[A];
     assign RD = {{24{byteAssign[7]}}, byteAssign}};
 end
 else begin
     assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an iisue here, want to confirm with the GTA
-end
+end*/
 //if each address stores a 32-bit word then RD would be 128 bits, so each address needs to store 1 byte, so 8 bit and then combined gives 32-bit word
 
 always_ff @(posedge clk) begin
