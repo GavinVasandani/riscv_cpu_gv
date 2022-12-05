@@ -42,7 +42,7 @@ always_comb begin //ALU implements different arithmetic/logic based on opcode in
         4'b0101: begin //SLT and BLT instruction so compare operands and output 1 based on which is greater:
             //Setting rd = 1 (if rs1<rs2), rd = 0 (if rs1>rs2) so ALUout must be modified and ALUout written to rd: 
             if(op1 < op2) begin 
-                ALUout = 1;
+                ALUout = 1; //check if by default this is signed extended or it must go through sign extender
                 //eq = 1 for BLT operation as op1 < op2:
                 eq = 1;
             end
