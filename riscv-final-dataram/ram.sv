@@ -1,5 +1,5 @@
 module ram #(
-    parameter ADDRESS_WIDTH = 12, // needs to be 12 bit wide, look at memory map of final project for reasoning
+    parameter ADDRESS_WIDTH = 17, // needs to be 17 bits wide, look at memory map of final project for reasoning
     DATA_WIDTH = 32 // 32 bit value stored in mem location of RAM - since it's byte addressed we store data in 4 addresses - confirm with GTA
 )(
     input logic clk,
