@@ -15,7 +15,8 @@ initial begin
 end;
 
 // asynchronous assignment, should be blocking
-assign instr = {rom_array[PC], rom_array[PC+1], rom_array[PC+2], rom_array[PC+3]};
+assign instr = {rom_array[PC+3], rom_array[PC+2], rom_array[PC+1], rom_array[PC]};
+// note, always leave some space / a line after your memory file. Verilator doesn't seem to pick up the very last signal for some reason otherwise.
 // byte addressing causes increments of 4.
 
 
