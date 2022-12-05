@@ -28,16 +28,16 @@ VL_ATTR_COLD void Vtop_pc___024root___eval_initial__TOP(Vtop_pc___024root* vlSel
     Vtop_pc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop_pc___024root___eval_initial__TOP\n"); );
     // Init
-    VlWide<6>/*191:0*/ __Vtemp_hfbf7ff78__0;
+    VlWide<6>/*191:0*/ __Vtemp_h1d7007b3__0;
     // Body
     VL_WRITEF("Loading rom.\n");
-    __Vtemp_hfbf7ff78__0[0U] = 0x2e686578U;
-    __Vtemp_hfbf7ff78__0[1U] = 0x65722e73U;
-    __Vtemp_hfbf7ff78__0[2U] = 0x6f756e74U;
-    __Vtemp_hfbf7ff78__0[3U] = 0x6f672f63U;
-    __Vtemp_hfbf7ff78__0[4U] = 0x6d797072U;
-    __Vtemp_hfbf7ff78__0[5U] = 0x7372632fU;
-    VL_READMEM_N(true, 8, 4096, 0, VL_CVT_PACK_STR_NW(6, __Vtemp_hfbf7ff78__0)
+    __Vtemp_h1d7007b3__0[0U] = 0x2e686578U;
+    __Vtemp_h1d7007b3__0[1U] = 0x73722e73U;
+    __Vtemp_h1d7007b3__0[2U] = 0x672f6c66U;
+    __Vtemp_h1d7007b3__0[3U] = 0x7970726fU;
+    __Vtemp_h1d7007b3__0[4U] = 0x72632f6dU;
+    __Vtemp_h1d7007b3__0[5U] = 0x73U;
+    VL_READMEM_N(true, 8, 4096, 0, VL_CVT_PACK_STR_NW(6, __Vtemp_h1d7007b3__0)
                  ,  &(vlSelf->top_pc__DOT__pcRom__DOT__rom_array)
                  , 0, ~0ULL);
     VL_WRITEF("Rom successfully loaded.\n");

@@ -31,7 +31,7 @@ int main(int argc,char **argv, char **env){
             }
 
             // change input stimuli
-            top->rst = (i % 7 == 0)&&(i>6)&&(i!=0);   // resets after every 12th clock cycle
+            top->rst = (i % 11 == 0)&&(i>6)&&(i!=0);   // resets after every 12th clock cycle
             if (Verilated::gotFinish())  exit(0);
     }
     tfp->close();
