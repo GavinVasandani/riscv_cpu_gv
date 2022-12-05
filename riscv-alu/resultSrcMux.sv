@@ -1,4 +1,4 @@
-//Mux determining which result to send to regfile to write to register
+//Mux determining which result to send to regfile to write to register, either output from data memory or ALU output
 module resultSrcMux #(
     parameter Data_Width = 32
 ) (
