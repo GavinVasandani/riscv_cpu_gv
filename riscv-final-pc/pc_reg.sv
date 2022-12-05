@@ -1,4 +1,4 @@
-module pcreg #(
+module pc_reg #(
     parameter ADDRESS_WIDTH = 12
 )(
     // inputs and corresponding outputs from left to right

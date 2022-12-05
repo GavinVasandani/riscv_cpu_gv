@@ -14,8 +14,8 @@ VL_INLINE_OPT void Vtop_pc___024root___ico_sequent__TOP__0(Vtop_pc___024root* vl
     vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
                                                 & ((IData)(vlSelf->PCsrc)
                                                     ? 
-                                                   ((IData)(vlSelf->top_pc__DOT__PC) 
-                                                    + vlSelf->ImmOp)
+                                                   (vlSelf->ImmOp 
+                                                    + (IData)(vlSelf->top_pc__DOT__PC))
                                                     : 
                                                    ((IData)(4U) 
                                                     + (IData)(vlSelf->top_pc__DOT__PC))));
@@ -60,8 +60,8 @@ VL_INLINE_OPT void Vtop_pc___024root___nba_sequent__TOP__0(Vtop_pc___024root* vl
     vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
                                                 & ((IData)(vlSelf->PCsrc)
                                                     ? 
-                                                   ((IData)(vlSelf->top_pc__DOT__PC) 
-                                                    + vlSelf->ImmOp)
+                                                   (vlSelf->ImmOp 
+                                                    + (IData)(vlSelf->top_pc__DOT__PC))
                                                     : 
                                                    ((IData)(4U) 
                                                     + (IData)(vlSelf->top_pc__DOT__PC))));

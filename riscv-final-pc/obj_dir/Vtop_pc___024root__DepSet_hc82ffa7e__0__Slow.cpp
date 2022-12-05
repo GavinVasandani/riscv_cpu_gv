@@ -118,8 +118,8 @@ VL_ATTR_COLD void Vtop_pc___024root___stl_sequent__TOP__0(Vtop_pc___024root* vlS
     vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
                                                 & ((IData)(vlSelf->PCsrc)
                                                     ? 
-                                                   ((IData)(vlSelf->top_pc__DOT__PC) 
-                                                    + vlSelf->ImmOp)
+                                                   (vlSelf->ImmOp 
+                                                    + (IData)(vlSelf->top_pc__DOT__PC))
                                                     : 
                                                    ((IData)(4U) 
                                                     + (IData)(vlSelf->top_pc__DOT__PC))));

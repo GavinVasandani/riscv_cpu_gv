@@ -12,11 +12,9 @@ module top_pc #(
   output logic [DATA_WIDTH-1:0]   instr
 );
 
-  logic [ADDRESS_WIDTH-1:0] internalImmOp = ImmOp[11:0];
-
   logic [ADDRESS_WIDTH-1:0] PC;
 
-pcreg pcReg(internalImmOp, PCsrc, clk, rst, PC);
+pc_reg pcReg(ImmOp[11:0], PCsrc, clk, rst, PC);
 
 rom pcRom(PC, instr);
 
