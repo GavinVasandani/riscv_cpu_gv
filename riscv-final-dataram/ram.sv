@@ -17,8 +17,8 @@ assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // a
 
 always_ff @(posedge clk) begin
     if (WE) // synchronous write
-        ram_array[A] <= WD[];
-        ram_array[A+1] <= WD[];
+        ram_array[A] <= WD[31:24];
+        ram_array[A+1] <= WD[23:16];
         ram_array[A+2] <= WD[15:8];
         ram_array[A+3] <= WD[7:0];
 end
