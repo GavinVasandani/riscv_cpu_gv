@@ -19,6 +19,8 @@ module topLevelALU# (
     input logic [3:0] ALU_ctrl,
     input logic MemWrite, //WE
     input logic ResultSrc,
+
+
 //Outputs
     //change: output logic [Data_Width-1:0] ALUout, //output of ALU is same size as ALU inputs
     output logic eq,
@@ -84,4 +86,3 @@ resultSrcMux resultSrcMux1 (
 );
 
 endmodule
-
