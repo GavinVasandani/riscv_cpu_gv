@@ -1,5 +1,5 @@
 module ram #(
-    parameter ADDRESS_WIDTH = 12, // needs to be 12 bit wide, look at memory map of final project for reasoning
+    parameter ADDRESS_WIDTH = 17, // needs to be 17 bit wide, look at memory map of final project for reasoning
     //memory addresses reserved from data memory is 0x00001000 to 0x00001FFF, so 12 bit address width, so 4096 referencable mem locations.
     DATA_WIDTH = 32, // 32 bit value stored in mem location of RAM - since it's byte addressed we store data in 4 addresses - confirm with GTA
     BYTE_WIDTH = 8
@@ -31,14 +31,14 @@ logic [15:0] halfwordAssign;
 always_comb begin
     case (dataType)
         2'b00: begin
-            assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an iisue here, want to confirm with the GTA
+            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; // asynchronous read - have an iisue here, want to confirm with the GTA
         end 
         2'b01: begin
             byteAssign = ram_array[A];
             assign RD = {{24{byteAssign[7]}}, byteAssign};
         end
         2'b10: begin
-            halfwordAssign = {ram_array[A], ram_array[A+1]};
+            halfwordAssign = {ram_array[A+1], ram_array[A]};
             assign RD = {{16{halfwordAssign[15]}}, halfwordAssign};
         end
         default: $display("No dataType selected. Please choose word, byte or halfword.");
