@@ -1,5 +1,5 @@
 # Group 18's RISC - V CPU
-##### *By: Arnav Kohli (sk1421), Gavin Vasandani, Junyi Wu, Harry Pan*
+##### *By: Arnav Kohli (sk1421), Gavin Vasandani, Junyi Wu, Xuhan Pan*
 
 ---
 - ## Breakdown of tasks:
