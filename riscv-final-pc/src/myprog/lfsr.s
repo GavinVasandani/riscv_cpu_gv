@@ -1,11 +1,11 @@
 .text
 .globl main
 main:
-    addi a0, zero, 0x0 # a0 is used for output
-    addi a1, zero, 0x7 # a1 is the lfsr, we start with 1
+    addi s2, zero, 0x0 # s2 is used by delay in subsequent modules
+    addi a1, zero, 0x1 # a1 is the lfsr, we start with 1
 mloop:
-    addi a0, a1, 0x0 # load output with answer
-    addi t1, a0, 0x0 # initialize dummy register for operation
+    addi s2, a1, 0x0 # load output with answer
+    addi t1, s2, 0x0 # initialize dummy register for operation
     slli a1, t1, 0x1d # shift left 29 times to get rid of the 4th bit
     srli a1, a1, 0x1c # a1 contains the first three bits of the number (shift right 28 times) as bits 1, 2 and 3 instead of 0, 1, 2 (x3x2x10)
     slli a2, t1, 0x1d # shift left 29 times to get rid of the 4th bit
