@@ -2,6 +2,7 @@ module top#(
     parameter ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32
 )(
+    input logic             trigger, 
     input logic             clk,
     input logic             rst,
     output logic [ADDRESS_WIDTH-1:0] a0,
@@ -19,6 +20,7 @@ module top#(
     logic [2:0] ALU_ctrl;
     logic EQ;
     logic [DATA_WIDTH-1:0] ImmOp;
+    logic [DATA_WIDTH-1:0] next_PC;
     logic [1:0]  ImmSrc;
     logic [11:0] imm_imm;
     logic [12:0] imm_branch;
@@ -29,12 +31,13 @@ module top#(
     assign rs2 = PC_instr[24:20];
     assign rd  = PC_instr[11:7];
 
-PC_top myPC(
+top_pc myPC(
     .ImmOp  (ImmOp),
     .PCsrc  (PCsrc),
     .clk    (clk),
     .rst    (rst),
-    .instr   (PC_instr)
+    .instr   (PC_instr),
+    .next_PC (next_PC)
 );
 
 ext sign_extend(
@@ -58,6 +61,7 @@ control control_unit(
     .RegWrite   (RegWrite),
 );
 topLevelALU ALU(
+    .trigger (trigger),
     .clk    (clk),
     .rs1    (rs1),
     .rs2    (rs2),
@@ -65,6 +69,7 @@ topLevelALU ALU(
     .regFileWen (RegWrite),
     .ALUSrc (ALUSrc),
     .ImmOp  (ImmOp),
+    .newPC (next_PC),
     .ALU_ctrl (ALU_ctrl),
     .MemWrite (MemWrite),
     .ResultSrc (ResultSrc),
