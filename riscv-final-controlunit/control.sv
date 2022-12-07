@@ -14,6 +14,7 @@ module control(
     output logic        ALUSrc,
     output logic [1:0]  ImmSrc,
     output logic        RegWrite,
+    output logic        DataType,
     output logic        J           //JAL
 );
 
@@ -38,6 +39,7 @@ ALUDecoder a(
     .funct75(funct75), 
     .ALUOp(ALUOp), 
     .ALUControl(ALUControl)
+    .DataType(DataType)
     );
 
 assign PCSrc = Zero & Branch;
