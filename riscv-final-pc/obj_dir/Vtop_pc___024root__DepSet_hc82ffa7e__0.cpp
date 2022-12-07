@@ -11,14 +11,11 @@ VL_INLINE_OPT void Vtop_pc___024root___ico_sequent__TOP__0(Vtop_pc___024root* vl
     Vtop_pc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop_pc___024root___ico_sequent__TOP__0\n"); );
     // Body
-    vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
-                                                & ((IData)(vlSelf->PCsrc)
-                                                    ? 
-                                                   (vlSelf->ImmOp 
-                                                    + (IData)(vlSelf->top_pc__DOT__PC))
-                                                    : 
-                                                   ((IData)(4U) 
-                                                    + (IData)(vlSelf->top_pc__DOT__PC))));
+    vlSelf->top_pc__DOT__pcReg__DOT__next_PC = ((IData)(vlSelf->PCsrc)
+                                                 ? 
+                                                (vlSelf->ImmOp 
+                                                 + vlSelf->top_pc__DOT__PC)
+                                                 : vlSelf->next_PC);
 }
 
 void Vtop_pc___024root___eval_ico(Vtop_pc___024root* vlSelf) {
@@ -43,28 +40,27 @@ VL_INLINE_OPT void Vtop_pc___024root___nba_sequent__TOP__0(Vtop_pc___024root* vl
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop_pc___024root___nba_sequent__TOP__0\n"); );
     // Body
     vlSelf->top_pc__DOT__PC = ((IData)(vlSelf->rst)
-                                ? 0U : (IData)(vlSelf->top_pc__DOT__pcReg__DOT__next_PC));
+                                ? 0U : vlSelf->top_pc__DOT__pcReg__DOT__next_PC);
     vlSelf->instr = ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                      [(0xfffU & ((IData)(3U) + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                      [(0xfffU & ((IData)(3U) + vlSelf->top_pc__DOT__PC))] 
                       << 0x18U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
                                     [(0xfffU & ((IData)(2U) 
-                                                + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                                                + vlSelf->top_pc__DOT__PC))] 
                                     << 0x10U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
                                                   [
                                                   (0xfffU 
                                                    & ((IData)(1U) 
-                                                      + (IData)(vlSelf->top_pc__DOT__PC)))] 
+                                                      + vlSelf->top_pc__DOT__PC))] 
                                                   << 8U) 
                                                  | vlSelf->top_pc__DOT__pcRom__DOT__rom_array
-                                                 [vlSelf->top_pc__DOT__PC])));
-    vlSelf->top_pc__DOT__pcReg__DOT__next_PC = (0xfffU 
-                                                & ((IData)(vlSelf->PCsrc)
-                                                    ? 
-                                                   (vlSelf->ImmOp 
-                                                    + (IData)(vlSelf->top_pc__DOT__PC))
-                                                    : 
-                                                   ((IData)(4U) 
-                                                    + (IData)(vlSelf->top_pc__DOT__PC))));
+                                                 [(0xfffU 
+                                                   & vlSelf->top_pc__DOT__PC)])));
+    vlSelf->next_PC = ((IData)(4U) + vlSelf->top_pc__DOT__PC);
+    vlSelf->top_pc__DOT__pcReg__DOT__next_PC = ((IData)(vlSelf->PCsrc)
+                                                 ? 
+                                                (vlSelf->ImmOp 
+                                                 + vlSelf->top_pc__DOT__PC)
+                                                 : vlSelf->next_PC);
 }
 
 void Vtop_pc___024root___eval_nba(Vtop_pc___024root* vlSelf) {
@@ -110,7 +106,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop_pc___024root___dump_triggers__ico(vlSelf);
 #endif
-                VL_FATAL_MT("top_pc.sv", 4, "", "Input combinational region did not converge.");
+                VL_FATAL_MT("top_pc.sv", 1, "", "Input combinational region did not converge.");
             }
             vlSelf->__VicoIterCount = ((IData)(1U) 
                                        + vlSelf->__VicoIterCount);
@@ -133,7 +129,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                     Vtop_pc___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("top_pc.sv", 4, "", "Active region did not converge.");
+                    VL_FATAL_MT("top_pc.sv", 1, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -148,7 +144,7 @@ void Vtop_pc___024root___eval(Vtop_pc___024root* vlSelf) {
 #ifdef VL_DEBUG
                 Vtop_pc___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("top_pc.sv", 4, "", "NBA region did not converge.");
+                VL_FATAL_MT("top_pc.sv", 1, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             Vtop_pc___024root___eval_nba(vlSelf);

@@ -69,3 +69,13 @@
 - ## Further extensions & refinements:
   
 ---
+
+
+
+# Personal Statement
+## Junyi Wu
+---
+### bug fixed:
+1. in ALUDECODER, : in line 16
+2. begin and end missing in case in line 13 and 16
+3. default missing in ALUDECODER, MAINDECODER

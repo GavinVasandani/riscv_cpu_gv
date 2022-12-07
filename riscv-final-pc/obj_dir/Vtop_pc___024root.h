@@ -18,10 +18,11 @@ class Vtop_pc___024root final : public VerilatedModule {
     VL_IN8(rst,0,0);
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __VactContinue;
-    SData/*11:0*/ top_pc__DOT__PC;
-    SData/*11:0*/ top_pc__DOT__pcReg__DOT__next_PC;
     VL_IN(ImmOp,31,0);
     VL_OUT(instr,31,0);
+    VL_OUT(next_PC,31,0);
+    IData/*31:0*/ top_pc__DOT__PC;
+    IData/*31:0*/ top_pc__DOT__pcReg__DOT__next_PC;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;

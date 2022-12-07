@@ -1,6 +1,6 @@
 //Creating ALU module
 //ALU implements all ALU_controls
-module regFileALU # (
+module regfileALU # (
     parameter //Address_Width = 5,
               //ALU_Instruction_Width = 1;
               Data_Width = 32 //Data_Width aka number of bits for instruction word doesn't need to correlate to size of main mem
@@ -81,7 +81,11 @@ always_comb begin //ALU implements different arithmetic/logic based on opcode in
             //eq is don't care:
             eq = 0;
         end
-        default: $display("Instruction not detected.");
+        default: begin
+            ALUout = 0;
+            eq = 0;
+            $display("Instruction not detected.");
+        end
     endcase
 end
 endmodule

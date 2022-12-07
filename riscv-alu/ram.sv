@@ -1,5 +1,5 @@
 module ram #(
-    parameter ADDRESS_WIDTH = 17, // needs to be 17 bit wide, look at memory map of final project for reasoning
+    parameter ADDRESS_WIDTH = 32, // needs to be 17 bit wide, look at memory map of final project for reasoning
     //memory addresses reserved from data memory is 0x00001000 to 0x00001FFF, so 12 bit address width, so 4096 referencable mem locations.
     DATA_WIDTH = 32, // 32 bit value stored in mem location of RAM - since it's byte addressed we store data in 4 addresses - confirm with GTA
     BYTE_WIDTH = 8
@@ -41,7 +41,7 @@ end
 
 always_ff @(posedge clk) begin
     if (WE) begin// synchronous write
-        if (!dataType) begin
+        if (dataType == 0) begin
     //last 2 bytes (16 bits) of address is same but filling a word as each mem location only holds 8 bits we split:
             ram_array[A] <= WD[7:0]; //LS Byte
             ram_array[A+1] <= WD[15:8];
@@ -54,5 +54,4 @@ always_ff @(posedge clk) begin
     end
 end
 endmodule
-
 // please ask the GTA if this implementation is correct, it is taken from the memory map so it should be fine. The only issue is the input address is 32 bits wide.

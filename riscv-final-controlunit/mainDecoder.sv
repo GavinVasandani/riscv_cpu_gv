@@ -22,6 +22,7 @@ always_comb begin
             Branch = 0;
             ALUOp = 2'b00;
             J = 0;
+
         end
 
         7'b0100011: begin           //S-type
@@ -29,7 +30,7 @@ always_comb begin
             ImmSrc = 2'b01;
             ALUSrc = 1;
             MemWrite = 1;
-            //ResultSrc = 1;
+            ResultSrc = 1'bx;
             Branch = 0;
             ALUOp = 2'b00;
             J = 0;
@@ -37,7 +38,7 @@ always_comb begin
 
         7'b0110011: begin           //R-type
             RegWrite = 1;
-            //ImmSrc = 2'b00;
+            ImmSrc = 2'bxx;
             ALUSrc = 0;
             MemWrite = 0;
             ResultSrc = 0;
@@ -51,21 +52,31 @@ always_comb begin
             ImmSrc = 2'b10;
             ALUSrc = 0;
             MemWrite = 0;
-            //ResultSrc = 1;
+            ResultSrc = 1'bx;
             Branch = 1;
             ALUOp = 2'b01;
             J = 0;
         end
 
-        7'b1101111: begin
+        7'b1101111: begin           // Jump
             RegWrite = 1;
             ImmSrc = 2'b11;
-            //ALUSrc = 1;
+            ALUSrc = 1'bx;
             MemWrite = 0;
-            //ResultSrc = 1;
+            ResultSrc = 1'bx;
             Branch = 0;
-            //ALUOp = 2'b01;
+            ALUOp = 2'bxx;
             J = 1;
+        end
+        default: begin
+            RegWrite = 1'bx;
+            ImmSrc = 2'bxx;
+            ALUSrc = 1'bx;
+            MemWrite = 1'bx;
+            ResultSrc = 1'bx;
+            Branch = 1'bx;
+            ALUOp = 2'bxx;
+            J = 1'bx;
         end
     endcase
 end

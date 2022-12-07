@@ -14,7 +14,7 @@ module control(
     output logic        ALUSrc,
     output logic [1:0]  ImmSrc,
     output logic        RegWrite,
-    output logic        DataType,
+    output logic [1:0]  DataType,
     output logic        J           //JAL
 );
 
@@ -34,11 +34,11 @@ mainDecoder m(
     );
 
 ALUDecoder a(
-    .op5(op[5]), 
+    //.op5(op[5]), you haven't used this anywhere
     .funct3(funct3), 
     .funct75(funct75), 
     .ALUOp(ALUOp), 
-    .ALUControl(ALUControl)
+    .ALUControl(ALUControl),
     .DataType(DataType)
     );
 
