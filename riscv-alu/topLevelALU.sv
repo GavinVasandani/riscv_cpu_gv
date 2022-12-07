@@ -15,10 +15,12 @@ module topLevelALU# (
     //change: input logic [Data_Width-1:0] din, //Data in which takes in ALU output to write to register rd. Registers hold 32 bit word so din is 32 bits
     input logic ALUSrc,
     input logic [Data_Width-1:0] ImmOp,
+    input logic [Data_Width-1:0] newPC, //PC+4 input
     //input logic [ALU_Instruction_Width-1:0] ALU_ctrl;
     input logic [3:0] ALU_ctrl,
     input logic MemWrite, //WE
     input logic ResultSrc,
+    input logic JumpSel, //select for resultPCMux
 
 
 //Outputs
@@ -34,8 +36,9 @@ logic [Data_Width-1:0] ALUOp2;
 logic [Data_Width-1:0] ALUout;
 
 //Din is output of ALU and input of regfile:
-logic [Data_Width-1:0] dinTest;
 logic [Data_Width-1:0] ReadData;
+logic [Data_Width-1:0] resultSrcOutput; //output from ResultSrcMux
+logic [Data_Width-1:0] regWrite; //data to write to register
 
 //Initializing objects of the different modules and linking them
 //.variablefromClass(variablefromTop)
@@ -46,7 +49,7 @@ regFile regFile1 (
     .rs2(rs2), 
     .rd(rd), 
     .en(regFileWen), 
-    .din(dinTest), //register file input is dinTest which was resultSrc mux output
+    .din(regWrite), //register file input is regWrite
     .rd1(rd1), 
     .rd2(rd2),
     .a0(a0) //check if needed
@@ -81,8 +84,16 @@ beginning of a word. */
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
-    .ResultSrc(ResultSrc),
-    .Result(dinTest)
+    .ResultSrc(ResultSrc), //select
+    .Result(resultSrcOutput)
+);
+
+resultPCMux resultPCMux1 (
+    .ALUResult(resultSrcOutput),
+    .newPC(newPC),
+    .JumpSel(JumpSel), //select
+    .Result(regWrite)
+
 );
 
 endmodule
