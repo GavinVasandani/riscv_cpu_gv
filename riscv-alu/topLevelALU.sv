@@ -19,7 +19,7 @@ module topLevelALU# (
     //input logic [ALU_Instruction_Width-1:0] ALU_ctrl;
     input logic [3:0] ALU_ctrl,
     input logic MemWrite, //WE
-    input logic ResultSrc,
+    input logic SrcSel, //select for ResultSrcMux
     input logic JumpSel, //select for resultPCMux
 
 
@@ -84,12 +84,12 @@ beginning of a word. */
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
-    .ResultSrc(ResultSrc), //select
+    .SrcSel(ResultSrc), //select
     .OutputSrcMux(resultSrcOutput) //previously Result
 );
 
 resultPCMux resultPCMux1 (
-    .ResultSrc(resultSrcOutput),
+    .ResultSrc(resultSrcOutput), //previously ALUResult
     .newPC(newPC),
     .JumpSel(JumpSel), //select
     .Result(regWrite)

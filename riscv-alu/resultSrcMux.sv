@@ -5,11 +5,11 @@ module resultSrcMux #(
     //Interface signals
     input logic [Data_Width-1:0] ALUResult,
     input logic [Data_Width-1:0] ReadData,
-    input logic ResultSrc,
+    input logic SrcSel,
     output logic [Data_Width-1:0] OutputSrcMux
 );
 
-assign OutputSrcMux = (ResultSrc) ? ReadData:ALUResult;
+assign OutputSrcMux = (SrcSel) ? ReadData:ALUResult;
 //so MuxSelect ? Output if mux select 1:Output if mux select 0
 
 endmodule
