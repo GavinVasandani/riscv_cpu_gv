@@ -7,7 +7,8 @@ module mainDecoder(
     output logic        MemWrite,
     output logic        ALUSrc,
     output logic        RegWrite,
-    output logic[1:0]   ALUOp
+    output logic[1:0]   ALUOp,
+    output logic        J
 );
 
 always_comb begin
@@ -20,6 +21,7 @@ always_comb begin
             ResultSrc = 1;
             Branch = 0;
             ALUOp = 2'b00;
+            J = 0;
         end
 
         7'b0100011: begin           //S-type
@@ -30,6 +32,7 @@ always_comb begin
             //ResultSrc = 1;
             Branch = 0;
             ALUOp = 2'b00;
+            J = 0;
         end
 
         7'b0110011: begin           //R-type
@@ -40,6 +43,7 @@ always_comb begin
             ResultSrc = 0;
             Branch = 0;
             ALUOp = 2'b10;
+            J = 0;
         end
 
         7'b1100011: begin           //B-type
@@ -50,6 +54,18 @@ always_comb begin
             //ResultSrc = 1;
             Branch = 1;
             ALUOp = 2'b01;
+            J = 0;
+        end
+
+        7'b1101111: begin
+            RegWrite = 1;
+            ImmSrc = 2'b11;
+            //ALUSrc = 1;
+            MemWrite = 0;
+            //ResultSrc = 1;
+            Branch = 0;
+            //ALUOp = 2'b01;
+            J = 1;
         end
     endcase
 end

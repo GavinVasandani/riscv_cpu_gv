@@ -13,7 +13,8 @@ module control(
     output logic [3:0]  ALUControl,
     output logic        ALUSrc,
     output logic [1:0]  ImmSrc,
-    output logic        RegWrite
+    output logic        RegWrite,
+    output logic        J           //JAL
 );
 
 logic Branch;
@@ -27,7 +28,8 @@ mainDecoder m(
     .MemWrite(MemWrite), 
     .ALUSrc(ALUSrc), 
     .RegWrite(RegWrite), 
-    .ALUOp(ALUOp)
+    .ALUOp(ALUOp),
+    .J(J)
     );
 
 ALUDecoder a(
