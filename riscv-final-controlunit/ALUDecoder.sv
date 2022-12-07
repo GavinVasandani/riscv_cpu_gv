@@ -8,7 +8,7 @@ module ALUDecoder(
     output logic[1:0] DataType
 );
 
-always_comb 
+always_comb begin
 
     case(ALUOp)
         2'b00: begin
@@ -24,6 +24,7 @@ always_comb
                     DataType = 00;
                 end
             endcase
+        
         end
         2'b01: begin 
 
@@ -74,4 +75,5 @@ always_comb
             ALUControl = 4'b0000;
         end
     endcase
+end
 endmodule

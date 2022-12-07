@@ -28,16 +28,11 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__control_unit__DOT__Branch;
     CData/*1:0*/ top__DOT__control_unit__DOT__ALUOp;
     CData/*7:0*/ top__DOT__ALU__DOT__ram1__DOT__byteAssign;
-    CData/*7:0*/ __VdfgTmp_h22e24ab9__0;
-    CData/*7:0*/ __VdfgTmp_h255a7f46__0;
-    CData/*7:0*/ __VdfgTmp_h9436ee9b__0;
-    CData/*0:0*/ __Vtrigrprev__TOP__clk;
-    CData/*0:0*/ __VactContinue;
+    CData/*0:0*/ __Vclklast__TOP__clk;
     SData/*15:0*/ top__DOT__ALU__DOT__ram1__DOT__halfwordAssign;
-    SData/*15:0*/ __VdfgTmp_h557ad426__0;
     VL_OUT(a0,31,0);
+    IData/*31:0*/ top__DOT__PC_instr;
     IData/*31:0*/ top__DOT__ImmOp;
-    IData/*24:0*/ top__DOT____Vcellinp__sign_extend__imm;
     IData/*31:0*/ top__DOT__myPC__DOT__PC;
     IData/*31:0*/ top__DOT__myPC__DOT__pcReg__DOT__next_PC;
     IData/*31:0*/ top__DOT__ALU__DOT__rd1;
@@ -45,16 +40,10 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__ALU__DOT__ALUOp2;
     IData/*31:0*/ top__DOT__ALU__DOT__ALUout;
     IData/*31:0*/ top__DOT__ALU__DOT__ReadData;
-    IData/*23:0*/ __VdfgTmp_h899fe6da__0;
-    IData/*31:0*/ __VstlIterCount;
-    IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*7:0*/, 4096> top__DOT__myPC__DOT__pcRom__DOT__rom_array;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__ALU__DOT__regFile1__DOT__regFile_array;
     VlUnpacked<CData/*7:0*/, 2> top__DOT__ALU__DOT__ram1__DOT__ram_array;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
-    VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<1> __VactTriggered;
-    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vtop__Syms* const vlSymsp;
