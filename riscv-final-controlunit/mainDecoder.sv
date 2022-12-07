@@ -13,7 +13,7 @@ module mainDecoder(
 
 always_comb begin
     case(op)
-        7'b0000011: begin           //LOAD
+        7'b0000011: begin           // Load
             RegWrite = 1;
             ImmSrc = 2'b00;
             ALUSrc = 1;
@@ -33,6 +33,17 @@ always_comb begin
             ResultSrc = 1'bx;
             Branch = 0;
             ALUOp = 2'b00;
+            J = 0;
+        end
+
+        7'b0010011: begin           //I-type
+            RegWrite = 1;
+            ImmSrc = 2'b00;
+            ALUSrc = 1;
+            MemWrite = 0;
+            ResultSrc = 0;
+            Branch = 0;
+            ALUOp = 2'b10;
             J = 0;
         end
 

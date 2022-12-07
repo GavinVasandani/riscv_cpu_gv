@@ -35,7 +35,7 @@ always_comb begin
                 3'b101:
                     ALUControl = 4'b1000;
                 default: begin
-                    ALUControl = 4'b0000;
+                    ALUControl = 4'b0001;
                 end
             endcase
         end
