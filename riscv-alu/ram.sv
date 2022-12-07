@@ -28,14 +28,14 @@ logic [15:0] halfwordAssign;
 //RD is output and is 32 bits so 4 8-bits combined:
 always_comb begin
     case (dataType)
-        2'b00: begin
+        2'b00: begin //00 then use word
             assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; // asynchronous read - have an iisue here, want to confirm with the GTA
         end 
-        2'b01: begin
+        2'b01: begin //01 then use byte
             byteAssign = ram_array[A];
             assign RD = {{24{byteAssign[7]}}, byteAssign};
         end
-        2'b10: begin
+        2'b10: begin //10 then use half word
             halfwordAssign = {ram_array[A+1], ram_array[A]};
             assign RD = {{16{halfwordAssign[15]}}, halfwordAssign};
         end
