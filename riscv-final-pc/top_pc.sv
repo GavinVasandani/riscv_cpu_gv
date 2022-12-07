@@ -1,6 +1,3 @@
-`include "rom.sv"
-`include "pc_reg.sv"
-
 module top_pc #(
         parameter ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32

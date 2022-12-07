@@ -51,7 +51,7 @@ module topLevelALU# (
 //Initializing objects of the different modules and linking them
 //.variablefromClass(variablefromTop)
 //regFile regFile1 (clk, rs1, rs2, rd, en, din, rd1, rd2, a0);
-regFile regFile1 (
+regfile regFile1 (
     .clk(clk),
     .rs1(rs1),
     .rs2(rs2), 
@@ -64,14 +64,14 @@ regFile regFile1 (
     .a0(a0) //check if needed
 );
 //regFileMux mux1 (rd2, ImmOp, ALUSrc, ALUOp2);
-regFileMux mux1 ( //Mux to determine ALU Op2
+regfileMux mux1 ( //Mux to determine ALU Op2
     .regOp2(rd2), 
     .ImmOp(ImmOp), 
     .ALUSrc(ALUSrc), 
     .ALUOp2(ALUOp2)
 );
 //regFileALU alu1 (rd1, ALUOp2, ALU_ctrl, ALUout, eq);
-regFileALU alu1 (
+regfileALU alu1 (
     .op1(rd1), 
     .op2(ALUOp2), 
     .ALU_ctrl(ALU_ctrl), 

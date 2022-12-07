@@ -1,3 +1,18 @@
+`include "riscv-final-pc/top_pc.sv"
+`include "riscv-final-pc/rom.sv"
+`include "riscv-final-pc/pc_reg.sv"
+`include "riscv-alu/topLevelALU.sv"
+`include "riscv-alu/regfile.sv"
+`include "riscv-alu/regfileALU.sv"
+`include "riscv-alu/regfileMux.sv"
+`include "riscv-alu/resultPCMux.sv"
+`include "riscv-alu/resultSrcMux.sv"
+`include "riscv-alu/top_dataram.sv"
+`include "riscv-final-controlunit/control.sv"
+`include "riscv-final-controlunit/ext.sv"
+`include "riscv-final-controlunit/ALUDecoder.sv"
+`include "riscv-final-controlunit/mainDecoder.sv"
+
 module top#(
     parameter ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32
@@ -5,7 +20,7 @@ module top#(
     input logic             trigger, 
     input logic             clk,
     input logic             rst,
-    output logic [ADDRESS_WIDTH-1:0] a0,
+    output logic [ADDRESS_WIDTH-1:0] a0
 
 );
 
@@ -17,8 +32,10 @@ module top#(
     logic [4:0] rd;
     logic [DATA_WIDTH-1:0] write_data;
     logic ALUSrc;
-    logic [2:0] ALU_ctrl;
+    logic [3:0] ALU_ctrl;
     logic EQ;
+    logic [1:0] DataType;
+    logic J;
     logic [DATA_WIDTH-1:0] ImmOp;
     logic [DATA_WIDTH-1:0] next_PC;
     logic [1:0]  ImmSrc;
@@ -51,14 +68,15 @@ control control_unit(
     .funct3 (PC_instr[14:12]),
     .funct75(PC_instr[30]),
     .Zero     (EQ),
-     
     .ALUControl (ALU_ctrl),
     .ALUSrc     (ALUSrc),
     .ImmSrc     (ImmSrc),
     .PCSrc      (PCsrc),
     .ResultSrc  (ResultSrc),
-    .MemWrite   (MemWrite)
+    .MemWrite   (MemWrite),
     .RegWrite   (RegWrite),
+    .DataType   (DataType),
+    .J          (J)
 );
 topLevelALU ALU(
     .trigger (trigger),
@@ -72,9 +90,12 @@ topLevelALU ALU(
     .newPC (next_PC),
     .ALU_ctrl (ALU_ctrl),
     .MemWrite (MemWrite),
-    .ResultSrc (ResultSrc),
+    .dataType (DataType),
+    .SrcSel (ResultSrc),
+    .JumpSel    (J),
     //----output-----------
-    .eq     (EQ)
+    .eq     (EQ),
+    .a0     (a0)
 );
 
 

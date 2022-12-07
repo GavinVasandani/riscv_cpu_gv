@@ -1,5 +1,5 @@
 //Register file is just special type of RAM component so copy RAM template code:
-module regFile # (
+module regfile # (
     parameter 
             // NumberOfReg = 32,
             Address_Width = 5, //32 registers so address size is 5 bits
@@ -46,13 +46,13 @@ always_ff @ (posedge clk) begin
     //At rising edge do:
     if (en) begin
         //regfile_array[rd] only reassigned at clock edge so use <=
-        if (rd) regFile_array[rd] <= din; //so conditional is run as long as rd is true so (not 0): //need to fix as there's register addressing offset so trying to access reg0 will be non-zero rd (reg address)
+        if (rd != 0) regFile_array[rd] <= din; //so conditional is run as long as rd is true so (not 0): //need to fix as there's register addressing offset so trying to access reg0 will be non-zero rd (reg address)
          //so at rising edge also the din is stored at register given by address rd
         else $display("Cannot write to register 0."); //invalid statement outputted if attempted to write to register 0   
     end
 
     if (trigger) begin
-        regFile_array[x17] <= 32'b1;
+        regFile_array[5'd17] <= 32'b1;
     end
     
 end

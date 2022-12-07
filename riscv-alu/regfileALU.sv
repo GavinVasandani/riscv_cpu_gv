@@ -1,6 +1,6 @@
 //Creating ALU module
 //ALU implements all ALU_controls
-module regFileALU # (
+module regfileALU # (
     parameter //Address_Width = 5,
               //ALU_Instruction_Width = 1;
               Data_Width = 32 //Data_Width aka number of bits for instruction word doesn't need to correlate to size of main mem

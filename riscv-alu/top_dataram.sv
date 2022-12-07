@@ -1,4 +1,4 @@
-module top_dataram(
+module top_dataram #(
     parameter ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32
 )(
@@ -8,7 +8,7 @@ module top_dataram(
     input logic [DATA_WIDTH-1:0] WD,
     input logic ResultSrc,
     output logic [DATA_WIDTH-1:0] Result
-)
+);
 
     logic [DATA_WIDTH-1:0] RD;
 
