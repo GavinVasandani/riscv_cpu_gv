@@ -26,7 +26,8 @@ logic [Data_Width-1:0] regFile_array [2**Address_Width-1:0]; //So 32-bit regfile
 //Registers in regfile are not initialized to anything so neither contents = 0 or contents are empty, so add rst which sets all content values to 0
 initial begin 
         $display("Initializing regFile with null values (0).");
-        $readmemh("regFile.mem", regFile_array); 
+        $readmemh("regfileInputs.mem", regFile_array); 
+        $display("Register successfully initialized");
 end;
 
 //Register file is sequential (clocked) so only at rising edge we output the value stored at register given by regFile_array[rs1]

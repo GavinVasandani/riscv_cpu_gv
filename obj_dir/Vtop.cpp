@@ -11,16 +11,9 @@
 Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vtop__Syms(contextp(), _vcname__, this)}
-    , top_dataram__02Eclk{vlSymsp->TOP.top_dataram__02Eclk}
-    , top__02Eclk{vlSymsp->TOP.top__02Eclk}
-    , WE{vlSymsp->TOP.WE}
-    , dataType{vlSymsp->TOP.dataType}
-    , ResultSrc{vlSymsp->TOP.ResultSrc}
+    , clk{vlSymsp->TOP.clk}
     , trigger{vlSymsp->TOP.trigger}
     , rst{vlSymsp->TOP.rst}
-    , A{vlSymsp->TOP.A}
-    , WD{vlSymsp->TOP.WD}
-    , Result{vlSymsp->TOP.Result}
     , a0{vlSymsp->TOP.a0}
     , rootp{&(vlSymsp->TOP)}
 {

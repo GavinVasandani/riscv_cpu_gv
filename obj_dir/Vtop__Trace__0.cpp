@@ -114,21 +114,9 @@ void Vtop___024root__trace_chg_sub_0(Vtop___024root* vlSelf, VerilatedVcd::Buffe
         bufp->chgIData(oldp+67,(vlSelf->top__DOT____Vcellinp__sign_extend__imm),25);
     }
     bufp->chgBit(oldp+68,(vlSelf->trigger));
-    bufp->chgBit(oldp+69,(vlSelf->top__02Eclk));
+    bufp->chgBit(oldp+69,(vlSelf->clk));
     bufp->chgBit(oldp+70,(vlSelf->rst));
     bufp->chgIData(oldp+71,(vlSelf->a0),32);
-    bufp->chgBit(oldp+72,(vlSelf->top_dataram__02Eclk));
-    bufp->chgBit(oldp+73,(vlSelf->WE));
-    bufp->chgCData(oldp+74,(vlSelf->dataType),2);
-    bufp->chgIData(oldp+75,(vlSelf->A),32);
-    bufp->chgIData(oldp+76,(vlSelf->WD),32);
-    bufp->chgBit(oldp+77,(vlSelf->ResultSrc));
-    bufp->chgIData(oldp+78,(vlSelf->Result),32);
-    bufp->chgIData(oldp+79,(vlSelf->top_dataram__DOT__RD),32);
-    bufp->chgCData(oldp+80,(vlSelf->top_dataram__DOT__dataram__DOT__ram_array[0]),8);
-    bufp->chgCData(oldp+81,(vlSelf->top_dataram__DOT__dataram__DOT__ram_array[1]),8);
-    bufp->chgCData(oldp+82,(vlSelf->top_dataram__DOT__dataram__DOT__byteAssign),8);
-    bufp->chgSData(oldp+83,(vlSelf->top_dataram__DOT__dataram__DOT__halfwordAssign),16);
 }
 
 void Vtop___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

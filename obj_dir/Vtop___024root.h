@@ -13,14 +13,9 @@ class Vtop___024root final : public VerilatedModule {
   public:
 
     // DESIGN SPECIFIC STATE
-    VL_IN8(top_dataram__02Eclk,0,0);
-    VL_IN8(top__02Eclk,0,0);
-    VL_IN8(WE,0,0);
-    VL_IN8(dataType,1,0);
-    VL_IN8(ResultSrc,0,0);
+    VL_IN8(clk,0,0);
     VL_IN8(trigger,0,0);
     VL_IN8(rst,0,0);
-    CData/*7:0*/ top_dataram__DOT__dataram__DOT__byteAssign;
     CData/*0:0*/ top__DOT__RegWrite;
     CData/*0:0*/ top__DOT__ALUSrc;
     CData/*3:0*/ top__DOT__ALU_ctrl;
@@ -36,17 +31,11 @@ class Vtop___024root final : public VerilatedModule {
     CData/*7:0*/ __VdfgTmp_h22e24ab9__0;
     CData/*7:0*/ __VdfgTmp_h255a7f46__0;
     CData/*7:0*/ __VdfgTmp_h9436ee9b__0;
-    CData/*0:0*/ __Vtrigrprev__TOP__top_dataram__02Eclk;
-    CData/*0:0*/ __Vtrigrprev__TOP__top__02Eclk;
+    CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __VactContinue;
-    SData/*15:0*/ top_dataram__DOT__dataram__DOT__halfwordAssign;
     SData/*15:0*/ top__DOT__ALU__DOT__ram1__DOT__halfwordAssign;
     SData/*15:0*/ __VdfgTmp_h557ad426__0;
-    VL_IN(A,31,0);
-    VL_IN(WD,31,0);
-    VL_OUT(Result,31,0);
     VL_OUT(a0,31,0);
-    IData/*31:0*/ top_dataram__DOT__RD;
     IData/*31:0*/ top__DOT__ImmOp;
     IData/*24:0*/ top__DOT____Vcellinp__sign_extend__imm;
     IData/*31:0*/ top__DOT__myPC__DOT__PC;
@@ -58,17 +47,14 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__ALU__DOT__ReadData;
     IData/*23:0*/ __VdfgTmp_h899fe6da__0;
     IData/*31:0*/ __VstlIterCount;
-    IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;
-    VlUnpacked<CData/*7:0*/, 2> top_dataram__DOT__dataram__DOT__ram_array;
     VlUnpacked<CData/*7:0*/, 4096> top__DOT__myPC__DOT__pcRom__DOT__rom_array;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__ALU__DOT__regFile1__DOT__regFile_array;
     VlUnpacked<CData/*7:0*/, 2> top__DOT__ALU__DOT__ram1__DOT__ram_array;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vtop__Syms* const vlSymsp;
