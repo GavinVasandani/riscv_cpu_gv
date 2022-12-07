@@ -28,16 +28,17 @@ void Vtop_pc___024root__trace_chg_sub_0(Vtop_pc___024root* vlSelf, VerilatedVcd:
     bufp->chgBit(oldp+2,(vlSelf->clk));
     bufp->chgBit(oldp+3,(vlSelf->rst));
     bufp->chgIData(oldp+4,(vlSelf->instr),32);
-    bufp->chgSData(oldp+5,(vlSelf->top_pc__DOT__PC),12);
-    bufp->chgSData(oldp+6,((0xfffU & vlSelf->ImmOp)),12);
-    bufp->chgSData(oldp+7,((0xfffU & (vlSelf->ImmOp 
-                                      + (IData)(vlSelf->top_pc__DOT__PC)))),12);
+    bufp->chgIData(oldp+5,(vlSelf->next_PC),32);
+    bufp->chgSData(oldp+6,(vlSelf->top_pc__DOT__PC),12);
+    bufp->chgSData(oldp+7,((0xfffU & vlSelf->ImmOp)),12);
     bufp->chgSData(oldp+8,((0xfffU & ((IData)(4U) + (IData)(vlSelf->top_pc__DOT__PC)))),12);
-    bufp->chgSData(oldp+9,((0xfffU & ((IData)(vlSelf->PCsrc)
-                                       ? (vlSelf->ImmOp 
-                                          + (IData)(vlSelf->top_pc__DOT__PC))
-                                       : ((IData)(4U) 
-                                          + (IData)(vlSelf->top_pc__DOT__PC))))),12);
+    bufp->chgSData(oldp+9,((0xfffU & (vlSelf->ImmOp 
+                                      + (IData)(vlSelf->top_pc__DOT__PC)))),12);
+    bufp->chgSData(oldp+10,((0xfffU & ((IData)(vlSelf->PCsrc)
+                                        ? (vlSelf->ImmOp 
+                                           + (IData)(vlSelf->top_pc__DOT__PC))
+                                        : ((IData)(4U) 
+                                           + (IData)(vlSelf->top_pc__DOT__PC))))),12);
 }
 
 void Vtop_pc___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

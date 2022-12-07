@@ -6,27 +6,26 @@ module pc_reg #(
     input logic                     PCsrc,
     input logic                     clk,
     input logic                     rst,
-    output logic [ADDRESS_WIDTH-1:0] PC
+    output logic [ADDRESS_WIDTH-1:0] PC,
+    output logic [31:0] pc_alu
 );
-
-    logic [ADDRESS_WIDTH-1:0] branch_PC;
     logic [ADDRESS_WIDTH-1:0] inc_PC;
+    logic [ADDRESS_WIDTH-1:0] alt_PC;
 
 // intermediate output from the mux block, should be decided based on the value of PCsrc
 logic [ADDRESS_WIDTH-1:0] next_PC;
 
 // handles assigning individual control values to the mux block
-assign branch_PC = PC + ImmOp;
+assign alt_PC = PC + ImmOp;
 assign inc_PC = PC + 12'h4;
-
-
 // handles the mux block
-assign next_PC = PCsrc ? branch_PC : inc_PC;
+assign next_PC = PCsrc ? alt_PC : inc_PC;
+assign pc_alu = {{20{1'b0}}, inc_PC};
 
 // handles the PC register, note that this part is clocked
-always_ff @(posedge clk)
+always_ff @(posedge clk) begin
     // synchronous reset
-    if(rst) PC <= {ADDRESS_WIDTH{1'b0}};
-    else    PC <= next_PC;
-
+        if(rst) PC <= {ADDRESS_WIDTH{1'b0}};
+        else    PC <= next_PC;
+    end
 endmodule

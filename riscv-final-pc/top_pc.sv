@@ -9,12 +9,13 @@ module top_pc #(
   input logic                     PCsrc,
   input logic                     clk,
   input logic                     rst,
-  output logic [DATA_WIDTH-1:0]   instr
+  output logic [DATA_WIDTH-1:0]   instr,
+  output logic [DATA_WIDTH-1:0] next_PC
 );
 
   logic [ADDRESS_WIDTH-1:0] PC;
 
-pc_reg pcReg(ImmOp[11:0], PCsrc, clk, rst, PC);
+pc_reg pcReg(ImmOp[11:0], PCsrc, clk, rst, PC, next_PC);
 
 rom pcRom(PC, instr);
 

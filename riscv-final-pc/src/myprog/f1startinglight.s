@@ -7,3 +7,7 @@
 # if it is 0xFF, reed the delay from the delay register and wait the correct amount of clock cycles before going back to 0xFF
 # now wait 24 cycles for the clktick register to become 0
 # if it does become 0, initiate a subroutine that sets it beack to 24 and increments a0 accordingly
+# a7 contains trigger
+# a5 contains delay
+# s2, a1, a2, a3, a5 - by lfsr
+# a0, ra, a5 - by state machine

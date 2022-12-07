@@ -42,8 +42,11 @@ VL_INLINE_OPT void Vtop_pc___024root___nba_sequent__TOP__0(Vtop_pc___024root* vl
     Vtop_pc__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop_pc___024root___nba_sequent__TOP__0\n"); );
     // Body
-    vlSelf->top_pc__DOT__PC = ((IData)(vlSelf->rst)
-                                ? 0U : (IData)(vlSelf->top_pc__DOT__pcReg__DOT__next_PC));
+    if (vlSelf->rst) {
+        vlSelf->top_pc__DOT__PC = 0U;
+    }
+    vlSelf->top_pc__DOT__PC = vlSelf->top_pc__DOT__pcReg__DOT__next_PC;
+    vlSelf->next_PC = (0xfffU & ((IData)(4U) + (IData)(vlSelf->top_pc__DOT__PC)));
     vlSelf->instr = ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array
                       [(0xfffU & ((IData)(3U) + (IData)(vlSelf->top_pc__DOT__PC)))] 
                       << 0x18U) | ((vlSelf->top_pc__DOT__pcRom__DOT__rom_array

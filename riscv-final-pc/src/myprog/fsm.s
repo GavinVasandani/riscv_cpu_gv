@@ -1,6 +1,6 @@
 .text
 .globl main
-# registers in use: s2, a1, a2, a3 - by lfsr
+# registers in use: s2, a1, a2, a3 - by lfsr, a0, ra, a5 - by this program
 # a5 will be used to store the delay value
 # ra is used to store the value of PC that holds the return from subroutine value
 main:
@@ -25,6 +25,7 @@ delay:
     jal x0, checkdelay # unconditional jump to termination step if you reach here
 done:
     addi ra, zero, 0x0 # reset subroutine register
+    addi a0, zero, 0x0 
 # look at f1 starting light code for reasoning behind design decisions
 # suggested modifications/ questions to ask to the GTA:
 
