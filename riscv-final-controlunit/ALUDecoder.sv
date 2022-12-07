@@ -19,7 +19,10 @@ always_comb
                 3'b000:                       //BYTE
                     DataType = 01;
                 3'b001:                       //HALF WORD
-                    DataType = 01; 
+                    DataType = 01;
+                default: begin
+                    DataType = 00;
+                end
             endcase
         end
         2'b01: begin 
@@ -30,6 +33,9 @@ always_comb
                 
                 3'b101:
                     ALUControl = 4'b1000;
+                default: begin
+                    ALUControl = 4'b0000;
+                end
             endcase
         end
         2'b10: begin
@@ -59,8 +65,13 @@ always_comb
                         ALUControl = 4'b0110;       
                 3'b100:                             //XOR
                     ALUControl = 4'b1001;
-                
+                default: begin
+                    ALUControl = 4'b0000;
+                end
             endcase
+        end
+        default: begin
+            ALUControl = 4'b0000;
         end
     endcase
 endmodule
