@@ -16,6 +16,7 @@ class Vtop___024root final : public VerilatedModule {
     VL_IN8(top_dataram__02Eclk,0,0);
     VL_IN8(top__02Eclk,0,0);
     VL_IN8(WE,0,0);
+    VL_IN8(dataType,1,0);
     VL_IN8(ResultSrc,0,0);
     VL_IN8(trigger,0,0);
     VL_IN8(rst,0,0);
@@ -39,8 +40,6 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ __Vtrigrprev__TOP__top__02Eclk;
     CData/*0:0*/ __VactContinue;
     SData/*15:0*/ top_dataram__DOT__dataram__DOT__halfwordAssign;
-    SData/*11:0*/ top__DOT__imm_imm;
-    SData/*12:0*/ top__DOT__imm_branch;
     SData/*15:0*/ top__DOT__ALU__DOT__ram1__DOT__halfwordAssign;
     SData/*15:0*/ __VdfgTmp_h557ad426__0;
     VL_IN(A,31,0);
@@ -48,8 +47,6 @@ class Vtop___024root final : public VerilatedModule {
     VL_OUT(Result,31,0);
     VL_OUT(a0,31,0);
     IData/*31:0*/ top_dataram__DOT__RD;
-    IData/*31:0*/ top_dataram__DOT__dataram__DOT__RD;
-    IData/*31:0*/ top__DOT__write_data;
     IData/*31:0*/ top__DOT__ImmOp;
     IData/*24:0*/ top__DOT____Vcellinp__sign_extend__imm;
     IData/*31:0*/ top__DOT__myPC__DOT__PC;

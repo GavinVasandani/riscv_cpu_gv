@@ -28,6 +28,7 @@ class Vtop VL_NOT_FINAL : public VerilatedModel {
     VL_IN8(&top_dataram__02Eclk,0,0);
     VL_IN8(&top__02Eclk,0,0);
     VL_IN8(&WE,0,0);
+    VL_IN8(&dataType,1,0);
     VL_IN8(&ResultSrc,0,0);
     VL_IN8(&trigger,0,0);
     VL_IN8(&rst,0,0);

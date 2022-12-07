@@ -14,6 +14,7 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     , top_dataram__02Eclk{vlSymsp->TOP.top_dataram__02Eclk}
     , top__02Eclk{vlSymsp->TOP.top__02Eclk}
     , WE{vlSymsp->TOP.WE}
+    , dataType{vlSymsp->TOP.dataType}
     , ResultSrc{vlSymsp->TOP.ResultSrc}
     , trigger{vlSymsp->TOP.trigger}
     , rst{vlSymsp->TOP.rst}

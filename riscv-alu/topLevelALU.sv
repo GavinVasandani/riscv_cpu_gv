@@ -2,7 +2,6 @@ module topLevelALU# (
     parameter 
               // NumberOfReg = 32,
               Address_Width_RegFile = 5, //32 registers so address size is 5 bits
-              Address_Width_RAM = 17,
               Data_Width = 32
               //ALU_Instruction_Width = 10;
 ) (
