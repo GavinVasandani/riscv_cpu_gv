@@ -57,7 +57,7 @@ always_comb begin
             J = 0;
         end
 
-        7'b1101111: begin
+        7'b1101111: begin           // Jump
             RegWrite = 1;
             ImmSrc = 2'b11;
             //ALUSrc = 1;
