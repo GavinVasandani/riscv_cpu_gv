@@ -12,6 +12,7 @@ module regFile # (
     input logic [Address_Width-1:0] rs2, //rs2 is 2nd source reg, arithmetic input
     input logic [Address_Width-1:0] rd, //rd is destination reg to store arithmetic output
     input logic en, //Enable to determine whether we can write to register file or not
+    input logic trigger,
     input logic [Data_Width-1:0] din, //Data in which takes in ALU output to write to register rd. Registers hold 32 bit word so din is 32 bits
     output logic [Data_Width-1:0] rd1, //32 bit word that is stored in register that is outputted to ALU for operation
     output logic [Data_Width-1:0] rd2, //32 bit word that is stored in register that is outputted to ALU for operation
@@ -49,6 +50,11 @@ always_ff @ (posedge clk) begin
          //so at rising edge also the din is stored at register given by address rd
         else $display("Cannot write to register 0."); //invalid statement outputted if attempted to write to register 0   
     end
+
+    if (trigger) begin
+        regFile_array[x17] <= 32'b1;
+    end
+    
 end
 
 assign a0 = regFile_array[5'd10];

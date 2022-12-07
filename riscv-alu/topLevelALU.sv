@@ -7,39 +7,46 @@ module topLevelALU# (
               //ALU_Instruction_Width = 10;
 ) (
 //Interface Signals
+
+    //Regfile signals
     input logic clk,
     input logic [Address_Width_RegFile-1:0] rs1, //32 registers so 5 bit address, rs1 is 1st source reg, arithmetic input
     input logic [Address_Width_RegFile-1:0] rs2, //rs2 is 2nd source reg, arithmetic input
     input logic [Address_Width_RegFile-1:0] rd, //rd is destination reg to store arithmetic output
     input logic regFileWen, //Enable to determine whether we can write to register file or not
-    //change: input logic [Data_Width-1:0] din, //Data in which takes in ALU output to write to register rd. Registers hold 32 bit word so din is 32 bits
+    input logic trigger, 
+
+    //ALU input mux signals
     input logic ALUSrc,
     input logic [Data_Width-1:0] ImmOp,
-    input logic [Data_Width-1:0] newPC, //PC+4 input
-    //input logic [ALU_Instruction_Width-1:0] ALU_ctrl;
+
+    //ALU signal
     input logic [3:0] ALU_ctrl,
+
+    //RAM signals
     input logic MemWrite, //WE
+    input logic [1:0] dataType,
+
+    //ResultSrcMux signal
     input logic SrcSel, //select for ResultSrcMux
+
+    //ResultPCMux signal
+    input logic [Data_Width-1:0] newPC, //PC+4 input
     input logic JumpSel, //select for resultPCMux
-    input loic [1:0] dataType,
 
-
-//Outputs
-    //change: output logic [Data_Width-1:0] ALUout, //output of ALU is same size as ALU inputs
+    //Outputs
     output logic eq,
     output logic [Data_Width-1:0] a0
 );
 
-//Variable which acts in the middle:
-logic [Data_Width-1:0] rd1;
-logic [Data_Width-1:0] rd2;
-logic [Data_Width-1:0] ALUOp2;
-logic [Data_Width-1:0] ALUout;
-
-//Din is output of ALU and input of regfile:
-logic [Data_Width-1:0] ReadData;
-logic [Data_Width-1:0] ResultSrc; //output from ResultSrcMux
-logic [Data_Width-1:0] regWrite; //data to write to register
+//Wires
+    logic [Data_Width-1:0] rd1; //regfile output 1
+    logic [Data_Width-1:0] rd2; //regfile output 2
+    logic [Data_Width-1:0] ALUOp2; //ALU input 2
+    logic [Data_Width-1:0] ALUout; //ALU output
+    logic [Data_Width-1:0] ReadData; //RAM output
+    logic [Data_Width-1:0] ResultSrcOutput; //ResultSrcMux output 
+    logic [Data_Width-1:0] regWrite; //data to write to register
 
 //Initializing objects of the different modules and linking them
 //.variablefromClass(variablefromTop)
@@ -50,6 +57,7 @@ regFile regFile1 (
     .rs2(rs2), 
     .rd(rd), 
     .en(regFileWen), 
+    .trigger(trigger),
     .din(regWrite), //register file input is regWrite
     .rd1(rd1), 
     .rd2(rd2),
@@ -86,12 +94,12 @@ beginning of a word. */
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
-    .SrcSel(SrcSel), //select
-    .OutputSrcMux(ResultSrc) //previously Result
+    .SrcSel(SrcSel), //ResultSrc select
+    .OutputSrcMux(ResultSrcOutput) //previously Result
 );
 
 resultPCMux resultPCMux1 (
-    .ResultSrc(ResultSrc), //previously ALUResult
+    .ResultSrc(ResultSrcOutput), //previously ALUResult
     .newPC(newPC),
     .JumpSel(JumpSel), //select
     .Result(regWrite)
