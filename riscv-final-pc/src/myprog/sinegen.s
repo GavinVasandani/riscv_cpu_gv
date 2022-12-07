@@ -9,4 +9,4 @@ iloop:
     lw      a0, 0(a1)           # load a0 dmem[a1]
     addi    a1, a1, 1           # increment a1
     bne     a1, t1, iloop       # if a1 = 255, branch to iploop
-    bne     t1, zero, mloop     #  ... else always brand to mloop
+    bne     t1, zero, mloop     #  ... else always branch to mloop
