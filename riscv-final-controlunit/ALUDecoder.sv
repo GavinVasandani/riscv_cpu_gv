@@ -4,14 +4,24 @@ module ALUDecoder(
     input logic      funct75,
     input logic[1:0] ALUOp,
 
-    output logic[3:0] ALUControl
+    output logic[3:0] ALUControl,
+    output logic[1:0] DataType
 );
 
 always_comb 
 
     case(ALUOp)
-        2'b00: 
-            ALUControl = 4'b0000;     //lw, sw
+        2'b00:
+            ALUControl = 4'b0000;             //LOAD / STORE
+            case(funct3):
+                3'b010:                       //WORD
+                    DataType = 00;
+                3'b000:                       //BYTE
+                    DataType = 01;
+                3'b001:                       //HALF WORD
+                    DataType = 01; 
+            endcase
+            
         2'b01:
 
             case(funct3)
