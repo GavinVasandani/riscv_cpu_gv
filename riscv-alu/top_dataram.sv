@@ -1,5 +1,5 @@
 module top_dataram(
-    parameter ADDRESS_WIDTH = 12,
+    parameter ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32
 )(
     input logic clk,

@@ -1,5 +1,5 @@
 module ram #(
-    parameter ADDRESS_WIDTH = 17, // needs to be 17 bit wide, look at memory map of final project for reasoning
+    parameter ADDRESS_WIDTH = 32, // needs to be 17 bit wide, look at memory map of final project for reasoning
     //memory addresses reserved from data memory is 0x00001000 to 0x00001FFF, so 12 bit address width, so 4096 referencable mem locations.
     DATA_WIDTH = 32, // 32 bit value stored in mem location of RAM - since it's byte addressed we store data in 4 addresses - confirm with GTA
     BYTE_WIDTH = 8
