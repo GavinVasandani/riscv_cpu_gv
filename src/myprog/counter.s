@@ -2,6 +2,7 @@
 .globl main
 main:
     addi    t1, zero, 0xff      # load t1 with 255
+    addi    t1, zero, 0xff      # load t1 with 255
     addi    a0, zero, 0x0       # a0 is used for output
 mloop:     
     addi    a1, zero, 0x0       # a1 is the counter, init to 0

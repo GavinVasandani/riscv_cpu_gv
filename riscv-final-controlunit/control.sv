@@ -18,6 +18,7 @@ module control(
     output logic        J           //JAL
 );
 
+logic Zero_intermediate;
 logic Branch;
 logic [1:0] ALUOp;
 
@@ -42,7 +43,9 @@ ALUDecoder a(
     .DataType(DataType)
     );
 
-assign PCSrc = Zero & Branch;
+assign Zero_intermediate = funct3[0] ? !Zero : Zero;
+
+assign PCSrc = Zero_intermediate & Branch;
     
 
     
