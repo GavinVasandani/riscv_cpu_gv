@@ -4,6 +4,7 @@ module top_dataram #(
 )(
     input logic clk,
     input logic WE,
+    input logic [1:0] dataType,
     input logic [ADDRESS_WIDTH-1:0] A,
     input logic [DATA_WIDTH-1:0] WD,
     input logic ResultSrc,
@@ -12,7 +13,7 @@ module top_dataram #(
 
     logic [DATA_WIDTH-1:0] RD;
 
-    ram dataram(clk, WE, A, WD, RD);
+    ram dataram(clk, WE, dataType, A, WD, RD);
 
     assign Result = ResultSrc ? RD : A;
 

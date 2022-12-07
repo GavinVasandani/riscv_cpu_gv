@@ -81,7 +81,11 @@ always_comb begin //ALU implements different arithmetic/logic based on opcode in
             //eq is don't care:
             eq = 0;
         end
-        default: $display("Instruction not detected.");
+        default: begin
+            ALUout = 0;
+            eq = 0;
+            $display("Instruction not detected.");
+        end
     endcase
 end
 endmodule

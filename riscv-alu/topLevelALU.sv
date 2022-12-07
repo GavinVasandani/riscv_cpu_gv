@@ -86,7 +86,7 @@ beginning of a word. */
     .clk(clk),
     .WE(MemWrite),
     .dataType(dataType),
-    .A(ALUout[Address_Width_RAM-1:0]),
+    .A(ALUout),
     .WD(rd2),
     .RD(ReadData)
 );

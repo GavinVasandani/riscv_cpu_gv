@@ -8,6 +8,7 @@
 `include "riscv-alu/resultPCMux.sv"
 `include "riscv-alu/resultSrcMux.sv"
 `include "riscv-alu/top_dataram.sv"
+`include "riscv-alu/ram.sv"
 `include "riscv-final-controlunit/control.sv"
 `include "riscv-final-controlunit/ext.sv"
 `include "riscv-final-controlunit/ALUDecoder.sv"
@@ -30,7 +31,6 @@ module top#(
     logic [4:0] rs1;
     logic [4:0] rs2;
     logic [4:0] rd;
-    logic [DATA_WIDTH-1:0] write_data;
     logic ALUSrc;
     logic [3:0] ALU_ctrl;
     logic EQ;
@@ -39,8 +39,6 @@ module top#(
     logic [DATA_WIDTH-1:0] ImmOp;
     logic [DATA_WIDTH-1:0] next_PC;
     logic [1:0]  ImmSrc;
-    logic [11:0] imm_imm;
-    logic [12:0] imm_branch;
     logic MemWrite;
     logic ResultSrc;
 

@@ -1,5 +1,5 @@
 module ALUDecoder(
-    input logic      op5,
+    // input logic      op5, unused signal, no need to include
     input logic[2:0] funct3,
     input logic      funct75,
     input logic[1:0] ALUOp,
