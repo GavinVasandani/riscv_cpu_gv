@@ -8,7 +8,7 @@ module ALUDecoder(
     output logic[1:0] DataType
 );
 
-always_comb 
+always_comb begin
 
     case(ALUOp)
         2'b00: begin
@@ -20,7 +20,10 @@ always_comb
                     DataType = 01;
                 3'b001:                       //HALF WORD
                     DataType = 01; 
+
+                default: $display("ALUDecoder error");
             endcase
+        
         end
         2'b01: begin 
 
@@ -30,6 +33,7 @@ always_comb
                 
                 3'b101:
                     ALUControl = 4'b1000;
+                default: $display("ALUDecoder error");
             endcase
         end
         2'b10: begin
@@ -60,7 +64,10 @@ always_comb
                 3'b100:                             //XOR
                     ALUControl = 4'b1001;
                 
+                default: $display("ALUDecoder error");
+                
             endcase
         end
     endcase
+end
 endmodule

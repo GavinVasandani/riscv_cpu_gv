@@ -22,6 +22,7 @@ always_comb begin
             Branch = 0;
             ALUOp = 2'b00;
             J = 0;
+
         end
 
         7'b0100011: begin           //S-type
@@ -67,6 +68,7 @@ always_comb begin
             //ALUOp = 2'b01;
             J = 1;
         end
+        default: $display("MainDecoder error");
     endcase
 end
 
