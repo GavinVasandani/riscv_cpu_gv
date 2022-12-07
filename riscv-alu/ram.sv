@@ -7,10 +7,6 @@ module ram #(
     input logic clk,
     input logic WE, //write enable
     input logic [1:0] dataType, //input signal, where 00: word, 01: byte, 10: half word
-    //Input signal to determine whether store byte or store word:
-    //if store byte then ram_array[A] = rd2 [7:0]
-    //input logic WW, //write word
-    //input logic RB, //read byte, signal that if 1 outputs byte from ram instead of word, by default word is outputted
     input logic [ADDRESS_WIDTH-1:0] A, // address, to be taken from output of ALU, 12 bit address so that we can address all mem locations in data mem
     input logic [DATA_WIDTH-1:0] WD, // write input, to be taken from rd2
     output logic [DATA_WIDTH-1:0] RD // read output
