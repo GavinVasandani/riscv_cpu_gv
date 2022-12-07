@@ -43,16 +43,6 @@ always_comb begin
     endcase
 end
 
-/*if (dataType==01) begin
-    //sign extend 8 bit output (signed):
-    byteAssign = ram_array[A];
-    assign RD = {{24{byteAssign[7]}}, byteAssign}};
-end
-else begin
-    assign RD = {ram_array[A], ram_array[A+1], ram_array[A+2], ram_array[A+3]}; // asynchronous read - have an iisue here, want to confirm with the GTA
-end*/
-//if each address stores a 32-bit word then RD would be 128 bits, so each address needs to store 1 byte, so 8 bit and then combined gives 32-bit word
-
 always_ff @(posedge clk) begin
     if (WE) begin// synchronous write
         if (!dataType) begin
