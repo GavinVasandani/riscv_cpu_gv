@@ -17,15 +17,15 @@ module topLevelALU# (
     input logic trigger, 
 
     //ALU input mux signals
-    input logic ALUSrc,
-    input logic [Data_Width-1:0] ImmOp,
+    input logic ALUSrc, //select
+    input logic [Data_Width-1:0] ImmOp, //sign extended immediate input
 
     //ALU signal
     input logic [3:0] ALU_ctrl,
 
     //RAM signals
-    input logic MemWrite, //WE
-    input logic [1:0] dataType,
+    input logic MemWrite, //WE (Write Enable)
+    input logic [1:0] dataType, //00: word, 01: byte, 10: halfword
 
     //ResultSrcMux signal
     input logic SrcSel, //select for ResultSrcMux
