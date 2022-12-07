@@ -1,5 +1,5 @@
 main:
-    addi a5, zero, 0x0 # s2 is used by delay in subsequent modules
+    addi a5, zero, 0x0 # a5 is used by delay in subsequent modules
     addi a1, zero, 0x1 # a1 is the lfsr, we start with 1
 mloop:
     addi a5, a1, 0x0 # load output with answer
@@ -11,5 +11,5 @@ mloop:
     srli a3, t1, 0x6 # a3 contains the 7th bit of the number
     xor t2, a3, a2 # randomization step (n)
     add a1, a1, t2 # reconstruct the number : x3x2x1n where n is the new bit from the randomization
-    beq a7, zero, mloop # loop till trigger is asserted - trigger is stored in a7 or x17
+    beq a7, zero, mloop # loop till trigger is asserted - trigger is stored in a7
     
