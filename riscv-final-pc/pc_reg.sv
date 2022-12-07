@@ -20,6 +20,7 @@ assign alt_PC = PC + ImmOp;
 assign inc_PC = PC + 32'h4;
 // handles the mux block
 assign next_PC = PCsrc ? alt_PC : inc_PC;
+// assigns output to alu block
 assign pc_alu = inc_PC;
 
 // handles the PC register, note that this part is clocked
