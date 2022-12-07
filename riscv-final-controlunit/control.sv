@@ -10,7 +10,7 @@ module control(
     output logic        PCSrc,
     output logic        ResultSrc,
     output logic        MemWrite,
-    output logic [2:0]  ALUControl,
+    output logic [3:0]  ALUControl,
     output logic        ALUSrc,
     output logic [1:0]  ImmSrc,
     output logic        RegWrite
