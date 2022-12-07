@@ -85,11 +85,11 @@ resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
     .ResultSrc(ResultSrc), //select
-    .Result(resultSrcOutput)
+    .OutputSrcMux(resultSrcOutput) //previously Result
 );
 
 resultPCMux resultPCMux1 (
-    .ALUResult(resultSrcOutput),
+    .ResultSrc(resultSrcOutput),
     .newPC(newPC),
     .JumpSel(JumpSel), //select
     .Result(regWrite)

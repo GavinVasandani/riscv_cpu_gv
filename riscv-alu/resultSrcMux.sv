@@ -6,10 +6,10 @@ module resultSrcMux #(
     input logic [Data_Width-1:0] ALUResult,
     input logic [Data_Width-1:0] ReadData,
     input logic ResultSrc,
-    output logic [Data_Width-1:0] Result
+    output logic [Data_Width-1:0] OutputSrcMux
 );
 
-assign Result = (ResultSrc) ? ReadData:ALUResult;
+assign OutputSrcMux = (ResultSrc) ? ReadData:ALUResult;
 //so MuxSelect ? Output if mux select 1:Output if mux select 0
 
 endmodule
