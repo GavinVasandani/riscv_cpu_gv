@@ -2,7 +2,7 @@ module topLevelALU# (
     parameter 
               // NumberOfReg = 32,
               Address_Width_RegFile = 5, //32 registers so address size is 5 bits
-              Address_Width_RAM = 12,
+              Address_Width_RAM = 17,
               Data_Width = 32
               //ALU_Instruction_Width = 10;
 ) (
@@ -21,6 +21,7 @@ module topLevelALU# (
     input logic MemWrite, //WE
     input logic SrcSel, //select for ResultSrcMux
     input logic JumpSel, //select for resultPCMux
+    input loic [1:0] dataType,
 
 
 //Outputs
@@ -37,7 +38,7 @@ logic [Data_Width-1:0] ALUout;
 
 //Din is output of ALU and input of regfile:
 logic [Data_Width-1:0] ReadData;
-logic [Data_Width-1:0] resultSrcOutput; //output from ResultSrcMux
+logic [Data_Width-1:0] ResultSrc; //output from ResultSrcMux
 logic [Data_Width-1:0] regWrite; //data to write to register
 
 //Initializing objects of the different modules and linking them
@@ -66,7 +67,7 @@ regFileALU alu1 (
     .op1(rd1), 
     .op2(ALUOp2), 
     .ALU_ctrl(ALU_ctrl), 
-    .ALUout(dinTest), 
+    .ALUout(ALUout), 
     .eq(eq)
 );
 
@@ -76,6 +77,7 @@ beginning of a word. */
 //need to add signals for WW (Write Word), RB (Read Byte)
     .clk(clk),
     .WE(MemWrite),
+    .dataType(dataType),
     .A(ALUout[Address_Width_RAM-1:0]),
     .WD(rd2),
     .RD(ReadData)
@@ -84,16 +86,15 @@ beginning of a word. */
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
-    .SrcSel(ResultSrc), //select
-    .OutputSrcMux(resultSrcOutput) //previously Result
+    .SrcSel(SrcSel), //select
+    .OutputSrcMux(ResultSrc) //previously Result
 );
 
 resultPCMux resultPCMux1 (
-    .ResultSrc(resultSrcOutput), //previously ALUResult
+    .ResultSrc(ResultSrc), //previously ALUResult
     .newPC(newPC),
     .JumpSel(JumpSel), //select
     .Result(regWrite)
-
 );
 
 endmodule
