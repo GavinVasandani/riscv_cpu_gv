@@ -1,7 +1,7 @@
 #include "Vtop_pc.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
-#include "vbuddy.cpp" 
+// #include "vbuddy.cpp" 
 
 int main(int argc,char **argv, char **env){
     int i;
@@ -17,16 +17,16 @@ int main(int argc,char **argv, char **env){
     tfp->open ("top_pc.vcd");
 
     // init vbuddy
-    if (vbdOpen()!=1) return(-1);
-    vbdHeader("Counter");
+    // if (vbdOpen()!=1) return(-1);
+    // vbdHeader("Counter");
 
     // initialize simulation inputs
     top->clk = 1;
     top->rst = 1;
-    top->PCsrc = vbdFlag(); // when in mode 0, the rom increments by 4. To test the ImmOp branch operation, set this to 1 and change the variable below to the increment/decrement you want to test.
+    top->PCsrc = 0; // when in mode 0, the rom increments by 4. To test the ImmOp branch operation, set this to 1 and change the variable below to the increment/decrement you want to test.
     top->ImmOp = 0xFFF; // this should increment by -1 when in branch mode. It is greater than 8 bits and proves that the PC block works.
     
-    vbdSetMode(0);
+    // vbdSetMode(0);
 
     //run simulation for many clock cycles
     for (i=0; i<64; i++){ // clock cycles - used only 300 to limit size of VCD file
@@ -37,8 +37,8 @@ int main(int argc,char **argv, char **env){
                 top->eval();
             }
                 
-                vbdHex(2, (int(top->instr) >> 4) & 0XF);
-                vbdHex(1, int(top->instr) & 0XF);
+                // vbdHex(2, (int(top->instr) >> 4) & 0XF);
+                // vbdHex(1, int(top->instr) & 0XF);
 
             // change input stimuli
             top->rst = (i % 11 == 0)&&(i>6)&&(i!=0);   // resets after every 12th clock cycle
