@@ -45,7 +45,7 @@ ALUDecoder a(
 
 assign Zero_intermediate = funct3[0] ? !Zero : Zero;
 
-assign PCSrc = (Zero_intermediate & Branch) | J;
+assign PCSrc = (Zero_intermediate & Branch) | J[0];
     
 
     
