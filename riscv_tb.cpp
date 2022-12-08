@@ -28,6 +28,10 @@ int main(int argc, char **argv, char **env) {
 
         top->rst = 0;
 
+        if(i == 20){
+            top->trigger = 1;
+        }
+
         if (Verilated::gotFinish()) 
             exit(0);                // ... exit if finish OR 'q' pressed
     }
