@@ -1,7 +1,7 @@
 #include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
-#include "vbuddy.cpp" 
+// #include "vbuddy.cpp" 
 
 
 int main(int argc, char **argv, char **env) {
@@ -16,14 +16,14 @@ int main(int argc, char **argv, char **env) {
     top->trace(tfp, 99);
     tfp->open("top.vcd");
 
-    if (vbdOpen()!=1) return(-1);
-    vbdHeader("RISCV - Test");
+    // if (vbdOpen()!=1) return(-1);
+    // vbdHeader("RISCV - Test");
 
-    top->trigger = vbdFlag();
+    top->trigger = 0;
     top->rst = 1;
     top->clk = 1;
 
-    vbdSetMode(1);
+    // vbdSetMode(1);
 
     for (i=0; i<1000; i++){
         
@@ -36,11 +36,11 @@ int main(int argc, char **argv, char **env) {
         // vbdHex(2, (int(top->a0) >> 4) & 0XF);
         // vbdHex(1, int(top->a0) & 0XF);
 
-        vbdBar(top->a0 & 0xFF);
+        // vbdBar(top->a0 & 0xFF);
 
-        vbdCycle(i+1);
+        // vbdCycle(i+1);
 
-        top->trigger = vbdFlag();
+        // top->trigger = vbdFlag();
         top->rst = false;
 
         if (Verilated::gotFinish()) 
