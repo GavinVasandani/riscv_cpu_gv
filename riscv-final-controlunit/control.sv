@@ -12,10 +12,10 @@ module control(
     output logic        MemWrite,
     output logic [3:0]  ALUControl,
     output logic        ALUSrc,
-    output logic [1:0]  ImmSrc,
+    output logic [2:0]  ImmSrc,
     output logic        RegWrite,
     output logic [1:0]  DataType,
-    output logic        J           //JAL
+    output logic [1:0]  J          //JAL if J == 01, JALR if J == 10
 );
 
 logic Zero_intermediate;
