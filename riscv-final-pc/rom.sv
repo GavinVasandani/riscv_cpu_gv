@@ -10,7 +10,7 @@ logic [DATA_WIDTH-1:0] rom_array [2**12-1:0];
 
 initial begin
     $display("Loading rom.");
-    $readmemh("src/myprog/fsm.s.hex", rom_array);
+    $readmemh("src/myprog/counter.s.hex", rom_array);
     $display("Rom successfully loaded.");
 end;
 

@@ -34,8 +34,9 @@ module top#(
     logic [3:0] ALU_ctrl;
     logic EQ;
     logic [1:0] DataType;
-    logic J;
+    logic [1:0] J;
     logic [DATA_WIDTH-1:0] ImmOp;
+    logic [ADDRESS_WIDTH-1:0] jalr_PC;
     logic [DATA_WIDTH-1:0] next_PC;
     logic [1:0]  ImmSrc;
     logic MemWrite;
@@ -47,7 +48,9 @@ module top#(
 
 top_pc myPC(
     .ImmOp  (ImmOp),
+    .jalr_PC (jalr_PC),
     .PCsrc  (PCsrc),
+    .J          (J),
     .clk    (clk),
     .rst    (rst),
     .instr   (PC_instr),
@@ -92,7 +95,8 @@ topLevelALU ALU(
     .JumpSel    (J),
     //----output-----------
     .eq     (EQ),
-    .a0     (a0)
+    .a0     (a0),
+    .jalrOutput (jalr_PC)
 );
 
 

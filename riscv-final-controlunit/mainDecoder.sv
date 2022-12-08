@@ -21,7 +21,7 @@ always_comb begin
             ResultSrc = 1;
             Branch = 0;
             ALUOp = 2'b00;
-            J = 2'b0;
+            J = 2'b00;
 
         end
 
@@ -55,7 +55,7 @@ always_comb begin
             ResultSrc = 0;
             Branch = 0;
             ALUOp = 2'b10;
-            J = 2'b0;
+            J = 2'b00;
         end
 
         7'b1100011: begin           //B-type
@@ -66,7 +66,7 @@ always_comb begin
             ResultSrc = 1'bx;
             Branch = 1;
             ALUOp = 2'b01;
-            J = 2'b0;
+            J = 2'b00;
         end
 
         7'b1101111: begin           // JAL
@@ -99,7 +99,7 @@ always_comb begin
             ResultSrc = 1'bx;
             Branch = 1'bx;
             ALUOp = 2'bxx;
-            J = 2'bxx;
+            J = 2'b00;
         end
     endcase
 end
