@@ -16,12 +16,9 @@ lightloop:
     addi a0, zero, 0x7F # seventh light
     addi a0, zero, 0xFF # eighth light
 checkdelay:
-    beq a5, zero, done # if no delay then jump to termination immediately
-    jal ra, delay # jump to the delay subroutine and store return value in ra
-delay:
+    beq a5, zero, done # if no delay then jump to termination immediately or you have reached the end of the program
     sub a5, a5, t5 # subtract 1 from delay
-    bne a5, zero, delay # loop till delay hits 0
-    jal ra, checkdelay # unconditional jump to termination step if you reach here
+    bne a5, zero, checkdelay # loop till delay hits 0
 done:
-    addi ra, zero, 0x0 # reset subroutine register
+    addi a5, a5, 0x1 # to make sure no errors in the lfsr loop
     addi a0, zero, 0x0 # end program by turning all the lights off
