@@ -81,14 +81,14 @@ always_comb begin
         end
 
         7'b1100111: begin           //JALR
-            RegWrite = 0;
-            ImmSrc = 3'b100;
-            ALUSrc = 1'bx;
-            MemWrite = 0;
-            ResultSrc = 1'bx;
-            Branch = 0;
-            ALUOp = 2'bxx;
-            J = 2'b10;
+            RegWrite = 1;
+            ImmSrc = 3'b100; // same as I-type tbh, might change
+            ALUSrc = 1'b1; // immediate
+            MemWrite = 0; // only for l and s
+            ResultSrc = 1'b0; // not from datamem
+            Branch = 0; // not a branch
+            ALUOp = 2'b10; // same as I-type tbh
+            J = 2'b10; // used in PC block
         end
 
         default: begin

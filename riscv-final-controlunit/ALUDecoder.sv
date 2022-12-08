@@ -67,7 +67,7 @@ always_comb begin
                 3'b100:                             //XOR
                     ALUControl = 4'b1001;
                 default: begin
-                    ALUControl = 4'b0000;
+                    ALUControl = 4'b0000; // i believe this is the case only for jalr
                 end
             endcase
         end
