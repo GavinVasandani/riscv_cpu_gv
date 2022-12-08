@@ -105,7 +105,24 @@ int main(int argc, char **argv, char **env) {
     top->ResultSrc = 1; //ReadData is being assigned to register a0, if doing addi instruction then ResultSrc = 0
     */
 
-
+   /**/
+    //jal rd, imm20
+    //do jal a1, xxx
+    //a1 expected to be newPC aka PC+4
+    top->clk = 1;
+    top->rs1 = 0x0; //irrelevant
+    top->rs2 = 0x3; //irrelevant
+    top->rd = 0x1; //not rewriting register value so don't care
+    top->regFileWen = 1; //not rewriting register so 0
+    top->trigger = 0;
+    top->ALUSrc = 0; //irrelevant as using PC+4
+    top->ImmOp = 0xFF; //irrelevant
+    top->ALU_ctrl = 0001; //irrelevant
+    top->MemWrite = 0; //irrelevant
+    top->dataType = 00; //irrelevant
+    top->SrcSel = 0; //irrelevant
+    top->newPC = 0xFFFF; //newPC value to store in rd (reg 1)
+    top->JumpSel = 1; //select newPc (PC+4) to assign to register rd
 
     for (i=0; i<300; i++){
 
