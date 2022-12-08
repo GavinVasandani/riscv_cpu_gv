@@ -35,7 +35,8 @@ module topLevelALU# (
 
     //Outputs
     output logic eq,
-    output logic [Data_Width-1:0] a0
+    output logic [Data_Width-1:0] a0,
+    output logic [Data_Width-1:0] jalrOutput
 );
 
 //Wires
@@ -75,7 +76,8 @@ regfileALU alu1 (
     .op2(ALUOp2), 
     .ALU_ctrl(ALU_ctrl), 
     .ALUout(ALUout), 
-    .eq(eq)
+    .eq(eq),
+    .jalrOutput(jalrOutput)
 );
 
 ram ram1 ( /* this works, presumably when doing sw, the address stored in the register
