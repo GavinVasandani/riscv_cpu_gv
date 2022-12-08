@@ -21,7 +21,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. When **PCsrc** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
     ```systemverilog
     assign branch_PC = PC + ImmOp;
-    assign inc_PC = PC + 12'h4;
+    assign inc_PC = PC + 32'h4;
 
     assign next_PC = PCsrc ? branch_PC : inc_PC;  
     ```
