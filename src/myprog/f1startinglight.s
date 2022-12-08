@@ -13,3 +13,4 @@
 # s2, a1, a2, a3, a5 - by lfsr
 # a0, ra, a5 - by state machine
 # a6 - by clkdiv
+# use a subroutine in between each light to create a delay, this subroutine should be the clkdiv module

@@ -27,10 +27,11 @@ void Vtop___024root__trace_chg_sub_0(Vtop___024root* vlSelf, VerilatedVcd::Buffe
         bufp->chgBit(oldp+0,(vlSelf->top__DOT__RegWrite));
         bufp->chgIData(oldp+1,((((IData)(vlSelf->__VdfgTmp_h22e24ab9__0) 
                                  << 0x18U) | vlSelf->__VdfgTmp_h899fe6da__0)),32);
-        bufp->chgBit(oldp+2,((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
-                                ? (~ (IData)(vlSelf->top__DOT__EQ))
-                                : (IData)(vlSelf->top__DOT__EQ)) 
-                              & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch))));
+        bufp->chgBit(oldp+2,(((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
+                                 ? (~ (IData)(vlSelf->top__DOT__EQ))
+                                 : (IData)(vlSelf->top__DOT__EQ)) 
+                               & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch)) 
+                              | (IData)(vlSelf->top__DOT__J))));
         bufp->chgCData(oldp+3,((0x1fU & (vlSelf->__VdfgTmp_h899fe6da__0 
                                          >> 0xfU))),5);
         bufp->chgCData(oldp+4,(((0x10U & ((IData)(vlSelf->__VdfgTmp_h22e24ab9__0) 
@@ -111,10 +112,11 @@ void Vtop___024root__trace_chg_sub_0(Vtop___024root* vlSelf, VerilatedVcd::Buffe
         bufp->chgIData(oldp+65,(vlSelf->top__DOT__myPC__DOT__PC),32);
         bufp->chgIData(oldp+66,((vlSelf->top__DOT__ImmOp 
                                  + vlSelf->top__DOT__myPC__DOT__PC)),32);
-        bufp->chgIData(oldp+67,(((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
-                                    ? (~ (IData)(vlSelf->top__DOT__EQ))
-                                    : (IData)(vlSelf->top__DOT__EQ)) 
-                                  & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch))
+        bufp->chgIData(oldp+67,((((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
+                                     ? (~ (IData)(vlSelf->top__DOT__EQ))
+                                     : (IData)(vlSelf->top__DOT__EQ)) 
+                                   & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch)) 
+                                  | (IData)(vlSelf->top__DOT__J))
                                   ? (vlSelf->top__DOT__ImmOp 
                                      + vlSelf->top__DOT__myPC__DOT__PC)
                                   : ((IData)(4U) + vlSelf->top__DOT__myPC__DOT__PC))),32);

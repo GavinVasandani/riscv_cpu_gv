@@ -30,17 +30,16 @@ VL_ATTR_COLD void Vtop___024root___eval_initial__TOP(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_initial__TOP\n"); );
     // Init
-    VlWide<6>/*191:0*/ __Vtemp_hfbf7ff78__0;
+    VlWide<5>/*159:0*/ __Vtemp_hc56b4732__0;
     VlWide<5>/*159:0*/ __Vtemp_h83cfa321__0;
     // Body
     VL_WRITEF("Loading rom.\n");
-    __Vtemp_hfbf7ff78__0[0U] = 0x2e686578U;
-    __Vtemp_hfbf7ff78__0[1U] = 0x65722e73U;
-    __Vtemp_hfbf7ff78__0[2U] = 0x6f756e74U;
-    __Vtemp_hfbf7ff78__0[3U] = 0x6f672f63U;
-    __Vtemp_hfbf7ff78__0[4U] = 0x6d797072U;
-    __Vtemp_hfbf7ff78__0[5U] = 0x7372632fU;
-    VL_READMEM_N(true, 8, 4096, 0, VL_CVT_PACK_STR_NW(6, __Vtemp_hfbf7ff78__0)
+    __Vtemp_hc56b4732__0[0U] = 0x2e686578U;
+    __Vtemp_hc56b4732__0[1U] = 0x736d2e73U;
+    __Vtemp_hc56b4732__0[2U] = 0x6f672f66U;
+    __Vtemp_hc56b4732__0[3U] = 0x6d797072U;
+    __Vtemp_hc56b4732__0[4U] = 0x7372632fU;
+    VL_READMEM_N(true, 8, 4096, 0, VL_CVT_PACK_STR_NW(5, __Vtemp_hc56b4732__0)
                  ,  &(vlSelf->top__DOT__myPC__DOT__pcRom__DOT__rom_array)
                  , 0, ~0ULL);
     VL_WRITEF("Rom successfully loaded.\nInitializing regFile with null values (0).\n");
@@ -174,16 +173,16 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
                                                    (1U 
                                                     & (vlSelf->top__DOT____Vcellinp__sign_extend__imm 
                                                        >> 0x18U)))) 
-                                        << 0x13U) | 
-                                       ((0x7f800U & 
+                                        << 0x14U) | 
+                                       ((0xff000U & 
                                          (vlSelf->top__DOT____Vcellinp__sign_extend__imm 
-                                          << 6U)) | 
-                                        ((0x400U & 
+                                          << 7U)) | 
+                                        ((0x800U & 
                                           (vlSelf->top__DOT____Vcellinp__sign_extend__imm 
-                                           >> 3U)) 
-                                         | (0x3ffU 
+                                           >> 2U)) 
+                                         | (0x7feU 
                                             & (vlSelf->top__DOT____Vcellinp__sign_extend__imm 
-                                               >> 0xeU)))))
+                                               >> 0xdU)))))
                                     : (((- (IData)(
                                                    (1U 
                                                     & (vlSelf->top__DOT____Vcellinp__sign_extend__imm 
@@ -308,10 +307,11 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
         vlSelf->top__DOT__EQ = 0U;
     }
     vlSelf->top__DOT__myPC__DOT__pcReg__DOT__next_PC 
-        = ((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
-              ? (~ (IData)(vlSelf->top__DOT__EQ)) : (IData)(vlSelf->top__DOT__EQ)) 
-            & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch))
-            ? (vlSelf->top__DOT__ImmOp + vlSelf->top__DOT__myPC__DOT__PC)
+        = (((((0x10U & (IData)(vlSelf->__VdfgTmp_h255a7f46__0))
+               ? (~ (IData)(vlSelf->top__DOT__EQ)) : (IData)(vlSelf->top__DOT__EQ)) 
+             & (IData)(vlSelf->top__DOT__control_unit__DOT__Branch)) 
+            | (IData)(vlSelf->top__DOT__J)) ? (vlSelf->top__DOT__ImmOp 
+                                               + vlSelf->top__DOT__myPC__DOT__PC)
             : ((IData)(4U) + vlSelf->top__DOT__myPC__DOT__PC));
     if ((0U == (IData)(vlSelf->top__DOT__DataType))) {
         vlSelf->top__DOT__ALU__DOT__ReadData = ((vlSelf->top__DOT__ALU__DOT__ram1__DOT__ram_array

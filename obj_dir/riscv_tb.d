@@ -6,4 +6,5 @@ riscv_tb.o: ../riscv_tb.cpp Vtop.h \
   /opt/homebrew/Cellar/verilator/5.002/share/verilator/include/verilated_funcs.h \
   /opt/homebrew/Cellar/verilator/5.002/share/verilator/include/verilated_vcd_c.h \
   /opt/homebrew/Cellar/verilator/5.002/share/verilator/include/verilated_trace.h \
-  /opt/homebrew/Cellar/verilator/5.002/share/verilator/include/verilated_trace_defs.h
+  /opt/homebrew/Cellar/verilator/5.002/share/verilator/include/verilated_trace_defs.h \
+  ../vbuddy.cpp

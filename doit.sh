@@ -1,4 +1,4 @@
-# rm -rf obj_dir
+rm -rf obj_dir
 rm -f top.vcd
 
 verilator -Wall --cc --trace  top.sv -I../riscv-final-pc -I../riscv-final-controlunit -I../riscv-alu  --exe riscv_tb.cpp

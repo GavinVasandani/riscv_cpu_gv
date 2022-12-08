@@ -16,7 +16,7 @@ module ext(
                 ImmExt = {{19{imm[31]}}, imm[31],imm[7],imm[30:25],imm[11:8],1'b0};
 
             2'b11:                                            //Jump
-                ImmExt = {{13{imm[31]}}, imm[19:12], imm[20], imm[30:21]};
+                ImmExt = {{12{imm[31]}}, imm[19:12], imm[20], imm[30:21],1'b0};
  
         endcase
 

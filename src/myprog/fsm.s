@@ -5,6 +5,7 @@
 # ra is used to store the value of PC that holds the return from subroutine value
 main:
     addi a5, a5, 0xA # lowest possible delay is supposed to be 11, so that the light doesn't turn off too fast in the worst case
+    addi t5, t5, 0x1 # for subtraction
 lightloop:
     addi a0, zero, 0x1 # first light
     addi a0, zero, 0x3 # second light
@@ -18,12 +19,9 @@ checkdelay:
     beq a5, zero, done # if no delay then jump to termination immediately
     jal ra, delay # jump to the delay subroutine and store return value in ra
 delay:
-    addi a5, a5, -1 # subtract 1 from delay
+    sub a5, a5, t5 # subtract 1 from delay
     bne a5, zero, delay # loop till delay hits 0
     jal ra, checkdelay # unconditional jump to termination step if you reach here
 done:
     addi ra, zero, 0x0 # reset subroutine register
     addi a0, zero, 0x0 # end program by turning all the lights off
-# look at f1 starting light code for reasoning behind design decisions
-# suggested modifications/ questions to ask to the GTA:
-

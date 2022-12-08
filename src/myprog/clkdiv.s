@@ -5,3 +5,4 @@ main:
 mloop:
     addi a6, a6, -1 # decrement by one
     bne a6, zero, mloop # loop till you hit zero
+    
