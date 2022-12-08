@@ -9,5 +9,7 @@
 # if it does become 0, initiate a subroutine that sets it beack to 24 and increments a0 accordingly
 # a7 contains trigger
 # a5 contains delay
+# a6 contains N for clkdiv
 # s2, a1, a2, a3, a5 - by lfsr
 # a0, ra, a5 - by state machine
+# a6 - by clkdiv
