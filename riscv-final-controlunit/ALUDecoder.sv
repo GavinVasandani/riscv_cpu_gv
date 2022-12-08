@@ -42,7 +42,7 @@ always_comb begin
         2'b10: begin
             case(funct3) 
                 3'b000:
-                    if(funct75 == 1)                // sub
+                    if(funct75 == 1)                // sub - there is a mistake here, which is causing a bug. Have to fix this after testing
                         ALUControl = 4'b0001;
                     else                            // add
                         ALUControl = 4'b0000;
