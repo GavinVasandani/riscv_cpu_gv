@@ -38,9 +38,12 @@ module top#(
     logic [DATA_WIDTH-1:0] ImmOp;
     logic [ADDRESS_WIDTH-1:0] jalr_PC;
     logic [DATA_WIDTH-1:0] next_PC;
-    logic [1:0]  ImmSrc;
+    logic [2:0]  ImmSrc;
     logic MemWrite;
     logic ResultSrc;
+    logic JumpSel;
+
+    assign JumpSel = J[1] | J[0];
 
     assign rs1 = PC_instr[19:15];
     assign rs2 = PC_instr[24:20];
@@ -92,7 +95,7 @@ topLevelALU ALU(
     .MemWrite (MemWrite),
     .dataType (DataType),
     .SrcSel (ResultSrc),
-    .JumpSel    (J),
+    .JumpSel    (JumpSel),
     //----output-----------
     .eq     (EQ),
     .a0     (a0),
