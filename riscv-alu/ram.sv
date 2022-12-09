@@ -17,6 +17,11 @@ logic [7:0] byteAssign;
 logic [15:0] halfwordAssign;
 
 // you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
+initial begin
+    $display("Loading ram.");
+    $readmemh("datamem.mem", rom_array);
+    $display("Ram successfully loaded.");
+end;
 //yeah but need to load in some initial values to the ram so probably do need a loadmemh operation
 
 //Include signal to differentiate word: 0, byte: 1
