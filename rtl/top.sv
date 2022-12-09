@@ -20,7 +20,8 @@ module top#(
     input logic             trigger, 
     input logic             clk,
     input logic             rst,
-    output logic [ADDRESS_WIDTH-1:0] a0
+    output logic [ADDRESS_WIDTH-1:0] a0,
+    output logic [ADDRESS_WIDTH-1:0] delay
 
 );
 
@@ -99,6 +100,7 @@ topLevelALU ALU(
     //----output-----------
     .eq     (EQ),
     .a0     (a0),
+    .delay  (delay),
     .jalrOutput (jalr_PC)
 );
 

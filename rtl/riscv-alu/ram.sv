@@ -12,14 +12,14 @@ module ram #(
     output logic [DATA_WIDTH-1:0] RD // read output
 );
 
-logic [BYTE_WIDTH-1:0] ram_array [2**ADDRESS_WIDTH-1:0]; //each mem location of array stores a byte-width so 8 bits
+logic [BYTE_WIDTH-1:0] ram_array [2**17-1:0]; //each mem location of array stores a byte-width so 8 bits
 logic [7:0] byteAssign;
 logic [15:0] halfwordAssign;
 
 // you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
 initial begin
     $display("Loading ram.");
-    $readmemh("datamem.mem", rom_array);
+    $readmemh("datamem.mem", ram_array);
     $display("Ram successfully loaded.");
 end;
 //yeah but need to load in some initial values to the ram so probably do need a loadmemh operation

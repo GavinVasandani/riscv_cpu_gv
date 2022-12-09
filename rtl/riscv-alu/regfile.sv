@@ -16,8 +16,8 @@ module regfile # (
     input logic [Data_Width-1:0] din, //Data in which takes in ALU output to write to register rd. Registers hold 32 bit word so din is 32 bits
     output logic [Data_Width-1:0] rd1, //32 bit word that is stored in register that is outputted to ALU for operation
     output logic [Data_Width-1:0] rd2, //32 bit word that is stored in register that is outputted to ALU for operation
-    output logic [Data_Width-1:0] a0//Outputs data stored in a0 register
-
+    output logic [Data_Width-1:0] a0,//Outputs data stored in a0 register
+    output logic [Data_Width-1:0] delay
 );
 
 //Creating array of 32 32-bit registers:
@@ -59,6 +59,7 @@ always_ff @ (posedge clk) begin
 end
 
 assign a0 = regFile_array[5'd10];
+assign delay = regFile_array[5'd15];
 
 endmodule
 //So this is all code for the regfile

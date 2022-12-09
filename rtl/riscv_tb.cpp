@@ -19,7 +19,7 @@ int main(int argc, char **argv, char **env) {
     if (vbdOpen()!=1) return(-1);
     vbdHeader("RISCV - Test");
 
-    top->trigger = vbdFlag();
+    top->trigger = 0;
     top->rst = 1;
     top->clk = 1;
 
@@ -33,8 +33,8 @@ int main(int argc, char **argv, char **env) {
             top->eval();
         }   
 
-        vbdHex(2, (int(top->a0) >> 4) & 0XF);
-        vbdHex(1, int(top->a0) & 0XF);
+        // vbdHex(2, (int(top->delay) >> 4) & 0XF);
+        vbdHex(1, int(top->delay) & 0XF);
 
         vbdBar(top->a0 & 0xFF);
 
