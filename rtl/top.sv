@@ -45,7 +45,6 @@ module top#(
     logic JumpSel;
 
     assign JumpSel = J[1] | J[0];
-
     assign rs1 = PC_instr[19:15];
     assign rs2 = PC_instr[24:20];
     assign rd  = PC_instr[11:7];
@@ -82,6 +81,7 @@ control control_unit(
     .DataType   (DataType),
     .J          (J)
 );
+
 topLevelALU ALU(
     .trigger (trigger),
     .clk    (clk),
@@ -97,19 +97,11 @@ topLevelALU ALU(
     .dataType (DataType),
     .SrcSel (ResultSrc),
     .JumpSel    (JumpSel),
-    //----output-----------
     .eq     (EQ),
     .a0     (a0),
     .delay  (delay),
     .jalrOutput (jalr_PC)
 );
-
-
-// assign aluCtrl = ALU_ctrl;
-// assign wr_en = RegWrite;
-// assign Eq = EQ;
-// assign extout = ImmOp;
-// assign alusrc = ALUSrc;
 
 
 endmodule
