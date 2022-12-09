@@ -15,14 +15,24 @@ class Vtop_pc___024root final : public VerilatedModule {
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
     VL_IN8(PCsrc,0,0);
+    VL_IN8(J,1,0);
     VL_IN8(rst,0,0);
-    CData/*0:0*/ __Vclklast__TOP__clk;
+    CData/*0:0*/ __Vtrigrprev__TOP__clk;
+    CData/*0:0*/ __VactContinue;
     VL_IN(ImmOp,31,0);
+    VL_IN(jalr_PC,31,0);
     VL_OUT(instr,31,0);
     VL_OUT(next_PC,31,0);
     IData/*31:0*/ top_pc__DOT__PC;
     IData/*31:0*/ top_pc__DOT__pcReg__DOT__next_PC;
+    IData/*31:0*/ __VstlIterCount;
+    IData/*31:0*/ __VicoIterCount;
+    IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*7:0*/, 4096> top_pc__DOT__pcRom__DOT__rom_array;
+    VlTriggerVec<1> __VstlTriggered;
+    VlTriggerVec<1> __VicoTriggered;
+    VlTriggerVec<1> __VactTriggered;
+    VlTriggerVec<1> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vtop_pc__Syms* const vlSymsp;

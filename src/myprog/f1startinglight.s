@@ -22,15 +22,16 @@ main:
     addi a1, zero, 0x1 # a1 is the lfsr, we start with 1
     addi t5, t5, 0x1 # for subtraction (sub reg -1 operation)
 lfsrloop:
-    addi a5, a1, 0x0 # load output with answer
-    addi t1, a5, 0x0 # initialize dummy register for operation
-    slli a1, t1, 0x1A # shift left 26 times to get rid of the 7th bit
-    srli a1, a1, 0x19 # a1 contains the first six bits of the number (shift right 25 times) as bits 1, 2 3, 4, 5, 6 instead of 0, 1, 2, 3, 4, 5 (x6x5x4x3x2x10)
-    slli a2, t1, 0x1c # shift left 28 times to get rid of the 4th bit
-    srli a2, a2, 0x1f # a2 contains the 4th bit of the number (shift right 31 times)
-    srli a3, t1, 0x6 # a3 contains the 7th bit of the number
-    xor t2, a3, a2 # randomization step (n)
-    add a1, a1, t2 # reconstruct the number : x6x5x4x3x2x1n where n is the new bit from the randomization
+    addi a5, a1, 0x0
+    addi t1, a5, 0x0
+    andi a1, t1, 0x7
+    slli a1, a1, 0x1
+    andi a2, t1, 0x4
+    srli a2, a2, 0x2
+    andi a3, t1, 0x8
+    srli a3, a3, 0x3
+    xor t2, a2, a3
+    add a1, a1, t2
     beq a7, zero, lfsrloop # loop till trigger is asserted - trigger is stored in a7
 # mainfsm:
     # addi a5, a5, 0xA # lowest possible delay is supposed to be 11, so that the light doesn't turn off too fast in the worst case
@@ -52,7 +53,7 @@ lightloop:
     addi a0, zero, 0xFF # eighth light
 checkdelay:
     beq a5, zero, done # if no delay then jump to termination immediately or you have reached the end of the program
-    jal ra, mainclkdiv
+    # jal ra, mainclkdiv
     sub a5, a5, t5 # subtract 1 from delay
     bne a5, zero, checkdelay # loop till delay hits 0
 mainclkdiv:
