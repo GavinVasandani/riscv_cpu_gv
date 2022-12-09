@@ -3,10 +3,10 @@
 
 ---
 - ## Breakdown of tasks:
-    - PC block, Instruction memory, Pipelining, Final CPU Assembly, Code for F1 light : **Arnav Kohli**
+    - PC block, Instruction memory, Pipelining, Code for F1 light, Debuggging, Testing and Verification, Documentation : **Arnav Kohli**
     - ALU Block, Register Files, Data memory (including unit testing suites) : **Gavin Vasandani**
     - Control Block, Sign extension block, Pipelining: **Xuhan Pan**
-    - Complete Testing suite using assembly files in src/myprog, Pipelining, Debugging: **Junyi Wu**
+    - Final CPU Assembly, Pipelining: **Junyi Wu**
 
 ---
 
