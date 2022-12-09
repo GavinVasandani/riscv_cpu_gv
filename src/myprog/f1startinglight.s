@@ -58,7 +58,7 @@ checkdelay:
 mainclkdiv:
     addi a6, zero, 0x0E # set clkdiv to roughly 14 cycles
 clkdiv:
-    addi a6, a6, -1 # decrement by one
+    sub a6, a6, t5 # decrement by one
     bne a6, zero, clkdiv # loop till you hit zero
     jalr zero, ra, 0 # ret instruction, return to either check delay or lightloop after creating one second delay
 done:
