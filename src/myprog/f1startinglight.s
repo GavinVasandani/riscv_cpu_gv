@@ -18,9 +18,11 @@
 .text
 .globl main
 main:
+    addi a7, a7, 0x0 # reset trigger at the start of the program
     addi a5, zero, 0x0 # a5 is used by delay in subsequent modules
     addi a1, zero, 0x1 # a1 is the lfsr, we start with 1
     addi t5, t5, 0x1 # for subtraction (sub reg -1 operation)
+    jal ra, lfsrloop
 lfsrloop:
     addi a5, a1, 0x0
     addi t1, a5, 0x0
@@ -33,8 +35,6 @@ lfsrloop:
     xor t2, a2, a3
     add a1, a1, t2
     beq a7, zero, lfsrloop # loop till trigger is asserted - trigger is stored in a7
-# mainfsm:
-    # addi a5, a5, 0xA # lowest possible delay is supposed to be 11, so that the light doesn't turn off too fast in the worst case
 lightloop:
     addi a0, zero, 0x1 # first light
     jal ra, mainclkdiv
@@ -57,13 +57,12 @@ checkdelay:
     sub a5, a5, t5 # subtract 1 from delay
     bne a5, zero, checkdelay # loop till delay hits 0
 mainclkdiv:
-    addi a6, zero, 0x0E # set clkdiv to roughly 14 cycles
+    addi a6, zero, 0x7 # set clkdiv to roughly 14 cycles
 clkdiv:
     sub a6, a6, t5 # decrement by one
     bne a6, zero, clkdiv # loop till you hit zero
-    jalr zero, ra, 0 # ret instruction, return to either check delay or lightloop after creating one second delay
+    jalr zero, ra, 0x0 # ret instruction, return to either check delay or lightloop after creating one second delay
 done:
-    addi a7, a7, 0x0  # to make sure that trigger is reset and there are no bugs.
     addi a0, zero, 0x0 # end program by turning all the lights off
-    beq a0, zero, main # reset program by going back to main
+    beq zero, zero, main # reset program by going back to main
 

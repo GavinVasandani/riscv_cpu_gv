@@ -49,7 +49,7 @@ always_ff @ (posedge clk) begin
         //regfile_array[rd] only reassigned at clock edge so use <=
         if (rd != 0) regFile_array[rd] <= din; //so conditional is run as long as rd is true so (not 0): //need to fix as there's register addressing offset so trying to access reg0 will be non-zero rd (reg address)
          //so at rising edge also the din is stored at register given by address rd
-        else $display("Cannot write to register 0."); //invalid statement outputted if attempted to write to register 0   
+        // else $display("Cannot write to register 0."); //invalid statement outputted if attempted to write to register 0   
     end
 
     if (trigger) begin

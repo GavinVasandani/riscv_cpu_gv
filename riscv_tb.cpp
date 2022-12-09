@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **env) {
         vbdHex(2, (int(top->a0) >> 4) & 0XF);
         vbdHex(1, int(top->a0) & 0XF);
 
-        // vbdBar(top->a0 & 0xFF);
+        vbdBar(top->a0 & 0xFF);
 
         vbdCycle(i+1);
 
