@@ -57,12 +57,12 @@ checkdelay:
     jal ra, done # to escape mainclkdiv loop below and finish execution unconditionally - can also use J operation
 maindelay:
     addi a6, zero, 0x3 # set clkdiv to roughly 3 cycles - for FF lights state
-    jal zero, count # unconditional jump to count which creates about a 0.5 second delay for each value in a6 register
+    jal zero, hold # unconditional jump to count which creates about a 0.5 second delay for each value in a6 register
 mainclkdiv:
     addi a6, zero, 0xD # set clkdiv to roughly 14 cycles - for state in between each light
-count:
+hold:
     sub a6, a6, t5 # decrement by one
-    bne a6, zero, count # loop till you hit zero
+    bne a6, zero, hold # loop till you hit zero
     jalr zero, ra, 0x0 # ret instruction, return to either check delay or lightloop after creating one second delay
 done:
     addi a7, zero, 0x0 # reset trigger at the start of the program
