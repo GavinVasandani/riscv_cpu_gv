@@ -18,12 +18,19 @@ All of the proof for contribution can be seen in commits and the respective fold
       **insert picture of PC reg here**
 
   - ### PC Register & Counter & Mux:
-    The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. When **PCsrc** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
+    The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. The Jump instruction would also require PC to be dynamically changed according to the previous PC and the offset which is stored as an immediate as part of the instruction. This functionality is common for both the branch operation and the jump operation. The only difference being the jalr operation, which allocates PC according to a value stored in a register. JALR works like a return operation when the register to which the JAL operation was stored is accessed. It allows PC to increment after returning from a subroutine. **PCsrc_inter** is responsible for checking if the instruction is a jump or not. Since J is a 2 bit input which is **2'b10** when a jalr operation is requested, the most significant bit is used to allocate the PC value which also comes as an input from the ALU. When **PCsrc_inter** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
     ```systemverilog
-    assign branch_PC = PC + ImmOp;
+    assign PCsrc_inter = J[0] | PCsrc;
+
+    assign alt_PC = PC + ImmOp;
     assign inc_PC = PC + 32'h4;
 
-    assign next_PC = PCsrc ? branch_PC : inc_PC;  
+    always_comb begin
+      if (J[1]) next_PC = jalr_PC; // //specifially for the jalr instruction
+      else begin
+        next_PC = PCsrc_inter ? alt_PC : inc_PC; // PCsrc is 1 during regular jump or branch operation
+      end 
+    end 
     ```
     The program counter ensures a one cycle delay between input PC (to calculate the increment and subsequent PC) and the output PC (which is pushed forward to the instruction memory as well as used as input PC for the next cycle). This is implemented with the code below (synchronously):
     ```systemverilog
