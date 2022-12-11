@@ -25,7 +25,7 @@ int main(int argc, char **argv, char **env) {
 
     // vbdSetMode(1);
 
-    for (i=0; i<1000; i++){
+    for (i=0; i<4000; i++){
         
         for (clk=0; clk<2; clk++){
             tfp->dump (2*i + clk);
