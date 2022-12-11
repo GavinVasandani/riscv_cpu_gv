@@ -82,7 +82,7 @@ always_comb begin
 
         7'b1100111: begin           //JALR
             RegWrite = 1;
-            ImmSrc = 3'b100; // same as I-type tbh, might change
+            ImmSrc = 3'b000; // same as I-type tbh, might change
             ALUSrc = 1'b1; // immediate
             MemWrite = 0; // only for l and s
             ResultSrc = 1'b0; // not from datamem

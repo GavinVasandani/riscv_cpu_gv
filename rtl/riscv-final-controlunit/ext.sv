@@ -17,9 +17,6 @@ module ext(
 
             3'b011:                                            //JAL
                 ImmExt = {{12{imm[31]}}, imm[19:12], imm[20], imm[30:21],1'b0};
-
-            3'b100:                                            //JALR
-                ImmExt = {{20{imm[31]}}, imm[31:20]};
             default: ImmExt = {{20{imm[31]}}, imm[31:20]};
         endcase
 
