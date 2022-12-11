@@ -12,7 +12,7 @@ module ram #(
     output logic [DATA_WIDTH-1:0] RD // read output
 );
 
-logic [BYTE_WIDTH-1:0] ram_array [2**17-1:0]; //each mem location of array stores a byte-width so 8 bits
+logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0]; //each mem location of array stores a byte-width so 8 bits
 logic [7:0] byteAssign;
 logic [15:0] halfwordAssign;
 
