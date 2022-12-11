@@ -47,6 +47,17 @@ always_comb begin
             J = 2'b00;
         end
 
+        7'b0010111: begin // U-type
+            RegWrite = 1;
+            ImmSrc = 3'b100;
+            ALUSrc = 1;
+            MemWrite = 0;
+            ResultSrc = 0;
+            Branch = 0;
+            ALUOp = 2'b11;
+            J = 2'b00;
+        end
+
         7'b0110011: begin           //R-type
             RegWrite = 1;
             ImmSrc = 3'bxx;

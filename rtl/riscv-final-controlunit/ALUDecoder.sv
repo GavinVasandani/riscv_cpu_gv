@@ -71,9 +71,7 @@ always_comb begin
                 end
             endcase
         end
-        default: begin
-            ALUControl = 4'b0000;
-        end
+        2'b11: ALUControl = 4'b1111;
     endcase
 end
 endmodule

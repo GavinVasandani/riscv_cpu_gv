@@ -92,6 +92,11 @@ always_comb begin //ALU implements different arithmetic/logic based on opcode in
             eq = 0;
             jalrOutput = 32'b0;
         end
+        4'b1111: begin // Upper Immediate function
+            ALUout = op2;
+            eq = 0;
+            jalrOutput = 32'b0;
+        end
         default: begin
             ALUout = 0;
             eq = 0;

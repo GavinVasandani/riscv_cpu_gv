@@ -6,7 +6,7 @@ module ext(
 
     always_comb 
         case(ImmSrc)
-            3'b000:                                            //Immediate
+            3'b000:                                            //Immediate and JALR
                 ImmExt = {{20{imm[31]}}, imm[31:20]};
             
             3'b001:                                            //Store
@@ -17,6 +17,8 @@ module ext(
 
             3'b011:                                            //JAL
                 ImmExt = {{12{imm[31]}}, imm[19:12], imm[20], imm[30:21],1'b0};
+            3'b100:
+                ImmExt = {imm[31:12], 12{1'b0}} // Upper Immediate
             default: ImmExt = {{20{imm[31]}}, imm[31:20]};
         endcase
 
