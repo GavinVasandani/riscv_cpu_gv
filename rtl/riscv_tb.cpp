@@ -1,7 +1,7 @@
 #include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
-#include "vbuddy.cpp" 
+// #include "vbuddy.cpp" 
 
 
 int main(int argc, char **argv, char **env) {
@@ -16,16 +16,16 @@ int main(int argc, char **argv, char **env) {
     top->trace(tfp, 99);
     tfp->open("top.vcd");
 
-    if (vbdOpen()!=1) return(-1);
-    vbdHeader("RISCV - Test");
+    // if (vbdOpen()!=1) return(-1);
+    // vbdHeader("RISCV - Test");
 
     top->trigger = 0;
     top->rst = 1;
     top->clk = 1;
 
-    vbdSetMode(1);
+    // vbdSetMode(1);
 
-    for (i=0; i<1000000; i++){
+    for (i=0; i<1000; i++){
         
         for (clk=0; clk<2; clk++){
             tfp->dump (2*i + clk);
@@ -38,13 +38,18 @@ int main(int argc, char **argv, char **env) {
         // vbdHex(2, (int(top->delay) >> 4) & 0XF);
         // vbdHex(1, int(top->delay) & 0XF);
 
-        vbdBar(top->a0 & 0xFF);
+        // vbdHex(4, (int(top->a0) >> 12) & 0XF); 
+        // vbdHex(3, (int(top->a0) >> 8) & 0XF);
+        // vbdHex(2, (int(top->a0) >> 4) & 0XF);
+        // vbdHex(1, int(top->a0) & 0XF);
+
+        // vbdBar(top->a0 & 0xFF);
 
         // to see what the value of the delay would be, you can uncomment the line above, it would increase the latency and slow down the progression of the program.
 
-        vbdCycle(i+1);
+        // vbdCycle(i+1);
 
-        top->trigger = vbdFlag();
+        top->trigger = 0;
         top->rst = false;
 
         if (Verilated::gotFinish()) 

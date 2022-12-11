@@ -1,5 +1,5 @@
 module mainDecoder(
-    input logic[6:0]    op,
+    input logic[6:0]    op, // added by arnav
 
     output logic[2:0]   ImmSrc,
     output logic        Branch,
@@ -47,7 +47,7 @@ always_comb begin
             J = 2'b00;
         end
 
-        7'b0010111: begin // U-type
+        7'b0110111: begin // U-type
             RegWrite = 1;
             ImmSrc = 3'b100;
             ALUSrc = 1;
@@ -103,12 +103,12 @@ always_comb begin
         end
 
         default: begin
-            RegWrite = 1'bx;
+            RegWrite = 1'b0;
             ImmSrc = 3'bxx;
             ALUSrc = 1'bx;
-            MemWrite = 1'bx;
+            MemWrite = 1'b0;
             ResultSrc = 1'bx;
-            Branch = 1'bx;
+            Branch = 1'b0;
             ALUOp = 2'bxx;
             J = 2'b00;
         end
