@@ -15,13 +15,13 @@ always_comb begin
             ALUControl = 4'b0000;             //LOAD / STORE
             case(funct3)
                 3'b010:                       //WORD
-                    DataType = 00;
+                    DataType = 2'b00;
                 3'b100:                       //BYTE UNSIGNED
-                    DataType = 01;
+                    DataType = 2'b01;
                 3'b101:                       //HALF WORD UNSIGNED
-                    DataType = 10;
+                    DataType = 2'b10;
                 default: begin
-                    DataType = 00;
+                    DataType = 2'b00;
                 end
             endcase
         

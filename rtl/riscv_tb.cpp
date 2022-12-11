@@ -33,10 +33,14 @@ int main(int argc, char **argv, char **env) {
             top->eval();
         }   
 
+        // vbdHex(4, (int(top->delay) >> 12) & 0XF); 
+        // vbdHex(3, (int(top->delay) >> 8) & 0XF);
         // vbdHex(2, (int(top->delay) >> 4) & 0XF);
-        vbdHex(1, int(top->delay) & 0XF);
+        // vbdHex(1, int(top->delay) & 0XF);
 
         vbdBar(top->a0 & 0xFF);
+
+        // to see what the value of the delay would be, you can uncomment the line above, it would increase the latency and slow down the progression of the program.
 
         vbdCycle(i+1);
 
