@@ -1,5 +1,5 @@
 module ALUDecoder(
-    input logic[6:0]    op, // added by arnav
+    input logic    op5, // added by arnav
     input logic[2:0] funct3,
     input logic      funct75,
     input logic[1:0] ALUOp,
@@ -42,7 +42,7 @@ always_comb begin
         2'b10: begin
             case(funct3) 
                 3'b000:
-                    if((funct75 == 1)&&(op == 7'b0110011))                // sub - there is a mistake here, which is causing a bug. Have to fix this after testing; hopeully fixed
+                    if((funct75 == 1)&&(op5 == 1))                // sub - there was a bug here, op5 fixed it
                         ALUControl = 4'b0001;
                     else                            // add
                         ALUControl = 4'b0000;

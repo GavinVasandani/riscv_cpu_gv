@@ -35,7 +35,7 @@ mainDecoder m(
     );
 
 ALUDecoder a(
-    .op(op),
+    .op5(op[5]),
     .funct3(funct3), 
     .funct75(funct75), 
     .ALUOp(ALUOp), 
