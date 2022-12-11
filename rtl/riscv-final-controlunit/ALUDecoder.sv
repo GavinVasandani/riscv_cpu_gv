@@ -16,10 +16,10 @@ always_comb begin
             case(funct3)
                 3'b010:                       //WORD
                     DataType = 00;
-                3'b000:                       //BYTE
+                3'b100:                       //BYTE UNSIGNED
                     DataType = 01;
-                3'b001:                       //HALF WORD
-                    DataType = 01;
+                3'b101:                       //HALF WORD UNSIGNED
+                    DataType = 10;
                 default: begin
                     DataType = 00;
                 end

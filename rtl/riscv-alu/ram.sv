@@ -16,13 +16,11 @@ logic [BYTE_WIDTH-1:0] ram_array [2**17-1:0]; //each mem location of array store
 logic [7:0] byteAssign;
 logic [15:0] halfwordAssign;
 
-// you don't need to initialize a ram array with 0s, there is no need for loadmemh operation
 initial begin
     $display("Loading ram.");
     $readmemh("datamem.mem", ram_array);
     $display("Ram successfully loaded.");
 end;
-//yeah but need to load in some initial values to the ram so probably do need a loadmemh operation
 
 //Include signal to differentiate word: 0, byte: 1
 
@@ -30,15 +28,15 @@ end;
 always_comb begin
     case (dataType)
         2'b00: begin //00 then use word
-            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; // asynchronous read - have an iisue here, want to confirm with the GTA
+            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; 
         end 
-        2'b01: begin //01 then use byte
+        2'b01: begin //01 then use byte unsigned - changed accordingly in ALU control
             byteAssign = ram_array[A];
-            assign RD = {{24{byteAssign[7]}}, byteAssign};
+            assign RD = {{24{1'b0}}, byteAssign};
         end
-        2'b10: begin //10 then use half word
+        2'b10: begin //10 then use half word unsigned - changed accordingly in ALU control
             halfwordAssign = {ram_array[A+1], ram_array[A]};
-            assign RD = {{16{halfwordAssign[15]}}, halfwordAssign};
+            assign RD = {{16{1'b0}}, halfwordAssign};
         end
         default: $display("No dataType selected. Please choose word, byte or halfword.");
     endcase
