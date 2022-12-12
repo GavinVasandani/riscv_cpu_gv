@@ -1,7 +1,7 @@
 #include "Vtop.h"
 #include "verilated.h"
 #include "verilated_vcd_c.h"
-// #include "vbuddy.cpp" 
+#include "vbuddy.cpp" 
 
 
 int main(int argc, char **argv, char **env) {
@@ -16,8 +16,8 @@ int main(int argc, char **argv, char **env) {
     top->trace(tfp, 99);
     tfp->open("top.vcd");
 
-    // if (vbdOpen()!=1) return(-1);
-    // vbdHeader("RISCV - Test");
+    if (vbdOpen()!=1) return(-1);
+    vbdHeader("Gaussian distribution");
 
     top->trigger = 0;
     top->rst = 1;
@@ -47,7 +47,11 @@ int main(int argc, char **argv, char **env) {
 
         // to see what the value of the delay would be, you can uncomment the line above, it would increase the latency and slow down the progression of the program.
 
-        // vbdCycle(i+1);
+        if (i>150000){
+            vbdPlot(int(top->a0), 0, 255);
+        }
+
+        vbdCycle(i+1);
 
         top->trigger = 0;
         top->rst = false;

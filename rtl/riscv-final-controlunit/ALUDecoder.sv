@@ -13,16 +13,39 @@ always_comb begin
     case(ALUOp)
         2'b00: begin
             ALUControl = 4'b0000;             //LOAD / STORE
-            case(funct3)
-                3'b010:                       //WORD
-                    DataType = 2'b00;
-                3'b100:                       //BYTE UNSIGNED
-                    DataType = 2'b01;
-                3'b101:                       //HALF WORD UNSIGNED
-                    DataType = 2'b10;
-                default: begin
-                    DataType = 2'b00;
-                end
+            case (op5)
+            1: begin
+                case(funct3)
+                    3'b010: begin                       //lw
+                        DataType = 2'b00;
+                    end
+                    3'b100: begin                      //lbu
+                        DataType = 2'b01;
+                    end
+                    3'b101: begin                      //lhu
+                        DataType = 2'b10;
+                    end
+                    default: begin
+                        DataType = 2'b01;
+                    end
+                endcase
+            end
+            0: begin
+                case(funct3)
+                    3'b010: begin                       //sw
+                        DataType = 2'b00;
+                    end
+                    3'b000: begin                      //sb
+                        DataType = 2'b01;
+                    end
+                    3'b001: begin                      //sh
+                        DataType = 2'b10;
+                    end
+                    default: begin
+                        DataType = 2'b01;
+                    end
+                endcase
+            end
             endcase
         
         end

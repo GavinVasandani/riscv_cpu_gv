@@ -12,13 +12,14 @@ module ram #(
     output logic [DATA_WIDTH-1:0] RD // read output
 );
 
-logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0]; //each mem location of array stores a byte-width so 8 bits
+logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h100]; //each mem location of array stores a byte-width so 8 bits
 logic [7:0] byteAssign;
 logic [15:0] halfwordAssign;
+//logic [7:0] ram_array_val = ram_array[17'h1EE];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("sine.mem", ram_array, 17'h10000, 17'h1FFFF);
+    $readmemh("reference/gaussian.mem", ram_array, 17'h10000, 17'h1FFFF);
     $display("Ram successfully loaded.");
 end;
 
