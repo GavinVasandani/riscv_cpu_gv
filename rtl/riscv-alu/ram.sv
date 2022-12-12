@@ -18,7 +18,7 @@ logic [15:0] halfwordAssign;
 
 initial begin
     $display("Loading ram.");
-    $readmemh("datamem.mem", ram_array);
+    $readmemh("sine.mem", ram_array, 17'h10000, 17'h1FFFF);
     $display("Ram successfully loaded.");
 end;
 
