@@ -15,20 +15,20 @@
 |riscv-alu/regfile.sv                |               |      :star:       |           |           |
 |riscv-alu/regfileALU.sv             |               |      :star:       |           |           |
 |riscv-alu/regfile_ALU_tb.cpp        |               |      :star:       |           |           |
-|riscv-alu/ram.sv                    |               |      :star:       |           |           |
+|riscv-alu/ram.sv                    |      :o:      |      :star:       |           |           |
 |riscv-alu/ram_cache.sv              |               |      :star:       |           |           |
-|riscv-controlunit/control.sv        |               |                   |           |           |
-|riscv-controlunit/ext.sv            |               |                   |   :o:     |           |
+|riscv-controlunit/control.sv        |      :o:      |                   |           |           |
+|riscv-controlunit/ext.sv            |      :o:      |                   |   :o:     |           |
 |riscv-controlunit/control_tb.cpp    |               |                   |           |           |
-|riscv-final-pc/rom.sv               |               |                   |           |           |
-|riscv-final-pc/pc_reg.sv            |               |                   |           |           |
-|riscv-final-pc/pc_tb.cpp            |               |                   |           |           |
-|top.sv                              |               |                   |   :star:  |           |
-|riscv_tb.cpp                        |               |                   |   :star:  |           |
-|pipeline register                   |               |                   |   :star:  |           |
-|pipeline stages                     |               |        :o:        |   :star:  |           |
-|pipeline assembly & debugging       |               |                   |   :star:  |           |
-|F1.s                                |               |                   |           |           |
+|riscv-final-pc/rom.sv               |     :star:    |                   |           |           |
+|riscv-final-pc/pc_reg.sv            |     :star:    |                   |           |           |
+|riscv-final-pc/pc_tb.cpp            |     :star:    |                   |           |           |
+|top.sv                              |     :o:       |                   |   :star:  |           |
+|riscv_tb.cpp                        |     :star:    |                   |           |           |
+|pipeline register folder            |               |                   |   :star:  |           |
+|pipeline stages                     |     :o:       |        :o:        |   :star:  |           |
+|pipeline assembly & debugging       |     :o:       |                   |   :star:  |           |
+|F1.s                                |     :star:    |                   |           |           |
 
 :star: Principal Author
 
