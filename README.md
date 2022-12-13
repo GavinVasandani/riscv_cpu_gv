@@ -18,9 +18,14 @@
 |riscv-alu/ram_cache.sv              |               |                   |           |           |
 |riscv-controlunit/control.sv        |               |                   |           |     *     |
 |riscv-controlunit/control_tb.cpp    |               |                   |           |           |
-|riscv-final-pc                      |               |                   |           |           |
-|top.sv & riscv_tb.cpp               |               |                   |     *     |           |
+|riscv-final-pc/rom.sv               |               |                   |           |           |
+|riscv-final-pc/pc_reg.sv            |               |                   |           |           |
+|riscv-final-pc/pc_tb.cpp            |               |                   |           |           |
+|top.sv                              |               |                   |     *     |           |
+|riscv_tb.cpp                        |               |                   |     *     |           |
 |pipeline register                   |               |                   |     *     |     *     |
-|F1 program                          |               |                   |           |           |
+|pipeline stages                     |               |                   |     *     |     *     |
+|pipeline assembly & debugging       |               |                   |     *     |     *     |
+|F1.s                                |               |                   |           |           |
 
 //Rename module/files in table to match files in repo
