@@ -102,3 +102,4 @@ endmodule
 //Currently RAM-cache only outputs word and cache stores word, byte or halfword.
 //RAM-cache can store word, half word or byte.
 //Add functionality for cache outputting halfword or byte.
+
