@@ -17,17 +17,17 @@
 |riscv-alu/regfile_ALU_tb.cpp        |               |      :star:       |           |           |
 |riscv-alu/ram.sv                    |               |      :star:       |           |           |
 |riscv-alu/ram_cache.sv              |               |      :star:       |           |           |
-|riscv-controlunit/control.sv        |               |                   |           |   :star:  |
-|riscv-controlunit/ext.sv            |               |                   |   :o:     |   :star:  |
-|riscv-controlunit/control_tb.cpp    |               |                   |           |   :star:  |
+|riscv-controlunit/control.sv        |               |                   |           |           |
+|riscv-controlunit/ext.sv            |               |                   |   :o:     |           |
+|riscv-controlunit/control_tb.cpp    |               |                   |           |           |
 |riscv-final-pc/rom.sv               |               |                   |           |           |
 |riscv-final-pc/pc_reg.sv            |               |                   |           |           |
 |riscv-final-pc/pc_tb.cpp            |               |                   |           |           |
-|top.sv                              |               |                   |   :star:  |   :o:     |
+|top.sv                              |               |                   |   :star:  |           |
 |riscv_tb.cpp                        |               |                   |   :star:  |           |
-|pipeline register                   |               |                   |   :star:  |   :star:  |
-|pipeline stages                     |               |        :o:        |   :star:  |   :star:  |
-|pipeline assembly & debugging       |               |                   |   :star:  |   :o:     |
+|pipeline register                   |               |                   |   :star:  |           |
+|pipeline stages                     |               |        :o:        |   :star:  |           |
+|pipeline assembly & debugging       |               |                   |   :star:  |           |
 |F1.s                                |               |                   |           |           |
 
 :star: Principal Author
