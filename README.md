@@ -13,6 +13,7 @@
 |Module                              |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
 |:-----------------------------------|:-------------:|:-----------------:|:---------:|:---------:|
 |riscv-alu/regfile.sv                |               |      :star:       |           |           |
+|riscv-alu/regfileALU.sv             |               |      :star:       |           |           |
 |riscv-alu/regfile_ALU_tb.cpp        |               |      :star:       |           |           |
 |riscv-alu/ram.sv                    |               |      :star:       |           |           |
 |riscv-alu/ram_cache.sv              |               |      :star:       |           |           |
