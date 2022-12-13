@@ -37,14 +37,12 @@ module topLevelALU# (
     input logic [Data_Width-1:0] newPC, //PC+4 input
     input logic JumpSel, //select for resultPCMux
 
-    //input logic flagInitial,
-
     //Outputs
     output logic eq,
     output logic [Data_Width-1:0] a0,
     output logic [Data_Width-1:0] RAM_array_value,
     output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
-    //output logic [Data_Width-1:0] Mux_RAM_array_value
+  
 );
 
 //Wires
@@ -52,18 +50,10 @@ module topLevelALU# (
     logic [Data_Width-1:0] rd2; //regfile output 2
     logic [Data_Width-1:0] ALUOp2; //ALU input 2
     logic [Data_Width-1:0] ALUout; //ALU output
-    //logic flagMiss;
-    //logic [Data_Width-1:0] mainMemFetch; //data fetched from main mem when cache miss
+
     logic [Data_Width-1:0] ReadData; //RAM output
     logic [Data_Width-1:0] ResultSrcOutput; //ResultSrcMux output 
     logic [Data_Width-1:0] regWrite; //data to write to register
-    //logic [BYTE_WIDTH-1:0] ram_array_wire_outer [2**RAM_ADDRESS_WIDTH-1:0];
-    //logic [BYTE_WIDTH-1:0] ram_array_wire_inner [2**RAM_ADDRESS_WIDTH-1:0];
-    //logic [CACHE_DATA_WIDTH-1:0] cache_array_wire_outer [2**CACHE_ADDRESS_WIDTH-1:0];
-    //logic [CACHE_DATA_WIDTH-1:0] cache_array_wire_inner [2**CACHE_ADDRESS_WIDTH-1:0];
-    //logic flagMiss_wire;
-
-    //assign flagMiss = flagInitial; //initially flagMiss = flagInitial which = 0
 
 //Initializing objects of the different modules and linking them
 //.variablefromClass(variablefromTop)
