@@ -2,7 +2,11 @@ module topLevelALU# (
     parameter 
               // NumberOfReg = 32,
               Address_Width_RegFile = 5, //32 registers so address size is 5 bits
-              Data_Width = 32
+              Data_Width = 32,
+              CACHE_DATA_WIDTH = 41,
+              BYTE_WIDTH = 8,
+              RAM_ADDRESS_WIDTH = 16,
+              CACHE_ADDRESS_WIDTH = 6
               //ALU_Instruction_Width = 10;
 ) (
 //Interface Signals
@@ -33,11 +37,14 @@ module topLevelALU# (
     input logic [Data_Width-1:0] newPC, //PC+4 input
     input logic JumpSel, //select for resultPCMux
 
+    //input logic flagInitial,
+
     //Outputs
     output logic eq,
     output logic [Data_Width-1:0] a0,
-    output logic [Data_Width-1:0] delay,
-    output logic [Data_Width-1:0] jalrOutput
+    output logic [Data_Width-1:0] RAM_array_value,
+    output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
+    //output logic [Data_Width-1:0] Mux_RAM_array_value
 );
 
 //Wires
@@ -45,9 +52,18 @@ module topLevelALU# (
     logic [Data_Width-1:0] rd2; //regfile output 2
     logic [Data_Width-1:0] ALUOp2; //ALU input 2
     logic [Data_Width-1:0] ALUout; //ALU output
+    //logic flagMiss;
+    //logic [Data_Width-1:0] mainMemFetch; //data fetched from main mem when cache miss
     logic [Data_Width-1:0] ReadData; //RAM output
     logic [Data_Width-1:0] ResultSrcOutput; //ResultSrcMux output 
     logic [Data_Width-1:0] regWrite; //data to write to register
+    //logic [BYTE_WIDTH-1:0] ram_array_wire_outer [2**RAM_ADDRESS_WIDTH-1:0];
+    //logic [BYTE_WIDTH-1:0] ram_array_wire_inner [2**RAM_ADDRESS_WIDTH-1:0];
+    //logic [CACHE_DATA_WIDTH-1:0] cache_array_wire_outer [2**CACHE_ADDRESS_WIDTH-1:0];
+    //logic [CACHE_DATA_WIDTH-1:0] cache_array_wire_inner [2**CACHE_ADDRESS_WIDTH-1:0];
+    //logic flagMiss_wire;
+
+    //assign flagMiss = flagInitial; //initially flagMiss = flagInitial which = 0
 
 //Initializing objects of the different modules and linking them
 //.variablefromClass(variablefromTop)
@@ -62,8 +78,7 @@ regfile regFile1 (
     .din(regWrite), //register file input is regWrite
     .rd1(rd1), 
     .rd2(rd2),
-    .a0(a0), //check if needed
-    .delay(delay)
+    .a0(a0) //check if needed
 );
 //regFileMux mux1 (rd2, ImmOp, ALUSrc, ALUOp2);
 regfileMux mux1 ( //Mux to determine ALU Op2
@@ -78,13 +93,35 @@ regfileALU alu1 (
     .op2(ALUOp2), 
     .ALU_ctrl(ALU_ctrl), 
     .ALUout(ALUout), 
-    .eq(eq),
-    .jalrOutput(jalrOutput)
+    .eq(eq)
 );
 
-ram ram1 ( /* this works, presumably when doing sw, the address stored in the register
+ram_cache ramCache1 (
+    .clk(clk),
+    .A(ALUout),
+    .WE(MemWrite),
+    .WD(rd2),
+    .dataType(dataType),
+    .RD(ReadData),
+    .RAM_array_value(RAM_array_value),
+    .cache_array_value(cache_array_value)
+);
+
+/*
+//This is all run simultaneously so it should be fine
+
+data_cache cache1 (
+    .clk(clk),
+    .A(ALUout),
+    .flagMissIn(flagMiss), //flagMiss is initially 0, maybe in tb assign flagMiss to 0
+    .DataIn(mainMemFetch),
+    .DataOut(ReadData),
+    .flagMissOut(flagMiss) //flagMissOut is outputted to flagMiss wire which is inputted to flagMissIn
+);
+
+ram ram1 ( this works, presumably when doing sw, the address stored in the register
 that is used is such that when added with offset it gives an LS Byte so it corresponds to
-beginning of a word. */
+beginning of a word. 
 //need to add signals for WW (Write Word), RB (Read Byte)
     .clk(clk),
     .WE(MemWrite),
@@ -94,11 +131,44 @@ beginning of a word. */
     .RD(ReadData)
 );
 
+if (flagMiss) begin //if flagMiss is 1 so must fetch value from main mem:
+
+    //don't reinitialize just assign one wire value to another
+    assign mainMemFetch = ReadData;
+
+end
+*/
+
+/*
+ram_cache_read ramCacheRead1 (
+    .clk(clk),
+    .A(ALUout),
+    .ram_array(ram_array_wire_outer),
+    .cache_array(cache_array_wire_outer),
+    .RD(ReadData),
+    .ram_arrayOut(ram_array_wire_inner),
+    .cache_arrayOut(cache_array_wire_inner),
+    .flagMiss(flagMiss_wire)
+);
+
+ram_cache_write ramCacheWrite1 (
+    .clk(clk),
+    .A(ALUout),
+    .ram_array(ram_array_wire_inner),
+    .cache_array(cache_array_wire_inner),
+    .flagMiss(flagMiss_wire),
+    .ram_arrayOut(ram_array_wire_outer),
+    .cache_arrayOut(cache_array_wire_outer)
+);
+*/
+
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
     .SrcSel(SrcSel), //ResultSrc select
+    //.ram_array(ram_array_wire),
     .OutputSrcMux(ResultSrcOutput) //previously Result
+    //.Mux_RAM_array_output(Mux_RAM_array_value)
 );
 
 resultPCMux resultPCMux1 (
