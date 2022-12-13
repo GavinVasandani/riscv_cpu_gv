@@ -13,7 +13,14 @@
 |module                 |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
 |:----------------------|:-------------:|:-----------------:|:---------:|:---------:|
 |riscv-alu              |               |                   |           |           |
+|riscv-alu_tb.cpp       |               |                   |           |           |
 |riscv-controlunit      |               |                   |           |     *     |
+|riscv-data_mem         |               |                   |           |           |
+|riscv-ram_cache        |               |                   |           |           |
+|riscv-instr_mem        |               |                   |           |           |
 |riscv-final-pc         |               |                   |           |           |
 |top.sv & riscv_tb.cpp  |               |                   |     *     |           |
 |pipeline register      |               |                   |     *     |     *     |
+|F1 program             |               |                   |           |           |
+
+//Rename module/files in table to match files in repo
