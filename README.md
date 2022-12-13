@@ -1,5 +1,5 @@
 # Group 18's RISC - V CPU
-##### *By: Arnav Kohli (sk1421), Gavin Vasandani, Junyi Wu, Xuhan Pan*
+##### *By: Arnav Kohli (sk1421), Gavin Vasandani (gv220), Junyi Wu, Xuhan Pan*
 
 ---
 - ## Breakdown of tasks:
@@ -10,12 +10,39 @@
 
 ---
 
-|module                 |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
-|:----------------------|:-------------:|:-----------------:|:---------:|:---------:|
-|riscv-alu              |               |                   |           |           |
-|riscv-controlunit      |               |                   |           |     *     |
-|riscv-final-pc         |               |                   |           |           |
-|riscv_tb.cpp           |               |                   |           |           |
-|top.sv                 |               |                   |     *     |           |
-|pipeline register 1-4  |               |                   |     *     |     *     |
-|
+|Module                              |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
+|:-----------------------------------|:-------------:|:-----------------:|:---------:|:---------:|
+|riscv-alu/regfile.sv                |               |                   |           |           |
+|riscv-alu/regfile_ALU_tb.cpp        |               |                   |           |           |
+|riscv-alu/ram.sv                    |               |                   |           |           |
+|riscv-alu/ram_cache.sv              |               |                   |           |           |
+|riscv-controlunit/control.sv        |               |                   |           |   :star:  |
+|riscv-controlunit/ext.sv            |               |                   |   :o:     |   :star:  |
+|riscv-controlunit/control_tb.cpp    |               |                   |           |   :star:  |
+|riscv-final-pc/rom.sv               |               |                   |           |           |
+|riscv-final-pc/pc_reg.sv            |               |                   |           |           |
+|riscv-final-pc/pc_tb.cpp            |               |                   |           |           |
+|top.sv                              |               |                   |   :star:  |   :o:     |
+|riscv_tb.cpp                        |               |                   |   :star:  |           |
+|pipeline register                   |               |                   |   :star:  |   :star:  |
+|pipeline stages                     |               |                   |   :star:  |   :star:  |
+|pipeline assembly & debugging       |               |                   |   :star:  |   :o:     |
+|F1.s                                |               |                   |           |           |
+
+:star: Principal Author
+
+:o: Contributed
+
+---
+
+## Personal Statement - Gavin
+
+1. My contributions.
+2. Explanation of each component I contributed too, mention mistakes made, and what I learned (include code examples).
+3. Obstacles faced in certain components (ram-cache) and how that led to special design decisions (include code examples).
+4. Improvements for next time. 
+
+---
+
+
+
