@@ -28,4 +28,6 @@
 |pipeline assembly & debugging       |               |                   |     *     |     *     |
 |F1.s                                |               |                   |           |           |
 
-//Rename module/files in table to match files in repo
+* Principal Author
+x Co-Author
+
