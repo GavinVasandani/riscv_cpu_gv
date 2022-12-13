@@ -10,17 +10,17 @@
 
 ---
 
-|module                 |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
-|:----------------------|:-------------:|:-----------------:|:---------:|:---------:|
-|riscv-alu              |               |                   |           |           |
-|riscv-alu_tb.cpp       |               |                   |           |           |
-|riscv-controlunit      |               |                   |           |     *     |
-|riscv-data_mem         |               |                   |           |           |
-|riscv-ram_cache        |               |                   |           |           |
-|riscv-instr_mem        |               |                   |           |           |
-|riscv-final-pc         |               |                   |           |           |
-|top.sv & riscv_tb.cpp  |               |                   |     *     |           |
-|pipeline register      |               |                   |     *     |     *     |
-|F1 program             |               |                   |           |           |
+|module                              |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
+|:-----------------------------------|:-------------:|:-----------------:|:---------:|:---------:|
+|riscv-alu/regfile.sv                |               |                   |           |           |
+|riscv-alu/regfile_ALU_tb.cpp        |               |                   |           |           |
+|riscv-alu/ram.sv                    |               |                   |           |           |
+|riscv-alu/ram_cache.sv              |               |                   |           |           |
+|riscv-controlunit/control.sv        |               |                   |           |     *     |
+|riscv-controlunit/control_tb.cpp    |               |                   |           |           |
+|riscv-final-pc                      |               |                   |           |           |
+|top.sv & riscv_tb.cpp               |               |                   |     *     |           |
+|pipeline register                   |               |                   |     *     |     *     |
+|F1 program                          |               |                   |           |           |
 
 //Rename module/files in table to match files in repo
