@@ -2,7 +2,7 @@
 
 ## **Single cycle CPU**
 
-In this part of the project, I was responsible for write test bench, creating top module to connect all the components, and do debugging.
+In this part of the project, I was responsible creating top module to connect all the components.
 
 - ### Test Bench
 
@@ -42,8 +42,3 @@ Control Unit can be divided into two parts, **Main Decoder** and **ALUDecoder**.
 
 
 
-## **Pipeline**
-In this part of the project, me (Junyi WU) and Harry each create two register, and I assemble the top module, and fix syntex errors and connection errors.
-
----
-Four registers are added into the design, reg1 - 4. register1 is rather simple, it's connected right after the Instruction Memory. register 2,3 and 4, however, needs to be connected inside the ALU. So ALU block is divided into three parts, **Registerfile**, **alu_e.sv**, **alu
