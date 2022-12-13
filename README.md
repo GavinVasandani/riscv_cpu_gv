@@ -15,5 +15,7 @@
 |riscv-alu              |               |                   |           |           |
 |riscv-controlunit      |               |                   |           |     *     |
 |riscv-final-pc         |               |                   |           |           |
-|top.sv & riscv_tb.cpp  |               |                   |     *     |           |
-|pipeline register      |               |                   |     *     |     *     |
+|riscv_tb.cpp           |               |                   |           |           |
+|top.sv                 |               |                   |     *     |           |
+|pipeline register 1-4  |               |                   |     *     |     *     |
+|

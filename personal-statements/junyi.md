@@ -43,11 +43,7 @@ Control Unit can be divided into two parts, **Main Decoder** and **ALUDecoder**.
 
 
 ## **Pipeline**
-In this part of the project, me (Junyi Wu) and Harry work together. I create first two pipeline register, and connect all register into the design, relocate componets, and create variables. While Harry create the rest two register, and debug the top module.
+In this part of the project, me (Junyi WU) and Harry each create two register, and I assemble the top module, and fix syntex errors and connection errors.
 
-
-# BUG
-1. alu_e missing an input RD1
-2. alu_e rd1 and rd2 bit length is wrong
-3. PCF in pc_top has wrong bit length
-
+---
+Four registers are added into the design, reg1 - 4. register1 is rather simple, it's connected right after the Instruction Memory. register 2,3 and 4, however, needs to be connected inside the ALU. So ALU block is divided into three parts, **Registerfile**, **alu_e.sv**, **alu
