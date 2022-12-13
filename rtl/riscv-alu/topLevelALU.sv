@@ -107,68 +107,11 @@ ram_cache ramCache1 (
     .cache_array_value(cache_array_value)
 );
 
-/*
-//This is all run simultaneously so it should be fine
-
-data_cache cache1 (
-    .clk(clk),
-    .A(ALUout),
-    .flagMissIn(flagMiss), //flagMiss is initially 0, maybe in tb assign flagMiss to 0
-    .DataIn(mainMemFetch),
-    .DataOut(ReadData),
-    .flagMissOut(flagMiss) //flagMissOut is outputted to flagMiss wire which is inputted to flagMissIn
-);
-
-ram ram1 ( this works, presumably when doing sw, the address stored in the register
-that is used is such that when added with offset it gives an LS Byte so it corresponds to
-beginning of a word. 
-//need to add signals for WW (Write Word), RB (Read Byte)
-    .clk(clk),
-    .WE(MemWrite),
-    .dataType(dataType),
-    .A(ALUout),
-    .WD(rd2),
-    .RD(ReadData)
-);
-
-if (flagMiss) begin //if flagMiss is 1 so must fetch value from main mem:
-
-    //don't reinitialize just assign one wire value to another
-    assign mainMemFetch = ReadData;
-
-end
-*/
-
-/*
-ram_cache_read ramCacheRead1 (
-    .clk(clk),
-    .A(ALUout),
-    .ram_array(ram_array_wire_outer),
-    .cache_array(cache_array_wire_outer),
-    .RD(ReadData),
-    .ram_arrayOut(ram_array_wire_inner),
-    .cache_arrayOut(cache_array_wire_inner),
-    .flagMiss(flagMiss_wire)
-);
-
-ram_cache_write ramCacheWrite1 (
-    .clk(clk),
-    .A(ALUout),
-    .ram_array(ram_array_wire_inner),
-    .cache_array(cache_array_wire_inner),
-    .flagMiss(flagMiss_wire),
-    .ram_arrayOut(ram_array_wire_outer),
-    .cache_arrayOut(cache_array_wire_outer)
-);
-*/
-
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
     .ReadData(ReadData),
     .SrcSel(SrcSel), //ResultSrc select
-    //.ram_array(ram_array_wire),
     .OutputSrcMux(ResultSrcOutput) //previously Result
-    //.Mux_RAM_array_output(Mux_RAM_array_value)
 );
 
 resultPCMux resultPCMux1 (
