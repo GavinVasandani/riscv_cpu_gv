@@ -12,10 +12,10 @@
 
 |Module                              |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
 |:-----------------------------------|:-------------:|:-----------------:|:---------:|:---------:|
-|riscv-alu/regfile.sv                |               |                   |           |           |
-|riscv-alu/regfile_ALU_tb.cpp        |               |                   |           |           |
-|riscv-alu/ram.sv                    |               |                   |           |           |
-|riscv-alu/ram_cache.sv              |               |                   |           |           |
+|riscv-alu/regfile.sv                |               |      :star:       |           |           |
+|riscv-alu/regfile_ALU_tb.cpp        |               |      :star:       |           |           |
+|riscv-alu/ram.sv                    |               |      :star:       |           |           |
+|riscv-alu/ram_cache.sv              |               |      :star:       |           |           |
 |riscv-controlunit/control.sv        |               |                   |           |   :star:  |
 |riscv-controlunit/ext.sv            |               |                   |   :o:     |   :star:  |
 |riscv-controlunit/control_tb.cpp    |               |                   |           |   :star:  |
@@ -25,7 +25,7 @@
 |top.sv                              |               |                   |   :star:  |   :o:     |
 |riscv_tb.cpp                        |               |                   |   :star:  |           |
 |pipeline register                   |               |                   |   :star:  |   :star:  |
-|pipeline stages                     |               |                   |   :star:  |   :star:  |
+|pipeline stages                     |               |        :o:        |   :star:  |   :star:  |
 |pipeline assembly & debugging       |               |                   |   :star:  |   :o:     |
 |F1.s                                |               |                   |           |           |
 
