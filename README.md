@@ -22,7 +22,7 @@
 |riscv-final-pc/rom.sv               |               |                   |           |           |
 |riscv-final-pc/pc_reg.sv            |               |                   |           |           |
 |riscv-final-pc/pc_tb.cpp            |               |                   |           |           |
-|top.sv                              |               |                   |   :star:  |   :o:     |
+|top.sv                              |               |                   |           |   :o:     |
 |riscv_tb.cpp                        |               |                   |   :star:  |           |
 |pipeline register                   |               |                   |   :star:  |   :star:  |
 |pipeline stages                     |               |                   |   :star:  |   :star:  |
