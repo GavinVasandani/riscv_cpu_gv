@@ -27,11 +27,13 @@ module ram_cache # (
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
+/* Cache is assumed to be filled with 0s
 initial begin
     $display("Loading cache.");
     $readmemh("cachedata.mem", cache_array); //64 mem locations of 41 bits each value
     $display("Cache successfully loaded.");
 end;
+*/
 
 //Initializing RAM and RAM variables:
 //logic [BYTE_WIDTH-1:0] ram_array [2**RAM_ADDRESS_WIDTH-1:0]; //each mem location of array stores a byte-width so 8 bits
@@ -65,13 +67,16 @@ always_ff @(posedge clk) begin
                     ram_array[A+1] <= WD[15:8];
                     ram_array[A+2] <= WD[23:16];
                     ram_array[A+3] <= WD[31:24]; //MS Byte
+                    cache_array[A[7:2]] <= {1'b1, A[15:8], WD}; //write word to cache
                 end
                 2'b01: begin //write byte to mem location given by A
                     ram_array[A] <= WD[7:0];
+                    cache_array[A[7:2]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0]};
                 end
                 2'b10: begin
                     ram_array[A] <= WD[7:0]; //LS Byte
                     ram_array[A+1] <= WD[15:8];
+                    cache_array[A[7:2]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:8], WD[7:0]};
                 end
                 default: $display("No dataType selected. Please choose word, byte or halfword.");
             endcase
@@ -106,8 +111,8 @@ always_ff @(posedge clk) begin
     end
 end
 
-assign RAM_array_value = ram_array[4];
-assign cache_array_value = cache_array[1];
+assign RAM_array_value = ram_array[3];
+assign cache_array_value = cache_array[A[7:2]];
 
 endmodule
 

@@ -41,7 +41,9 @@ module topLevelALU# (
     output logic eq,
     output logic [Data_Width-1:0] a0,
     output logic [Data_Width-1:0] RAM_array_value,
-    output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
+    output logic [CACHE_DATA_WIDTH-1:0] cache_array_value,
+    output logic [Data_Width-1:0] delay,
+    output logic [Data_Width-1:0] jalrOutput
   
 );
 
@@ -68,7 +70,8 @@ regfile regFile1 (
     .din(regWrite), //register file input is regWrite
     .rd1(rd1), 
     .rd2(rd2),
-    .a0(a0) //check if needed
+    .a0(a0), //check if needed
+    .delay(delay)
 );
 //regFileMux mux1 (rd2, ImmOp, ALUSrc, ALUOp2);
 regfileMux mux1 ( //Mux to determine ALU Op2
@@ -83,7 +86,8 @@ regfileALU alu1 (
     .op2(ALUOp2), 
     .ALU_ctrl(ALU_ctrl), 
     .ALUout(ALUout), 
-    .eq(eq)
+    .eq(eq),
+    .jalrOutput(jalrOutput)
 );
 
 ram_cache ramCache1 (

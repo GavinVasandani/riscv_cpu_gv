@@ -125,6 +125,7 @@ int main(int argc, char **argv, char **env) {
     top->JumpSel = 1; //select newPc (PC+4) to assign to register rd
     */
 
+    /*
     //Fetch from main memory:
     //lw rd, imm(rs1), so:
     //lw a2, 3(0x1) so a2 = mem[0x1+3], so rd = address of a2 (0x2), rs1 is address to reg a1 (0x1) that contains data val (1)
@@ -147,8 +148,8 @@ int main(int argc, char **argv, char **env) {
     //Expected output: reg 2 has value EE and cache has EE
     //0x04 is A, in binary the bits A[7:2] = 000001 which is cache[1] which stores 41 bit word.
     //41 bit word has contents of mem[0x04 (entire word)] in cache_data[31:0].
+    */
 
-    /*
     //Writing to main memory:
     //sb rs2, imm(rs1)
     //sb a2, 2(0x01) so mem[0x01+2] = a2, where a2 is data at register 2 given by address 0x02 so:
@@ -163,15 +164,15 @@ int main(int argc, char **argv, char **env) {
     top->regFileWen = 0; //not writing to reg
     top->trigger = 0;
     top->ALUSrc = 1; //we want to add immediate (offset) to rs1 to get effective address, assign 0 if adding value from 2 registers
-    top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
+    top->ImmOp = 0x2; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
     top->ALU_ctrl = 0000; //add operation
     top->MemWrite = 0x1; //Writing to RAM
-    top->dataType = 01; //Writing byte
+    top->dataType = 00; //Writing byte
     top->SrcSel = 1; //irelevant as we aren't writing to rd so no effect
     top->newPC = 0x0; //irelevant as we aren't writing to rd so no effect
     top->JumpSel = 0; //irelevant as we aren't writing to rd so no effect
-    //Expected: 10003 is A which is sent to RAM, WD is 6 so RAM[10003] = 6
-    */
+    //Expected: 0003 is A which is sent to RAM, WD is 5 so RAM[0003] = 5
+    //Also cache is empty so cache at address A[7:2] where A = 0003 = 00011, so at cache[000] = 1000...(tag)000005(data)
 
     for (i=0; i<300; i++){
 
