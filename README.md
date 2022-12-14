@@ -33,14 +33,6 @@
 
 :o: Contributed
 
----
-
-## Personal Statement - Gavin
-
-1. My contributions.
-2. Explanation of each component I contributed too, mention mistakes made, and what I learned (include code examples).
-3. Obstacles faced in certain components (ram-cache) and how that led to special design decisions (include code examples).
-4. Improvements for next time. 
 
 ---
 
