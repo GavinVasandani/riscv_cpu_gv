@@ -125,14 +125,13 @@ int main(int argc, char **argv, char **env) {
     top->JumpSel = 1; //select newPc (PC+4) to assign to register rd
     */
 
-    /*
     //Fetch from main memory:
     //lw rd, imm(rs1), so:
     //lw a2, 3(0x1) so a2 = mem[0x1+3], so rd = address of a2 (0x2), rs1 is address to reg a1 (0x1) that contains data val (1)
     //immOp = 2, expected output is a2 reg = value at mem location 0x3 (6) but a2 is 000000....6
     //at mem value 10000+3, it's a2 = mem[17h'10003], where a2 should = EE
     top->clk = 1;
-    top->rs1 = 0x1; //0x01 address register contains value 10000
+    top->rs1 = 0x1; //0x01 address register contains value 1
     top->rs2 = 0x7; //don't care
     top->rd = 0x2; //address of reg to write to
     top->regFileWen = 1; //writing to reg
@@ -141,15 +140,24 @@ int main(int argc, char **argv, char **env) {
     top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
     top->ALU_ctrl = 0000; //add operation
     top->MemWrite = 0; //Not writing to RAM
-    top->dataType = 00; //reading byte
+    top->dataType = 00; //reading word
     top->SrcSel = 1; //want ReadData value that's outputted from RAM
     top->newPC = 0x0;
     top->JumpSel = 0; //want ReadData value that's outputted from RAM
+    //We fetch data at memory address 0x04, but first we check cache:
+    //0x04 = A = 000000100, so set 1 cache (address of cache: 0001).
+    //Cache data has V bit 0, so miss so read word from RAM and write word + neighbours to cache.
+    //mem[0x04] is byte, but we output word so: EE EE ED ED
+    //Cache is filled with next 4 words so: EE EE ED ED EC EC EB EA E9 E8 E7 E6 E5 E4 E3 E2
+
+
+
+    
     //Expected output: reg 2 has value EE and cache has EE
     //0x04 is A, in binary the bits A[7:2] = 000001 which is cache[1] which stores 41 bit word.
     //41 bit word has contents of mem[0x04 (entire word)] in cache_data[31:0].
-    */
 
+    /*
     //Writing to main memory:
     //sb rs2, imm(rs1)
     //sb a2, 2(0x01) so mem[0x01+2] = a2, where a2 is data at register 2 given by address 0x02 so:
@@ -173,6 +181,7 @@ int main(int argc, char **argv, char **env) {
     top->JumpSel = 0; //irelevant as we aren't writing to rd so no effect
     //Expected: 0003 is A which is sent to RAM, WD is 5 so RAM[0003] = 5
     //Also cache is empty so cache at address A[7:2] where A = 0003 = 00011, so at cache[000] = 1000...(tag)000005(data)
+    */
 
     for (i=0; i<300; i++){
 
