@@ -90,6 +90,20 @@ regfileALU alu1 (
     .jalrOutput(jalrOutput)
 );
 
+ram_cache_spatial ramCacheSpatial1 (
+    .clk(clk),
+    .A(ALUout),
+    .WE(MemWrite),
+    .WD(rd2),
+    .dataType(dataType),
+    .RD(ReadData),
+    .RAM_array_value(RAM_array_value),
+    .cache_array_value(cache_array_value)
+
+);
+
+
+/*
 ram_cache ramCache1 (
     .clk(clk),
     .A(ALUout),
@@ -100,6 +114,7 @@ ram_cache ramCache1 (
     .RAM_array_value(RAM_array_value),
     .cache_array_value(cache_array_value)
 );
+*/
 
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),
