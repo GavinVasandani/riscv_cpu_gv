@@ -27,6 +27,10 @@ module ram_cache_spatial # (
 
 );
 
+//Variables:
+
+
+
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
