@@ -64,6 +64,15 @@ Hence, before any register is written to, a conditional evaluates the destinatio
 
 Finally, another design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held within each register is unknown and could effect the program result if a value is read and used from the register before an instruction writes to the register. Therefore, to have full knowledge of register values throughout the program execution, the design decision of initializing the register file with 0s was made.
 
+## RAM-Cache
+
+As an extension to the pipelined processor, I implemented a data cache to the main memory giving a new combined memory component called: RAM-cache. The project brief mentioned that the cache has a capacity of 256 bytes or 64 words. As each cache stores a 32 bit word then the cache component has 64 cache spaces corresponding to a cache address width of 6 bits. Furthermore, the data width stored in a cache is 60 bits and is composed of a 1 bit valid flag, 27 bit tag and 32 bit data.
+
+(MAYBE ADD PICTURE OF CACHE DECLARATION)
+
+Initially, I planned on creating a separate cache component that would be wired to the existing RAM. This data cache would have an input DataIn that would be stored in the direct mapped cache location if there was a cache miss. However, as DataIn is the data stored in main memory address A then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component. Therefore, fetching data from the cache would take equal amount of cycles as fetching from main memory. 
+
+As an alternative, I considered combining the RAM and data cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:2], known as the set bits, are used to establish cache location, while the remaining bits of A are compared with the cache’s tag to determine whether the cache contains the requested data or we have a cache miss. In the situation of a cache hit, the data stored in the cache is read and the 1 bit signal flagMiss is LOW. Whereas, in a cache miss, the data is read from the main memory and flagMiss is HIGH. This code is executed in an always_comb block.
 
 
 ---
