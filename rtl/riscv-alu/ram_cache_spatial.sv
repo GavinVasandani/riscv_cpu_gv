@@ -33,7 +33,10 @@ logic [RAM_ADDRESS_WIDTH-1:0] A_RD2;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD3;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD4;
 
-logic [DATA_WIDTH]
+logic [BYTE_WIDTH-1:0] RD1;
+logic [BYTE_WIDTH-1:0] RD2;
+logic [BYTE_WIDTH-1:0] RD3;
+logic [BYTE_WIDTH-1:0] RD4;
 
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
