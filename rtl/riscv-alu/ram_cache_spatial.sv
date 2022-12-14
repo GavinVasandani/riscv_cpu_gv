@@ -1,12 +1,14 @@
-//Combined ram cache module - specific for 16 bit address width RAM
-//Check whether cache is also byte addressed (Don't think it is)
-//RAM cache works, just need to implement full functionality of normal RAM and use good test program
-module ram_cache # (
+//RAM-Cache module with spatial locality.
+//Spatial locality only considering 3 neighbours.
+//Benefit of spatial locality is that it pre-writes next 4 values so we can read immediately
+//instead of only reading once we write them when we specifically receive them, but in this case we receive its neighbour and indirectly right it
+module ram_cache_spatial # (
     parameter RAM_ADDRESS_WIDTH = 16, //should be 32
+    // A[15:8] = tag, A[7:4] = cache address, A[3:2] = block offset, A[1:0] = byte offset
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
-    CACHE_DATA_WIDTH = 41, //32 bit for data, 8 bit for tag, 1 bit for flag = 41
-    CACHE_ADDRESS_WIDTH = 6
+    CACHE_DATA_WIDTH = 137, //4 x 32 bit = 128 bit for data, 8 bit for tag, 1 bit for flag = 137
+    CACHE_ADDRESS_WIDTH = 4
 )(
 
 //Interface signals:
@@ -22,6 +24,7 @@ module ram_cache # (
     output logic [DATA_WIDTH-1:0] RD, //DataOut
     output logic [DATA_WIDTH-1:0] RAM_array_value,
     output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
+
 );
 
 //Initializing Cache and cache variables:
@@ -35,12 +38,6 @@ initial begin
     $readmemh("sine.mem", ram_array); //65536 values so 16 bits address width
     $display("Ram successfully loaded.");
 end;
-
-//Word at cache:
-logic [CACHE_DATA_WIDTH-1:0] cache_data;
-assign cache_data = cache_array[A[7:2]];
-
-logic flagMiss; //1-Miss, 0-Hit
 
 always_ff @(posedge clk) begin 
     //synchronous write
@@ -69,19 +66,48 @@ end
 
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
     if (!WE) begin //Read instruction so cache is checked first
-        if(cache_data[40]) begin //so if V is 1
-            if(cache_data[39:32]==A[15:8]) begin //compare tag
-                assign RD = cache_data[31:0]; //output immediately that DataOut is 31 bit data stored in cache, as its read its async
+        if(cache_data[136]) begin //so if V is 1
+            if(cache_data[135:128]==A[15:8]) begin //compare tag
+                //Use mux:
+                //Select data based on block offset
+                assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
                 assign flagMiss = 1'b0; //hit
             end
             else begin //tag doesn't match so miss, so read from RAM
                 assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
                 assign flagMiss = 1'b1; //miss
+
+                //Logic: //Writing to cache, writing outputted value and its neighbours.
+      //The neighbours we write aren't just next 3 values, it's the rest of the block offset, so:
+      //if I write mem[0x04] to cache set 0, and data within cache that is assigned to mem[0x04] is 01 then must write 10,11 to next data values and 00 to prev data value
+      //but use same memory address just change block offset and fetch that value and store in data cache
+      //Fetch all data from main mem with same mem address but block offset varies: 00, 01, 10, 11:
+      //Copy mem address but use 00 for block offset: A[15:4], A[3:2] = 00, A[1:0]
+
+                assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
+                assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
+                assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
+                assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
+
+                assign RD1 = ram_array[A_RD1];
+                assign RD2 = ram_array[A_RD2];
+                assign RD3 = ram_array[A_RD3];
+                assign RD4 = ram_array[A_RD4];
             end
         end
         else begin //0 V-bit so miss, so read fom RAM
             assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
             assign flagMiss = 1'b1; //miss
+
+            assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
+            assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
+            assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
+            assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
+
+            assign RD1 = ram_array[A_RD1];
+            assign RD2 = ram_array[A_RD2];
+            assign RD3 = ram_array[A_RD3];
+            assign RD4 = ram_array[A_RD4];
         end
     end
 end
@@ -90,7 +116,19 @@ always_ff @(posedge clk) begin
     //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
     //Add spatial locality, so copy neighbouring data into cache
     if (flagMiss) begin //Write to cache if miss
-      cache_array[A[7:2]] <= {1'b1, A[15:8], ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};  
+
+      assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
+      assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
+      assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
+      assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
+
+      assign RD1 = ram_array[A_RD1];
+      assign RD2 = ram_array[A_RD2];
+      assign RD3 = ram_array[A_RD3];
+      assign RD4 = ram_array[A_RD4];
+
+      cache_array[A[7:4]] <= {1'b1, A[15:8], RD4, RD3, RD2, RD1};  
+    
     end
 end
 
@@ -99,9 +137,3 @@ assign RAM_array_value = ram_array[3];
 assign cache_array_value = cache_array[A[7:2]];
 
 endmodule
-
-
-//Currently RAM-cache only outputs word and cache stores word, byte or halfword.
-//RAM-cache can store word, half word or byte.
-//Add functionality for cache outputting halfword or byte.
-
