@@ -2,7 +2,7 @@
 
 ## **Single cycle CPU**
 
-In this part of the project, I was responsible creating top module to connect all the components.
+In this part of the project, I was responsible of creating top module to connect all the components, and fix syntex errors.
 
 - ### Test Bench
 
