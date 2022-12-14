@@ -8,7 +8,7 @@ module ram_cache_spatial # (
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
     CACHE_DATA_WIDTH = 137, //4 x 32 bit = 128 bit for data, 8 bit for tag, 1 bit for flag = 137
-    CACHE_ADDRESS_WIDTH = 4,
+    CACHE_ADDRESS_WIDTH = 4
 )(
 
 //Interface signals:
@@ -38,9 +38,6 @@ logic [DATA_WIDTH-1:0] RD2;
 logic [DATA_WIDTH-1:0] RD3;
 logic [DATA_WIDTH-1:0] RD4;
 
-logic [CACHE_DATA_WIDTH-1:0] currentData;
-assign currentData = cache_array[A[7:4]]; //data in cache location given by A[7:4]
-
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
@@ -52,6 +49,12 @@ initial begin
     $readmemh("sine.mem", ram_array); //65536 values so 16 bits address width
     $display("Ram successfully loaded.");
 end;
+
+//Word at cache:
+logic [CACHE_DATA_WIDTH-1:0] cache_data;
+assign cache_data = cache_array[A[7:4]]; //data in cache location given by A[7:4]
+
+logic flagMiss; //1-Miss, 0-Hit
 
 always_ff @(posedge clk) begin 
     //synchronous write
@@ -66,16 +69,16 @@ always_ff @(posedge clk) begin
                     //Using block offset of A, so A[3:2]
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], currentData[63:32], WD};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], WD, currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], WD, cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], WD, currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], WD, cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], WD, currentData[95:64], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], WD, cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -86,16 +89,16 @@ always_ff @(posedge clk) begin
                     //Writing byte to specific data in cache:
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], currentData[63:32], {24{1'b0}}, WD[7:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {24{1'b0}}, WD[7:0]};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], {24{1'b0}}, WD[7:0], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], {24{1'b0}}, WD[7:0], cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], {24{1'b0}}, WD[7:0], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], {24{1'b0}}, WD[7:0], cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0], currentData[95:64], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -107,16 +110,16 @@ always_ff @(posedge clk) begin
                     //Writing halfword to specific data in cache:
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], currentData[63:32], {16{1'b0}}, WD[15:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {16{1'b0}}, WD[15:0]};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], {16{1'b0}}, WD[15:0], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], {16{1'b0}}, WD[15:0], cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], {16{1'b0}}, WD[15:0], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], {16{1'b0}}, WD[15:0], cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:0], currentData[95:64], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
