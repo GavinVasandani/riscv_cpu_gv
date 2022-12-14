@@ -115,11 +115,12 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
             assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
             assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
-            //ram_array[A_RD1] is a byte, so do RD1 = {ram_array[A_RD1+3], ram_array[A_RD1+2], ram_array[A_RD1+1], ram_array[A_RD1]}
-            assign RD1 = ram_array[A_RD1];
-            assign RD2 = ram_array[A_RD2];
-            assign RD3 = ram_array[A_RD3];
-            assign RD4 = ram_array[A_RD4];
+
+            //Concatenating 4 bytes gives the data word RD
+            assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
+            assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
+            assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
+            assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
         end
     end
 end
@@ -129,16 +130,7 @@ always_ff @(posedge clk) begin
     //Add spatial locality, so copy neighbouring data into cache
     if (flagMiss) begin //Write to cache if miss
 
-      assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
-      assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
-      assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
-      assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
-
-      assign RD1 = ram_array[A_RD1];
-      assign RD2 = ram_array[A_RD2];
-      assign RD3 = ram_array[A_RD3];
-      assign RD4 = ram_array[A_RD4];
-
+      //Cache address given by A[7:4], and is filled with all neighbours.
       cache_array[A[7:4]] <= {1'b1, A[15:8], RD4, RD3, RD2, RD1};  
     
     end
