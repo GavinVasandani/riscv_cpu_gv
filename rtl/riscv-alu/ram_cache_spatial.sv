@@ -100,10 +100,11 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                 assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
                 assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
 
-                assign RD1 = ram_array[A_RD1];
-                assign RD2 = ram_array[A_RD2];
-                assign RD3 = ram_array[A_RD3];
-                assign RD4 = ram_array[A_RD4];
+                //Concatenating 4 bytes gives the data word RD
+                assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
+                assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
+                assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
+                assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
             end
         end
         else begin //0 V-bit so miss, so read fom RAM
