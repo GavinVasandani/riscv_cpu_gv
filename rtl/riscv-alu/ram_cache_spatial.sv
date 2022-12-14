@@ -107,16 +107,16 @@ always_ff @(posedge clk) begin
                     //Writing halfword to specific data in cache:
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], currentData[63:32], {24{1'b0}}, WD[7:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], currentData[63:32], {16{1'b0}}, WD[15:0]};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], {24{1'b0}}, WD[7:0], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], currentData[95:64], {16{1'b0}}, WD[15:0], currentData[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], {24{1'b0}}, WD[7:0], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], currentData[127:96], {16{1'b0}}, WD[15:0], currentData[63:32], currentData[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0], currentData[95:64], currentData[63:32], currentData[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:0], currentData[95:64], currentData[63:32], currentData[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -139,6 +139,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                 assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
                 assign flagMiss = 1'b1; //miss
 
+                //Addresses of neighbours in main mem that are fetched and written to same cache set
                 assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
                 assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
                 assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
@@ -155,6 +156,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
             assign flagMiss = 1'b1; //miss
 
+            //Addresses of neighbours in main mem that are fetched and written to same cache set
             assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
             assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
             assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
@@ -180,6 +182,6 @@ end
 
 //For debugging
 assign RAM_array_value = ram_array[3];
-assign cache_array_value = cache_array[A[7:2]];
+assign cache_array_value = cache_array[A[7:4]];
 
 endmodule
