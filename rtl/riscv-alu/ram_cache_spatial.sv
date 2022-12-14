@@ -8,7 +8,7 @@ module ram_cache_spatial # (
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
     CACHE_DATA_WIDTH = 137, //4 x 32 bit = 128 bit for data, 8 bit for tag, 1 bit for flag = 137
-    CACHE_ADDRESS_WIDTH = 4
+    CACHE_ADDRESS_WIDTH = 4,
 )(
 
 //Interface signals:
@@ -33,10 +33,10 @@ logic [RAM_ADDRESS_WIDTH-1:0] A_RD2;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD3;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD4;
 
-logic [BYTE_WIDTH-1:0] RD1;
-logic [BYTE_WIDTH-1:0] RD2;
-logic [BYTE_WIDTH-1:0] RD3;
-logic [BYTE_WIDTH-1:0] RD4;
+logic [DATA_WIDTH-1:0] RD1;
+logic [DATA_WIDTH-1:0] RD2;
+logic [DATA_WIDTH-1:0] RD3;
+logic [DATA_WIDTH-1:0] RD4;
 
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
