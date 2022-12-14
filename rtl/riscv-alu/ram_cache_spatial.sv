@@ -33,6 +33,7 @@ logic [RAM_ADDRESS_WIDTH-1:0] A_RD2;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD3;
 logic [RAM_ADDRESS_WIDTH-1:0] A_RD4;
 
+logic [DATA_WIDTH]
 
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
@@ -110,7 +111,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
             assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
             assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
-
+            //ram_array[A_RD1] is a byte, so do RD1 = {ram_array[A_RD1+3], ram_array[A_RD1+2], ram_array[A_RD1+1], ram_array[A_RD1]}
             assign RD1 = ram_array[A_RD1];
             assign RD2 = ram_array[A_RD2];
             assign RD3 = ram_array[A_RD3];
