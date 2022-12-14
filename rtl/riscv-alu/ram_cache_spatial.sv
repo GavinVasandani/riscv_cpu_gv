@@ -59,7 +59,9 @@ always_ff @(posedge clk) begin
                     ram_array[A+1] <= WD[15:8];
                     ram_array[A+2] <= WD[23:16];
                     ram_array[A+3] <= WD[31:24]; //MS Byte
-                    cache_array[A[7:2]] <= {1'b1, A[15:8], WD}; //write word to cache
+                    //Writing word to specific data in cache:
+                    //
+                    cache_array[A[7:4]] <= {1'b1, A[15:8], WD}; //write word to cache
                 end
                 2'b01: begin //write byte to mem location given by A
                     ram_array[A] <= WD[7:0];
@@ -87,13 +89,6 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             else begin //tag doesn't match so miss, so read from RAM
                 assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
                 assign flagMiss = 1'b1; //miss
-
-                //Logic: //Writing to cache, writing outputted value and its neighbours.
-      //The neighbours we write aren't just next 3 values, it's the rest of the block offset, so:
-      //if I write mem[0x04] to cache set 0, and data within cache that is assigned to mem[0x04] is 01 then must write 10,11 to next data values and 00 to prev data value
-      //but use same memory address just change block offset and fetch that value and store in data cache
-      //Fetch all data from main mem with same mem address but block offset varies: 00, 01, 10, 11:
-      //Copy mem address but use 00 for block offset: A[15:4], A[3:2] = 00, A[1:0]
 
                 assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
                 assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
@@ -129,10 +124,8 @@ always_ff @(posedge clk) begin
     //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
     //Add spatial locality, so copy neighbouring data into cache
     if (flagMiss) begin //Write to cache if miss
-
       //Cache address given by A[7:4], and is filled with all neighbours.
       cache_array[A[7:4]] <= {1'b1, A[15:8], RD4, RD3, RD2, RD1};  
-    
     end
 end
 
