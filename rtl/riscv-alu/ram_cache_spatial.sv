@@ -28,7 +28,10 @@ module ram_cache_spatial # (
 );
 
 //Variables:
-
+logic [RAM_ADDRESS_WIDTH-1:0] A_RD1;
+logic [RAM_ADDRESS_WIDTH-1:0] A_RD2;
+logic [RAM_ADDRESS_WIDTH-1:0] A_RD3;
+logic [RAM_ADDRESS_WIDTH-1:0] A_RD4;
 
 
 //Initializing Cache and cache variables:
