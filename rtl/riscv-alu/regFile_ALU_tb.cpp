@@ -145,14 +145,14 @@ int main(int argc, char **argv, char **env) {
     top->newPC = 0x0;
     top->JumpSel = 0; //want ReadData value that's outputted from RAM
     //We fetch data at memory address 0x04, but first we check cache:
-    //0x04 = A = 000000100, so set 1 cache (address of cache: 0001).
+    //0x04 = A = 000000100, so set 0 cache (address of cache: A[7:4] = 0000).
     //Cache data has V bit 0, so miss so read word from RAM and write word + neighbours to cache.
     //mem[0x04] is byte, but we output word so: EE EE ED ED
     //Cache is filled with next 4 words so: EE EE ED ED EC EC EB EA E9 E8 E7 E6 E5 E4 E3 E2
 
 
 
-    
+
     //Expected output: reg 2 has value EE and cache has EE
     //0x04 is A, in binary the bits A[7:2] = 000001 which is cache[1] which stores 41 bit word.
     //41 bit word has contents of mem[0x04 (entire word)] in cache_data[31:0].
