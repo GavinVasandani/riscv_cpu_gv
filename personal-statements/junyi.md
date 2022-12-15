@@ -1,6 +1,6 @@
-# Contribution
+# **Single cycle CPU** &nbsp; Junyi Wu
 
-## **Single cycle CPU**
+## Contribution
 
 In this part of the project, I was responsible of creating top module to connect all the components, and fix syntex errors in `top.sv` and individual components. I also wrote the initial version of `test bench`.
 
@@ -26,27 +26,28 @@ top->trigger = vbdFlag();
 - ### **Top Module**
 Top Module is an important part, It connect all components.
 
-![这是图片](../images-logbook/Single cycle.jpeg)
+![a](../images-logbook/SingleCycle.jpeg)
+
+
+- ### Debug
 
 
 
-
-
-# Evidence
+## Evidence
 Commits corresponding to my contribution can be found here. 
 
 **Note:** Many of the commits are in the old git project, and may not be found in the final assignment. Those will be shown seperately.
 
 ---
-## Old project
+### Old project
 
-### write `ext.sv`
+#### write `ext.sv`
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/acd427de9226d47c882ad4a16817afc41bf132b6
 
-### initial `test bench` and `top.sv` added
+#### initial `riscv_tb.cpp` and `top.sv` added
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/0dc84ec7b69aa3cb8f17030e464595edfb6ce237
 
-### Debug
+#### Debug
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/b7afb35451e3b623daa2d2cffdd5e137b168cdfc
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/592600061d23f121ad5caa4b713a121c18e0cc41
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/cdbafc98e91de73d1278ebd823cc1c311d8055a7
@@ -57,10 +58,10 @@ Commits corresponding to my contribution can be found here.
 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/f5f7ff4857715090c66299c93caee184f0726b12
   
 ---
-## New project
+### New project
 Components were moved from old project to this new project
 
-### Debug
+#### Debug
 - https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/260e64ef3a2d798e87c55a24cb2d867fca9f2da8
 
 
