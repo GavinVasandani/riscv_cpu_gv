@@ -12,6 +12,8 @@ All of the proof for contribution can be seen in commits and the respective fold
 
       **insert image of mux block here.**
 
+      Apart from these two functions, jumps were handled by an input from the control block called "**J**". When J was 0, there would be no jumps. With J = 1 there would be a **jal** operation, but this was easily handled by **alt_PC**. Finally if J = 2, a **jalr** operation would be executed. This is explained in further detail below.
+
     - **Instruction Memory:** Apart from the counter and mux block, there is also a memory block(in this particular use case we have used a ROM, but a RAM would work perfectly fine as well). Typically a RAM would be implemented in case of a Von Neumann architecture where we require dynamic access to the memory location in case it needs to be changed mid-program). The memory block currently contains 65536 (hex FFF as per the memory map) addresses, with 32 bit instruction words stored in each of these addresses. The reasoning for this decision was due to optimization of the memory to fit the memory map provided in the project speicifcation. It was decided that only 0xFFF locations would be allocated because allocating all $2^{32}$ memory address would require 4 Gigs of system memory which verilator would not be able to handle.
 
       **insert picture of memory block here.**
@@ -21,7 +23,7 @@ All of the proof for contribution can be seen in commits and the respective fold
       **insert picture of PC reg here**
 
   - #### **PC Register & Counter & Mux**:
-    The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. The Jump instruction would also require PC to be dynamically changed according to the previous PC and the offset which is stored as an immediate as part of the instruction. This functionality is common for both the branch operation and the jump operation. The only difference being the jalr operation, which allocates PC according to a value stored in a register. JALR works like a return operation when the register to which the JAL operation was stored is accessed. It allows PC to increment after returning from a subroutine. **PCsrc_inter** is responsible for checking if the instruction is a jump or not. Since J is a 2 bit input which is **2'b10** when a jalr operation is requested, the most significant bit is used to allocate the PC value which also comes as an input from the ALU. When **PCsrc_inter** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
+    The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. The Jump instruction would also require PC to be dynamically changed according to the previous PC and the offset which is stored as an immediate as part of the instruction. This functionality is common for both the branch operation and the jump operation. The only difference being the jalr operation, which allocates PC according to a value stored in a register. JALR works like a return operation when the register to which the JAL operation was stored is accessed. It allows PC to increment after returning from a subroutine. For jalr specifically, the input to the rom should come from the alu block since the operation to be performed is  **PCsrc_inter** is responsible for checking if the instruction is a jump or not. Since J is a 2 bit input which is **2'b10** when a jalr operation is requested, the most significant bit is used to allocate the PC value which also comes as an input from the ALU. When **PCsrc_inter** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
     ```systemverilog
     assign PCsrc_inter = J[0] | PCsrc;
 
@@ -51,7 +53,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     Note that the assignment is asynchronous as per the specification.
 - ### Testing and verification:
   Apart from the instruction memory block, I handled design verification and testing for the single cycle CPU. To test the CPU, I used the src folder under rtl to write code in assembly. The code was written to be a part of the F1 program but also simultaneously allow me to test the three basic instructions needed by the CPU in order to implement the F1 program. These were: XOR, Shifts, Add/Sub, Branch, JAL and JALR. A more detailed explanation as to why and where these were used in particular:
-  - **fsm.s :** This program would switch the lights on sequentially till all it would reach a state where all 8 light on the LED array were turned on, at which it would wati a fixed amount of time before turning all of them off.
+  - **fsm.s :** This program would switch the lights on sequentially till all it would reach a state where all 8 light on the LED array were turned on, at which it would wait a fixed amount of time before turning all of them off. It can be found in rtl/src/myprog.
       ```asm
       main:
           addi a5, a5, 0xA 
@@ -73,8 +75,40 @@ All of the proof for contribution can be seen in commits and the respective fold
           addi a5, a5, 0x1 
           addi a0, zero, 0x0 
     ```
-  1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
-  2. **lightloop** initiated the switching on of the array of LED lights.
+    1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
+    2. **lightloop** initiated the switching on of the array of LED lights.
+    3. **checkdelay** would hold the state when all the lights were on till the contents of register **a5** (the delay register) reached 0.
+    The looping mechanism allowed me to check that bne was indeed working as expected. This code also proved that the add operations were working correctly.
+  - **clkdiv.s :** This program allowed me to check if the jal and the jalr function were working properly. It can be found in rtl/src/myprog. It was useful in implementing a pause between each light sequence so that I could control how much time would pass in between each light turning on. 
+    ``` asm
+    main:
+      addi a0, zero, 0x0
+      addi a6, zero, 0x0E
+      jal ra, mloop 
+      addi a0, a0, 0x1
+      jal ra, end
+    mloop:
+      addi a6, a6, -1 
+      bne a6, zero, mloop 
+      jalr x0, ra, 0
+    end:
+    ```
+    The test for this program was simple: If register a0 contained 1 at the end of execution, then both the jal and jalr operations were working fine. 
+    1. In the initial loop, register **a6** is set up with the value to hold execution between each light progression. Once **a0** and **a6** are initialized, a jump is performed to the main loop.
+    2. The main loop titled **mloop** would decrement the value of a6 till it reaches zero, at which point the branch check will fail. 
+    3. The **jalr** operation just before the end label is equivalent to a **RET** and allows the program to return from the mloop subroutine once a6 has reached 0.
+  - **F1.s :** This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A video is also shown in the folder, and steps to execute the code are explained in the Documentation. This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
+    1. On start, the program would stay in the lfsr loop till a7 was fed with a value greater than zero (more details in the testbench for the code below).
+    2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant least bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly)
+   
+    **insert picture of primitive polynomial here**
+
+
+    3. The isolated bits would be added to register **a1** before the branch check. If the branch was successful, **a1** would be stored back in **a5** which is the delay register. Otherwise, the lfsr loop would be executed and the LED array would be turned on sequentially.
+    4. **mainclkdiv** was the subroutine which would execute the clkdiv function along with the **hold** label.
+    5. **checkdelay** was executed after all 8 lights were turned on. As the name suggests, it would check the value of register **a5** and decrement it till it reached 0. 
+    6. **maindelay** was required so that in the worst case (if the delay was 1), the lights would not turn off immediately. **maindelay** performed the same function as mainclkdiv, except the delay between each loop in **checkdelay** would be about 0.5 seconds.
+    7. When the delay counter hit 0, the program jumps to **done** which shuts off all the lights and resets the trigger manually so that the program can be executed again on asserting **vbdFlag()**.
 
 ---
 ## Reflection and possible improvements:
@@ -82,4 +116,5 @@ All of the proof for contribution can be seen in commits and the respective fold
     ```asm
     addi a5, a5, -1
    ```
-This is a minor change, as it would not affect the functioning of the program except for a microscopic delay due to loading of the register file with 1. Where this could be problematic, was in case of a bigger program, if more registers were required in order to facilitate more variables, or if the given subroutine was run enough times to cause a substantial delay.
+  This is a minor change, as it would not affect the functioning of the program except for a microscopic delay due to loading of the register file with 1. Where this could be problematic, was in case of a bigger program, if more registers were required in order to facilitate more variables, or if the given subroutine was run enough times to cause a substantial delay.
+- Also in the fsm program, the effect of switching the lights on could be accomplished by using an lsl operation, along with an increment at each stage.
