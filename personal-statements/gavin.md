@@ -48,13 +48,13 @@ Based on the RISC-V specifications, the RAM component uses byte addressing and t
 
 In order to implement store byte, word and halfword instructions, a special design decision was to introduce a new control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte). The remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, the memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
 
-## Reflection about what I have learned
+## Reflection
 
 Through this project, I have grown my understanding of the RISC-V architecture. Whilst I had a theoretical grasp of how an instruction is translated into an operation, by now creating the components that make up the RISC-V architecture on SystemVerilog, I was able to apply theory into practice which gave me insight into details that I previously overlooked. For instance, to implement load byte, halfword or word, I hadn’t considered how the RAM would differentiate between the data size requests as an input signal wasn’t mentioned in the provided diagrams. This led me to implement the dataType control signal. 
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
 
-## What I would have done differently
+## Future Changes
 
 With more time available, I would change the cache organization to be 2-way associative cache with LRU replacement. Currently, I have implemented direct-mapped cache with 4 word blocks per set as it allows for spatial locality. This is optimal for the reference program as we’re reading and writing data in successive memory addresses. With spatial locality, these data values can now be easily fetched from the cache when its address is inputted. In a more complex CPU architecture, this cache organization would drastically reduce time taken for the reference program to run. However, for more general programs, a 2-way associative cache allows for less cache misses and maximizes temporal locality by only replacing the least recently used way in the cache line. 
 
