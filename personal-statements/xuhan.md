@@ -4,14 +4,40 @@
     - This lab report will provide an overview of the control unit implemented in a RISC-V processor written in SystemVerilog. This report will discuss the design and implementation of the control unit, as well as any challenges encountered during the development process.
 
 - ## Control Unit & Sign Extension:
-    - **Main Decoder:** The mainDecoder takes the input of last 7 digit from the instruction. This is known as opcode(**op**), which specify different type of instruction. There are mainly 6 types of instruction -- Load, Store, I-type, R-type, B-type and Jump type. Each of these type sends same control signals like **regWrite** and **ImmSrc**. One thing to note here is that JAL and JALR instruction are different in terms of the opcode and function. So it is good to write them seperately. 
+    - **Main Decoder:** The mainDecoder takes the input of last 7 digit from the instruction. This is known as opcode(**op**), which specify different type of instruction. There are mainly 6 types of instruction -- Load, Store, I-type, R-type, B-type and Jump type. Each of these type sends same control signals like **regWrite** and **ImmSrc**. One thing to note here is that JAL and JALR instruction are different in terms of the opcode and function. So it is good to write them seperately. This block is in combinational logic, and each instruction was differenciated from **op** using case statement.
+    ```systemverilog
+        case(op)
+            7'b0000011: begin           // Load
+                RegWrite = 1;
+                ImmSrc = 3'b000;
+                ALUSrc = 1;
+                MemWrite = 0;
+                ResultSrc = 1;
+                Branch = 0;
+                ALUOp = 2'b00;
+                J = 2'b00;
+            end
+            7'b0100011:                 //Store
+                //set all signals
+
+    ```
 
 
-    - **ALU Decoder:** The mainDecoder provides the information of the instruction type (**ALUOp**).  Each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). ALUDecoder takes in ALUOp as well as **funct3** and **funct75**. This gives the **ALUControl**, which tells what ALU needs to do. I discussed with Gavin who is doing ALU, and we decided to add a new variable **dataType** that specify whether to load word/half word/byte.
+    - **ALU Decoder:** The mainDecoder provides the information of the instruction type (**ALUOp**).  Each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). ALUDecoder takes in ALUOp as well as **funct3** and **funct75**. This gives the **ALUControl**, which tells what ALU needs to do. I discussed with Gavin who is doing ALU, and we decided to add a new variable **dataType** that specify whether to load word/half word/byte. There are many instructions belongs to ALUOp, so I used case statement similar to the code above.
+    
 
 
-    - **Sign Extension:** To extend a 2's complement number, we made copies of the sign bit the add to the front. In order to use the 32-bit instruction space efficiently, immediate signal may have appear everywhere exept for the opcode. These information could be find from the look up table in risc-v spec.
+    - **Sign Extension:** To extend a 2's complement number, we made copies of the sign bit the add to the front. In order to use the 32-bit instruction space efficiently, immediate signal may have appear everywhere exept for the opcode. These information could be find from the look up table in risc-v spec. Code below shows 2 examples of extending Imm from different location.
+    ```systemverilog
+        always_comb 
+            case(ImmSrc)
+                3'b000:             //Immediate and JALR
+                    ImmExt = {{20{imm[31]}}, imm[31:20]};
+                
+                3'b001:             //Store
+                    ImmExt = {{20{imm[31]}}, imm[31:25], imm[11:7]};
 
+    ```
 
 
 - ## Pipelining
