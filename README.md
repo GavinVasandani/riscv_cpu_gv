@@ -34,8 +34,35 @@
 
 :o: Contributed
 
-
+###### Authored by : Gavin Vasandani
 ---
 
+- ## Branches:
+  This repository has been split up into three branches. The current branch contains the code for the single cycle RISC-V CPU. The pipeline branch and the cache branch, as the names suggest are the stretched goals mentioned in the project brief.
+
+- ## Single Cycle branch (main):
+  The results for the reference program can be found in the [tests](tests/) directory:
+  1. [F1 program code](tests/f1.s)
+  2. [F1 test video](tests/sc-f1.mp4)
+  3. [Gaussian distribution](tests/sc-gaussian.mp4)
+  4. [Sine distribution](tests/sc-sine.mp4)
+  5. [Triangle distribution](tests/sc-triangle.mp4)
+    
+    To test the f1 code, navigate to the rtl directory using and then execute the shell file using the commands one after the other:
+     ```shell
+     cd rtl
+
+     source ./doit.sh
+     ```
+     The [testbench](rtl/riscv_tb.cpp) has been set up in order to allow for execution of the light sequence to start once the rotary encoder has been pressed. For more details on how the code works, look at [Arnav's personal statement](personal-statements/arnav.md)
+
+    The remaining personal statements can be found below:
+    1. [Gavin's personal statement](personal-statements/gavin.md)
+    2. [Harry's personal statement](personal-statements/xuhan.md)
+    3. [Junyi's personal statement](personal-statements/junyi.md)
+
+
+###### Videos by : Arnav Kohli
+###### Authored by : Arnav Kohli
 
 
