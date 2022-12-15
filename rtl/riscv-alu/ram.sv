@@ -19,7 +19,7 @@ logic [15:0] halfwordAssign;
 
 initial begin
     $display("Loading ram.");
-    $readmemh("reference/gaussian.mem", ram_array, 17'h10000, 17'h1FFFF);
+    $readmemh("datamem.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
