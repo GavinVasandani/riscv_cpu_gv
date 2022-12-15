@@ -42,7 +42,7 @@ maindelay:
     addi a6, zero, 0x3 # set clkdiv to roughly 3 cycles - for FF lights state
     jal zero, hold # unconditional jump to count which creates about a 0.5 second delay for each value in a6 register
 mainclkdiv:
-    addi a6, zero, 0x20 # set clkdiv to roughly 14 cycles - for state in between each light
+    addi a6, zero, 0xD # set clkdiv to roughly 14 cycles - for state in between each light
 hold:
     sub a6, a6, t5 # decrement by one
     bne a6, zero, hold # loop till you hit zero

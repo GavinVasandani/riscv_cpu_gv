@@ -1,7 +1,7 @@
 .text
 .equ base_pdf, 0x100
 .equ base_data, 0x10000
-.equ max_count, 0xC8
+.equ max_count, 0xFF
 main:
     JAL     ra, init  # jump to init, ra and save position to ra
     JAL     ra, build
