@@ -61,6 +61,15 @@
     2. [Harry's personal statement](personal-statements/xuhan.md)
     3. [Junyi's personal statement](personal-statements/junyi.md)
 
+  To navigate to the pipeline branch type:
+  ```bash
+  git checkout pipeline
+  ```
+  And for the cache branch type:
+  ```bash
+  git checkout cache
+  ```
+
 
 ###### Videos by : Arnav Kohli
 ###### Authored by : Arnav Kohli
