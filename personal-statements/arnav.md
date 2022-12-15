@@ -74,7 +74,7 @@ All of the proof for contribution can be seen in commits and the respective fold
           addi a0, zero, 0x0 
     ```
   1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
-  2. lightloop initiated the switching on of the array of LED lights. 
+  2. **lightloop** initiated the switching on of the array of LED lights.
 
 ---
 ## Reflection and possible improvements:
