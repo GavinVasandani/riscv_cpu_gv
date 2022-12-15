@@ -82,28 +82,28 @@ All of the proof for contribution can be seen in commits and the respective fold
     7. When the delay counter hit 0, the program jumps to **done** which shuts off all the lights and resets the trigger manually so that the program can be executed again on asserting **vbdFlag()**.
 
 
- - [**Testbench :**](../rtl/riscv_tb.cpp)
-    The testbench allows execution of the f1 program at the moment, but uncommenting the lines
-  ```cpp
-     if (i>400000){
-        vbdPlot(int(top->a0), 0, 255);
-     }
-  ``` 
-  and commenting out the vbdBar() function would allow for testing of the reference programs. The test for the reference programs will be mentioned in subsequent sections. 
+   - [**Testbench :**](../rtl/riscv_tb.cpp)
+      The testbench allows execution of the f1 program at the moment, but uncommenting the lines
+    ```cpp
+       if (i>400000){
+          vbdPlot(int(top->a0), 0, 255);
+       }
+    ``` 
+    and commenting out the vbdBar() function would allow for testing of the reference programs. The test for the reference programs will be mentioned in subsequent sections. 
 
-  The testbench initializes by resetting the program count, and resetting trigger, which is an input into the register file in the ALU. Trigger always maps to register 7. 
-  ```cpp
-    top->trigger = vbdFlag();
-    top->rst = false;
-  ```
-  The code above ensures that once vbdFlag() that is the rotary encoder is pressed, trigger goes high and 1 is stored in the register **a7**. From the [f1](../tests/f1.s) code above, this register breaks the lfsr loop and initiates the lights loop, which is implemented with the code below:
-  ```cpp
-    vbdBar(top->a0 & 0xFF);
-  ```
-  It is essential that the vbuddy is in one shot mode, because otherwise trigger would stay high till it is de-asserted. The code below ensures this:
-  ```cpp
-    vbdSetMode(1);
-  ```
+    The testbench initializes by resetting the program count, and resetting trigger, which is an input into the register file in the ALU. Trigger always maps to register 7. 
+    ```cpp
+      top->trigger = vbdFlag();
+      top->rst = false;
+    ```
+    The code above ensures that once vbdFlag() that is the rotary encoder is pressed, trigger goes high and 1 is stored in the register **a7**. From the [f1](../tests/f1.s) code above, this register breaks the lfsr loop and initiates the lights loop, which is implemented with the code below:
+    ```cpp
+      vbdBar(top->a0 & 0xFF);
+    ```
+    It is essential that the vbuddy is in one shot mode, because otherwise trigger would stay high till it is de-asserted. The code below ensures this:
+    ```cpp
+      vbdSetMode(1);
+    ```
 
 ---
 ## Reflection and possible improvements:
