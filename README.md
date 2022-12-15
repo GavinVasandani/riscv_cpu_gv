@@ -25,7 +25,7 @@
 |riscv-final-pc/pc_tb.cpp            |     :star:    |                   |           |           |
 |top.sv                              |     :o:       |                   |   :star:  |    :o:    |
 |riscv_tb.cpp                        |     :star:    |                   |   :o:     |           |
-|pipeline register folder            |               |                   |   :star:  |   :star:  |
+|pipeline register folder            |               |        :o:        |   :star:  |   :star:  |
 |pipeline stages                     |     :o:       |        :o:        |   :star:  |   :star:  |
 |pipeline assembly & debugging       |     :o:       |                   |   :star:  |   :o:     |
 |F1.s                                |     :star:    |                   |           |           |
