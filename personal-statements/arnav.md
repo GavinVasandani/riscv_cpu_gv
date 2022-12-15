@@ -51,8 +51,11 @@ All of the proof for contribution can be seen in commits and the respective fold
     assign instr = {rom_array[PC+3], rom_array[PC+2], rom_array[PC+1], rom_array[PC]};
     ```
     Note that the assignment is asynchronous as per the specification.
+    
 - ### Testing and verification:
   Apart from the instruction memory block, I handled design verification and testing for the single cycle CPU. To test the CPU, I used the src folder under rtl to write code in assembly. The code was written to be a part of the F1 program but also simultaneously allow me to test the three basic instructions needed by the CPU in order to implement the F1 program. These were: XOR, Shifts, Add/Sub, Branch, JAL and JALR. A more detailed explanation as to why and where these were used in particular:
+
+
   - [**fsm.s :**](../rtl/src/myprog/fsm.s) This program would switch the lights on sequentially till all it would reach a state where all 8 light on the LED array were turned on, at which it would wait a fixed amount of time before turning all of them off.
     1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
     2. **lightloop** initiated the switching on of the array of LED lights.
@@ -63,6 +66,8 @@ All of the proof for contribution can be seen in commits and the respective fold
     1. In the initial loop, register **a6** is set up with the value to hold execution between each light progression. Once **a0** and **a6** are initialized, a jump is performed to the main loop.
     2. The main loop titled **mloop** would decrement the value of a6 till it reaches zero, at which point the branch check will fail. 
     3. The **jalr** operation just before the end label is equivalent to a **RET** and allows the program to return from the mloop subroutine once a6 has reached 0.
+
+
   - [**F1.s :**](../tests/f1.s) This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A video is also shown in the folder, and steps to execute the code are explained in the Documentation. This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
     1. On start, the program would stay in the lfsr loop till a7 was fed with a value greater than zero (more details in the testbench for the code below).
     2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant least bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly)
@@ -76,6 +81,30 @@ All of the proof for contribution can be seen in commits and the respective fold
     6. **maindelay** was required so that in the worst case (if the delay was 1), the lights would not turn off immediately. **maindelay** performed the same function as mainclkdiv, except the delay between each loop in **checkdelay** would be about 0.5 seconds.
     7. When the delay counter hit 0, the program jumps to **done** which shuts off all the lights and resets the trigger manually so that the program can be executed again on asserting **vbdFlag()**.
 
+
+ - [**Testbench :**](../rtl/riscv_tb.cpp)
+    The testbench allows execution of the f1 program at the moment, but uncommenting the lines
+  ```cpp
+     if (i>400000){
+        vbdPlot(int(top->a0), 0, 255);
+     }
+  ``` 
+  and commenting out the vbdBar() function would allow for testing of the reference programs. The test for the reference programs will be mentioned in subsequent sections. 
+
+  The testbench initializes by resetting the program count, and resetting trigger, which is an input into the register file in the ALU. Trigger always maps to register 7. 
+  ```cpp
+    top->trigger = vbdFlag();
+    top->rst = false;
+  ```
+  The code above ensures that once vbdFlag() that is the rotary encoder is pressed, trigger goes high and 1 is stored in the register **a7**. From the [f1](../tests/f1.s) code above, this register breaks the lfsr loop and initiates the lights loop, which is implemented with the code below:
+  ```cpp
+    vbdBar(top->a0 & 0xFF);
+  ```
+  It is essential that the vbuddy is in one shot mode, because otherwise trigger would stay high till it is de-asserted. The code below ensures this:
+  ```cpp
+    vbdSetMode(1);
+  ```
+
 ---
 ## Reflection and possible improvements:
 - In the fsm program, it is possible to save register t5 from being used at all by instead replacing the decrement with: 
@@ -84,3 +113,6 @@ All of the proof for contribution can be seen in commits and the respective fold
    ```
   This is a minor change, as it would not affect the functioning of the program except for a microscopic delay due to loading of the register file with 1. Where this could be problematic, was in case of a bigger program, if more registers were required in order to facilitate more variables, or if the given subroutine was run enough times to cause a substantial delay.
 - Also in the fsm program, the effect of switching the lights on could be accomplished by using an lsl operation, along with an increment at each stage.
+
+---
+## Relevant commits not mentioned here:
