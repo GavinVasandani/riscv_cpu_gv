@@ -31,7 +31,13 @@ always_comb begin
  end
 ```
 
-However, a mistake I made was trying to overuse existing ALU logic instead of using a SystemVerilog operator. For instance, in the shift left logical (SLL) instruction where SLL rd, rs1, rs2 which means rd <- rs1 << rs2, I considered using the add logic to add rs1 with itself rs2 times. This has the same effect as shifting rs1 left by rs2 bits, and reuses an existing ALU logic. However, this requires overhead such as introducing registers to store the ALU output and then feed it as an ALU input to prevent a combinational loop. This operation would take multiple clock cycles to get the desired output, therefore, it was more suitable to create a new ALU logic which uses the shift operator, an inbuilt operator which performs the shift operation immediately.
+A mistake made was trying to overuse existing ALU logic instead of using a SystemVerilog operator. In the shift left logical (SLL) instruction:
+
+> SLL rd rd1, rd2
+> 
+> rd = rs1 << rs2
+
+I considered using the ADD logic to add rs1 with itself rs2 times. This has the same effect as shifting rs1 left by rs2 bits, and reuses an existing ALU logic. But, this requires overhead like introducing registers to store the ALU output and then feed it as an ALU input to prevent a combinational loop. This operation would take multiple clock cycles to get the desired output, therefore, it was more suitable to create a new ALU logic which uses the shift operator, an inbuilt operator that performs the shift operation immediately.
 
 ## Register File
 
