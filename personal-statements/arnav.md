@@ -91,7 +91,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     ``` 
     and commenting out the vbdBar() function would allow for testing of the reference programs. The test for the reference programs will be mentioned in subsequent sections. 
 
-    The testbench initializes by resetting the program count, and resetting trigger, which is an input into the register file in the ALU. Trigger always maps to register 7. 
+    The testbench initializes by resetting the program count, and resetting trigger, which is an input into the register file in the ALU. Trigger always maps to register **a7**. 
     ```cpp
       top->trigger = vbdFlag();
       top->rst = false;
