@@ -105,6 +105,8 @@ All of the proof for contribution can be seen in commits and the respective fold
       vbdSetMode(1);
     ```
 
+- ### **LUI, LBU, SB operations (co-authored with Gavin):**
+  It was also my responsibility to add the logic for these functions to [ALU decoder](../rtl/riscv-final-controlunit/ALUDecoder.sv), the [main decoder](../rtl/riscv-final-controlunit/mainDecoder.sv), [ext](../rtl/riscv-final-controlunit/ext.sv) and the [ALU](../rtl/riscv-alu/regfileALU.sv). The proof of this can be seen in the relevant commits section.
 ---
 ## Reflection and possible improvements:
 - In the fsm program, it is possible to save register t5 from being used at all by instead replacing the decrement with: 
@@ -115,4 +117,4 @@ All of the proof for contribution can be seen in commits and the respective fold
 - Also in the fsm program, the effect of switching the lights on could be accomplished by using an lsl operation, along with an increment at each stage.
 
 ---
-## Relevant commits not mentioned here:
+## Relevant commits:
