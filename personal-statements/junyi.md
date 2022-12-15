@@ -25,6 +25,8 @@ top->trigger = vbdFlag();
 
 - ### **Top Module**
 Top Module is an important part, It connect all components.
+
+![这是图片](../images-logbook/IMG_E18796BEE4F0-1.jpeg)
 - #### PC
 
 PC contains a PC register and a ROM called Instruction Memory. PC register control current address, and Instruction Memory contains all 32-bit Instructions.
@@ -39,6 +41,7 @@ Control Unit takes Instruction as input, and analyse the instruction in order to
 Control Unit can be divided into two parts, **Main Decoder** and **ALUDecoder**. **Main Decoder** use Opcode to determine the type of the instruction. This will give most of the information. It also give an 2-bit ALUOp to **ALUDecoder**, which use ALUOp and the rest of the instuction (*funct3 and funct7*) to calculate ALUcontrol output.
 
 - #### ALU
+
 
 
 
