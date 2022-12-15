@@ -1,22 +1,43 @@
 ---
 
-## Personal Statement - Gavin
+# Contribution:
 
-1. My contributions.
-2. Explanation of each component I contributed too, mention mistakes made, and what I learned (include code examples).
-3. Obstacles faced in certain components (ram-cache) and how that led to special design decisions (include code examples).
-4. Improvements for next time. 
+Served as the principal author for the arithmetic logic unit (ALU), register file, ram and the combined ram-cache memory unit. I also built test benches for each of these components to validate that they work as expected before they’re implemented in the complete CPU. 
+
+---
 
 ## ALU
 
+- ### Preliminary Design
 
-I served as the principal author for the arithmetic logic unit (ALU), register file, ram or data memory and the combined ram-cache memory unit. I also built test benches for each of these components to validate that they work as expected before they’re implemented in the complete CPU. 
+To create the ALU, I identified all instructions required to implement the Lab 4 binary counter task. These were: bne and addi, so only a 1-bit ALU_ctrl signal was needed to differentiate between the 2 instructions and they were both implemented using in-built operations. 
 
-When creating the ALU I, first, identified all the instructions that are required to implement the Lab 4 binary counter task. These initial instructions were: bne and addi, therefore only a 1 bit ALU_ctrl signal was needed to differentiate between the 2 instructions and they were both implemented using in-built operations. The ALU had 2 output signals, ALUout which was the result of the 2 inputs after applying a certain arithmetic and eq which was assigned HIGH if the 2 ALU inputs were equal, regardless of the instruction being bne or beq. The control unit applied a signal to invert eq depending on if the instruction was bne. This ensured the same logic could be used for both bne and beq instructions, which simplifies the ALU.
+The ALU had 2 output signals, ALUout which was the result of the 2 inputs after applying certain arithmetic, and eq which was HIGH if the 2 ALU inputs were equal, regardless of the instruction being bne or beq. The control unit applied a signal to invert eq depending on if the instruction was bne. This ensured the same logic could be used for both bne and beq instructions, which simplifies the ALU.
+  
+- ### Complete Design
 
-This ALU served as the foundation for the ALU used in the complete RISC-V processor. I expanded upon it by using a 4-bit ALU_ctrl signal so it could differentiate between 16 instructions. As I introduced new logic to the ALU, I emphasized the design decision of reusing existing ALU logic for new instructions. For instance, the SUB, BNE and BEQ instructions all use the same ALU logic as shown below: (add code snippet)
+This ALU served as the foundation for the ALU used in the complete RISC-V processor. I expanded upon it by using a 4-bit ALU_ctrl signal to differentiate between 16 instructions. As I introduced new logic to the ALU, I emphasized the design decision of reusing existing ALU logic for new instructions. For instance, the SUB, BNE and BEQ instructions all use the same ALU logic as shown below: (add code snippet)
 
-However, a mistake I made was trying to overuse existing ALU logic instead of using a SystemVerilog operator. For instance, in the shift left logical (SLL) instruction where SLL rd, rs1, rs2 which means rd <- rs1 << rs2, I considered using the add logic to add rs1 with itself rs2 times. This has the same effect as shifting rs1 left by rs2 bits, and reuses an existing ALU logic. However, this requires overhead such as introducing registers to store the ALU output and then feed it as an ALU input to prevent a combinational loop. This operation would take multiple clock cycles to get the desired output, therefore, it was more suitable to create a new ALU logic which uses the shift operator, an inbuilt operator which performs the shift operation immediately.
+```systemverilog
+always_comb begin
+  case (ALU_ctrl) 
+     ...
+    4'b0001: begin
+      ALUout = op1 - op2; // Subtraction logic
+      if(ALUout==0) eq = 1; // Condition to evaluate equality
+      else eq = 0;
+    end
+    ... 
+ end
+```
+
+A mistake made was trying to overuse existing ALU logic instead of using a SystemVerilog operator. In the shift left logical (SLL) instruction:
+
+> SLL rd rd1, rd2
+> 
+> rd = rs1 << rs2
+
+I considered using the ADD logic to add rs1 with itself rs2 times. This has the same effect as shifting rs1 left by rs2 bits, and reuses an existing ALU logic. But, this requires overhead like introducing registers to store the ALU output and then feed it as an ALU input to prevent a combinational loop. This operation would take multiple clock cycles to get the desired output, therefore, it was more suitable to create a new ALU logic which uses the shift operator, an inbuilt operator that performs the shift operation immediately.
 
 ## Register File
 
@@ -47,4 +68,14 @@ Based on the RISC-V specifications, the RAM component uses byte addressing and t
 (ADD CODE Snippet of RAM declaration)
 
 In order to implement store byte, word and halfword instructions, a special design decision was to introduce a new control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte). The remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, the memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
+
+## Reflection
+
+Through this project, I have grown my understanding of the RISC-V architecture. Whilst I had a theoretical grasp of how an instruction is translated into an operation, by now creating the components that make up the RISC-V architecture on SystemVerilog, I was able to apply theory into practice which gave me insight into details that I previously overlooked. For instance, to implement load byte, halfword or word, I hadn’t considered how the RAM would differentiate between the data size requests as an input signal wasn’t mentioned in the provided diagrams. This led me to implement the dataType control signal. 
+
+Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
+
+## Future Changes
+
+With more time available, I would change the cache organization to be 2-way associative cache with LRU replacement. Currently, I have implemented direct-mapped cache with 4 word blocks per set as it allows for spatial locality. This is optimal for the reference program as we’re reading and writing data in successive memory addresses. With spatial locality, these data values can now be easily fetched from the cache when its address is inputted. In a more complex CPU architecture, this cache organization would drastically reduce time taken for the reference program to run. However, for more general programs, a 2-way associative cache allows for less cache misses and maximizes temporal locality by only replacing the least recently used way in the cache line. 
 
