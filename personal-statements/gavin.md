@@ -1,11 +1,12 @@
 ---
 
-## Personal Statement - Gavin
+# Contribution:
+
+Served as the principal author for the arithmetic logic unit (ALU), register file, ram and the combined ram-cache memory unit. I also built test benches for each of these components to validate that they work as expected before they’re implemented in the complete CPU. 
+
+---
 
 ## ALU
-
-
-I served as the principal author for the arithmetic logic unit (ALU), register file, ram or data memory and the combined ram-cache memory unit. I also built test benches for each of these components to validate that they work as expected before they’re implemented in the complete CPU. 
 
 When creating the ALU I, first, identified all the instructions that are required to implement the Lab 4 binary counter task. These initial instructions were: bne and addi, therefore only a 1 bit ALU_ctrl signal was needed to differentiate between the 2 instructions and they were both implemented using in-built operations. The ALU had 2 output signals, ALUout which was the result of the 2 inputs after applying a certain arithmetic and eq which was assigned HIGH if the 2 ALU inputs were equal, regardless of the instruction being bne or beq. The control unit applied a signal to invert eq depending on if the instruction was bne. This ensured the same logic could be used for both bne and beq instructions, which simplifies the ALU.
 
