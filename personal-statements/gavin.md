@@ -30,11 +30,21 @@ Finally, another design decision was to initialize each register in the register
 
 ## RAM-Cache
 
-As an extension to the pipelined processor, I implemented a data cache to the main memory giving a new combined memory component called: RAM-cache. The project brief mentioned that the cache has a capacity of 256 bytes or 64 words. As each cache stores a 32 bit word then the cache component has 64 cache spaces corresponding to a cache address width of 6 bits. Furthermore, the data width stored in a cache is 60 bits and is composed of a 1 bit valid flag, 27 bit tag and 32 bit data.
+As an extension to the pipelined processor, I implemented a data cache to the main memory giving a new combined memory component called: RAM-cache. 
 
-(MAYBE ADD PICTURE OF CACHE DECLARATION)
+Initially, I planned on creating a separate cache component that would be wired to the existing RAM. This data cache would have an input DataIn that would be stored in the cache location if there was a cache miss. However, as DataIn is the data stored in main memory address A then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component. Therefore, fetching data from the cache would take equal amount of cycles as fetching from main memory. 
 
-Initially, I planned on creating a separate cache component that would be wired to the existing RAM. This data cache would have an input DataIn that would be stored in the direct mapped cache location if there was a cache miss. However, as DataIn is the data stored in main memory address A then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component. Therefore, fetching data from the cache would take equal amount of cycles as fetching from main memory. 
+As an alternative, I considered combining the RAM and data cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:4], known as the set bits, are used to establish cache set location. As each set stores 4 32-bit data values, bits A[3:2] known as the block offset is used as the control signal for a multiplexer which outputs the data stored in the corresponding block. Finally, to check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data.
 
-As an alternative, I considered combining the RAM and data cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:2], known as the set bits, are used to establish cache location, while the remaining bits of A are compared with the cache’s tag to determine whether the cache contains the requested data or we have a cache miss. In the situation of a cache hit, the data stored in the cache is read and the 1 bit signal flagMiss is LOW. Whereas, in a cache miss, the data is read from the main memory and flagMiss is HIGH. This code is executed in an always_comb block.
+A 4-way set associative cache was created as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. 
+
+All write operations were executed in an always_ff block that executes at a positive edge, whereas all read operations were done in an always_comb block. This ensures that the clock cycles to read and write to the RAM-cache is identical to RAM which ensures that programs are still able to execute normally. In the case of a more complex CPU design, this implementation of the cache ensures that fetching from cache is far more quicker than reading from main memory. 
+
+## RAM
+
+Based on the RISC-V specifications, the RAM component uses byte addressing and the addresses are offset by 17’h1000 which allowed for easier debugging. This was implemented in the RAM declaration: 
+
+(ADD CODE Snippet of RAM declaration)
+
+In order to implement store byte, word and halfword instructions, a special design decision was to introduce a new control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte). The remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, the memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
 
