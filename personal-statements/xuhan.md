@@ -25,7 +25,7 @@
 
     - **ALU Decoder:** The mainDecoder provides the information of the instruction type (**ALUOp**).  Each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). ALUDecoder takes in ALUOp as well as **funct3** and **funct75**. This gives the **ALUControl**, which tells what ALU needs to do. I discussed with Gavin who is doing ALU, and we decided to add a new variable **dataType** that specify whether to load word/half word/byte. There are many instructions belongs to ALUOp, so I used case statement similar to the code above.
     
-
+    - ![Control Block](git@github.com:EIE2-IAC-Labs/iac-riscv-cw-18/images-logbook/ControlBlock.png)
 
     - **Sign Extension:** To extend a 2's complement number, we made copies of the sign bit the add to the front. In order to use the 32-bit instruction space efficiently, immediate signal may have appear everywhere exept for the opcode. These information could be find from the look up table in risc-v spec. Code below shows 2 examples of extending Imm from different location.
     ```systemverilog
