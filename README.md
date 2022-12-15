@@ -48,7 +48,7 @@
   4. [Sine distribution](tests/sc-sine.mp4)
   5. [Triangle distribution](tests/sc-triangle.mp4)
     
-    To test the f1 code, navigate to the rtl directory using and then execute the shell file using the commands one after the other:
+    To test the f1 code, navigate to the rtl directory using the first command below and then execute the shell file using the commands one after the other:
      ```shell
      cd rtl
 
