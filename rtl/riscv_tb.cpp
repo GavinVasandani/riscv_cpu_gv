@@ -17,15 +17,15 @@ int main(int argc, char **argv, char **env) {
     tfp->open("top.vcd");
 
     if (vbdOpen()!=1) return(-1);
-    vbdHeader("Gaussian distribution");
+    vbdHeader("Group 18");
 
     top->trigger = 0;
     top->rst = 1;
     top->clk = 1;
 
-    // vbdSetMode(1);
+    vbdSetMode(1);
 
-    for (i=0; i<400000; i++){
+    for (i=0; i<800000; i++){
         
         for (clk=0; clk<2; clk++){
             tfp->dump (2*i + clk);
@@ -43,17 +43,17 @@ int main(int argc, char **argv, char **env) {
         // vbdHex(2, (int(top->a0) >> 4) & 0XF);
         // vbdHex(1, int(top->a0) & 0XF);
 
-        // vbdBar(top->a0 & 0xFF);
+        vbdBar(top->a0 & 0xFF);
 
         // to see what the value of the delay would be, you can uncomment the line above, it would increase the latency and slow down the progression of the program.
 
-        if (i>150000){
-            vbdPlot(int(top->a0), 0, 255);
-        }
+        // if (i>400000){
+        //     vbdPlot(int(top->a0), 0, 255);
+        // }
 
-        vbdCycle(i+1);
+        // vbdCycle(i+1);
 
-        top->trigger = 0;
+        top->trigger = vbdFlag();
         top->rst = false;
 
         if (Verilated::gotFinish()) 
