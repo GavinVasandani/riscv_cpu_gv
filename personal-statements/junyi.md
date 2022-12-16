@@ -31,6 +31,60 @@ Top Module is an important part, It connect all components.
 
 - ### Debug
 
+---
+
+# **Pipeline**
+
+## Contribution
+
+In this part of the project, me (Junyi WU) and Harry each create two register, and I assemble the top module, and fix syntex errors and connection errors.
+
+pipeline Registers also delay Output from control unit. This can make sure right control signal is delivered to the right component at the right moment.
+
+---
+## Pipeline assemble
+
+**To make the code easier to read,  and make debugging easier, CPU is divided into 5 parts, F, D, E, M, and W from left to right.**
+
+
+Four registers are added into the design, `reg1 - 4`. `register1` is rather simple, it's connected right after the Instruction Memory. `register 2,3 and 4`, however, needs to be connected inside the ALU. So ALU block is divided into four parts, `regfile.sv` (Register File), `alu_e.sv`, `ram.sv` (Data Memory), and `alu_w.sv`. These parts are connected by three registers. 
+
+Apart from signal given in the slides, we added one more signals.
+
+1. `Datatype`, which is used to decide word operation, byte operation or half-word operation.
+2. `Jump` signal has also been extended to block `W`, in out design, `Jump` signal is requires in `alu_e`.
+3. `Jump` Signal has been extended from 1 bit to 2 bits. This is because we need **JAL, JALR** instructions.
+4. In order to generate the signal `PCSrcE`, control unit gives a new output `Zero_select`. It pass through register2, and stop at block `E`. Below is the code for `PCSrcE`.
+   
+```systemverilog
+logic PCsrcE_inter;
+
+assign PCsrcE_inter = (Zero_selectE ? !ZeroE : ZeroE) & BranchE;
+
+assign PCsrcE = PCsrcE_inter | JumpE[0];
+```
+
+
+
+
+
+
+
+
+## Mistakes and Experience
+
+1. Many components have different names for the same signal. This caused many mistakes when assembling the CPU.
+   
+- discuss with the team in advance, decide all the names or the rule of naming.
+
+2. `Data-Width` and `Address-Width` are two parameters used in almost every components, but that value is different in different components. So when other people use the components (add parameters), operation like shown in the example will cause number of bits doesn't match.
+    
+```systemverilog
+input logic [ADDRESS_WIDTH-1:0] a0
+```
+
+- In components like `ram.sv` or `top_pc.sv`, parameters can make it easier for changing the Address-width and Data_width, but it's not necessary for every components to have them. Removing redundant parameter can make the code more efficient.
+
 
 ---
 ---
