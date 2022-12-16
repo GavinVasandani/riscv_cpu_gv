@@ -2,6 +2,8 @@
 
 Note: Due to issues with syncing my local git with my GitHub account, my commits have not been reflected on my profile. The name with which all my commits have been made is my own (arnavxkohli, Arnav Kohli). I have included the relevant commits at the bottom of this document, but all the other commits (around 150 of them) [can be viewed in the commit log](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commits/main?after=a2c751e3dceb0eb88105e091be6df2f3789cc151+104&branch=main&qualified_name=refs%2Fheads%2Fmain).
 
+Apart from the responsibilities mentioned below, I also took initiative and took the videos/set up the shell file as well as [Documentation](../README.md) for ease of access of the assessor. As is mentioned there, we have used 6 branches, two of these are for the cache. One of these implements the cache with a single cycle CPU. We are aware that the project specification did not ask for this, but we found it easier to scale up to the pipelined version.
+
 All of the proof for contribution can be seen in commits and the respective folders on this branch. They are further documented with explanations below:
 
 ## Single Cycle CPU:

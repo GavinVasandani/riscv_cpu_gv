@@ -41,8 +41,6 @@
 - ## Branches:
   This repository has been split up into three branches. The current branch contains the code for the single cycle RISC-V CPU. The pipeline branch and the cache branch, as the names suggest are the stretched goals mentioned in the project brief.
 
-  [A brief diagram of our branches](https://www.edrawmax.com/online/share.html?code=4a5c05d07d2611ed98580a951ba8b83d).
-
 - ## Single Cycle branch (main):
   The results for the reference program can be found in the [tests](tests/) directory:
   1. [F1 program code](tests/f1.s)
@@ -84,6 +82,13 @@
   git checkout pipeline_with_cache
   ```
 
+In any of the branches that test reference programs, the data in the ram can be changed from
+
+```systemverilog
+  $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
+```
+
+to whatever distribution the assessor wants to check. For simplicity, the default distribution on running each branch is the Gaussian distribution
 
 ###### Videos by : Arnav Kohli
 ###### Authored by : Arnav Kohli
