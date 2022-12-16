@@ -46,7 +46,7 @@ addi x1, x0, 255 // Register x0 is used for rs1 as it has no effect on immediate
 ```
 To ensure the value in register x0 isn’t overwritten, a conditional evaluates the destination register (rd) to ensure it isn’t x0.
 
-Finally, a design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held within each register is unknown and could effect the program result if a value is used from the register before an instruction writes to it. Therefore, to have full knowledge of register values throughout the program execution, the design decision of initializing the register file with 0s was made.
+A design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held in each register is unknown and could effect the program result if a value is used from the register before an instruction writes to it. Therefore, to have full knowledge of register values throughout program execution, a design decision to initialize register file with 0s was made.
 
 ## RAM-Cache
 
