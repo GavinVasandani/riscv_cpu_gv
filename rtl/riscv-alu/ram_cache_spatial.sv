@@ -43,7 +43,7 @@ logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
 initial begin
     $display("Loading cache.");
-    $readmemh("cachedata.mem", cache_array); //16 cache sets to load
+    $readmemh("reference/cachedata.mem", cache_array); //16 cache sets to load
     $display("Cache successfully loaded.");
 end;
 
@@ -53,7 +53,7 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("gaussian.mem", ram_array, 17'h10000);
+    $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
@@ -284,7 +284,7 @@ always_ff @(posedge clk) begin
                                     cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:104], WD[7:0], cache_data[95:0]};
                                 end
                                 2'b01: begin
-                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:112], WD[7:0], cache_data[103:0];
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:112], WD[7:0], cache_data[103:0]};
                                 end
                                 2'b10: begin
                                     cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:120], WD[7:0], cache_data[111:0]};
