@@ -60,24 +60,64 @@ As an extension to the pipelined processor, I implemented a data cache to the ma
 
 Initially, I planned on creating a separate cache component that would be wired to the existing RAM. 
 
-- ![Initial Design](images-logbook/Image1Cache.png)
+![Initial Design](../images-logbook/Image1Cache.png)
 
+The cache module has input DataIn that would be stored in a cache set if there was a miss. However, as DataIn is the data stored in main memory address A, then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component.
 
-Initially, I planned on creating a separate cache component that would be wired to the existing RAM. This data cache would have an input DataIn that would be stored in the cache location if there was a cache miss. However, as DataIn is the data stored in main memory address A then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component. Therefore, fetching data from the cache would take equal amount of cycles as fetching from main memory. 
+- ### Actual Cache Implementation
 
-As an alternative, I considered combining the RAM and data cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:4], known as the set bits, are used to establish cache set location. As each set stores 4 32-bit data values, bits A[3:2] known as the block offset is used as the control signal for a multiplexer which outputs the data stored in the corresponding block. Finally, to check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data.
+<div id="image-table">
+    <table>
+	    <tr>
+    	    <td style="padding:10px">
+        	    <img src="../images-logbook/Image2RAM-Cache.png" width="800"/>
+      	    </td>
+            <td style="padding:10px">
+            	<img src="../images-logbook/Image4CorrectDirectMappedImage.png" width="800"/>
+            </td>
+        </tr>
+    </table>
+</div>
 
-A 4-way set associative cache was created as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. 
+In the actual design, I combined the RAM and cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:4], known as the set bits, are used to establish cache set location. Each set stores 4 32-bit data values, so bits A[3:2] known as the block offset is used as the control signal for a multiplexer which outputs the data stored in the corresponding block. Code to select correct word from cache set:
 
-All write operations were executed in an always_ff block that executes at a positive edge, whereas all read operations were done in an always_comb block. This ensures that the clock cycles to read and write to the RAM-cache is identical to RAM which ensures that programs are still able to execute normally. In the case of a more complex CPU design, this implementation of the cache ensures that fetching from cache is far more quicker than reading from main memory. 
+```systemverilog
+always_comb begin
+  if(cache_data[136]) begin //check valid bit
+      if(cache_data[135:128]==A[15:8]) begin //compare tag
+        assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]); //word to output
+        assign flagMiss = 1'b0; //hit
+      end
+    ...
+end
+```
 
-## RAM
+To check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data. If the following conditions are satisfied, the word is fetched from the cache and flagMiss is LOW.
+
+A direct mapped cache with 4 words per cache set was chosen for the cache organisation as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. 
+
+All write operations were executed in an always_ff block that executes at a positive edge, whereas all read operations were done in an always_comb block. This ensures that the clock cycles to read and write to the RAM-cache is identical to RAM which ensures that programs are still able to execute normally. In the case of a more complex CPU design, this implementation of the cache ensures that fetching from cache is far more quicker than reading from main memory.
+
+```systemverilog
+always_ff @(posedge clk) begin
+    if (flagMiss) begin //Write to cache if miss at positive clock edge
+      //Cache set given by A[7:4].
+      //RD1, RD2, RD3, RD4 are successive data values from main mem.
+      cache_array[A[7:4]] <= {1'b1, A[15:8], RD4, RD3, RD2, RD1};  
+    end
+end
+```
+
+## RAM (in Single-Cycle CPU)
 
 Based on the RISC-V specifications, the RAM component uses byte addressing and the addresses are offset by 17’h1000 which allowed for easier debugging. This was implemented in the RAM declaration: 
 
-(ADD CODE Snippet of RAM declaration)
+```systemverilog
+logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h10000]; 
+```
+To implement store byte, word and halfword instructions, a special design decision was to introduce a control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte).
 
-In order to implement store byte, word and halfword instructions, a special design decision was to introduce a new control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte). The remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, the memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
+Remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
 
 ## Reflection
 
