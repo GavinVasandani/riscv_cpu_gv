@@ -16,7 +16,7 @@
 |[regfileALU.sv](rtl/riscv-alu/regfileALU.sv)             |               |      :star:       |           |           |
 |[regfile_ALU_tb.cpp](rtl/riscv-alu/regFile_ALU_tb.cpp)        |               |      :star:       |           |           |
 |[ram.sv](rtl/riscv-alu/ram.sv)                    |      :o:      |      :star:       |           |           |
-|ram_cache.sv (in the cache branch)              |               |      :star:       |           |           |
+|ram_cache_spatial.sv (in the cache branch)              |               |      :star:       |           |           |
 |[control.sv](rtl/riscv-final-controlunit/control.sv)        |      :o:      |                   |           |   :star:  |
 |[ext.sv](rtl/riscv-final-controlunit/ext.sv)           |      :o:      |                   |   :o:     |   :star:  |
 |[control_tb.cpp](rtl/riscv-final-controlunit/control_tb.cpp)    |               |                   |           |   :star:  |
@@ -74,7 +74,12 @@
   git checkout sc-reference
   ```
 
-  And for the cache branch type:
+  To test the reference program on pipeline type:
+  ```bash
+  git checkout pp-reference
+  ```
+
+  And for the cache branch (reference program test, since only the ram is changing) type:
   ```bash
   git checkout pipeline_with_cache
   ```
