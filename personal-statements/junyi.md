@@ -26,9 +26,9 @@ top->trigger = vbdFlag();
 - ### **Top Module**
 Top Module is an important part, It connect all components.
 
-In order to implement Instructions, a few changse has been made.
+In order to implement Instructions, a few changes has been made.
 
-1. For `JALR` and `JAL` operation, two bit signal jump `J` is added. 
+1. For `JALR` and `JAL` operation, two bit control signal jump `J` is added. 
    |Operation   | J     |
    |:--------:  |:-:    |
    |JAL         | 01    |
@@ -45,12 +45,13 @@ In order to implement Instructions, a few changse has been made.
    |sh          | 10    |
 3. `pc_reg` now have to choose between three values, `jalr_PC`, `inc_PC` (PC + ImmOp) and `alt_PC` (PC + 4).
 
-4. 
+4. `jalr_PC` is created as output from component `ALU`. It's the PC value for `JALR` instruction. `JALR` use the same `ALU_ctrl` value as `add` (0000), and has value as `ALU_out`. In any other cases, it has value of 0.
 
 ![a](../images-logbook/SingleCycle.jpeg)
 
 
 - ### Debug
+Most of the errors are syntex errors, and i didn't keep track of them. I documented some common errors, so others can prevent them.
 
 ---
 
@@ -58,7 +59,7 @@ In order to implement Instructions, a few changse has been made.
 
 ## Contribution
 
-In this part of the project, me (Junyi WU) and Harry each create two register, and I assemble the top module, and fix syntex errors and connection errors.
+In this part of the project, me (Junyi WU) and Harry each create two registers, and I assemble the top module, fixed syntex errors and connection errors.
 
 pipeline Registers also delay Output from control unit. This can make sure right control signal is delivered to the right component at the right moment.
 
@@ -70,11 +71,11 @@ pipeline Registers also delay Output from control unit. This can make sure right
 
 Four registers are added into the design, `reg1 - 4`. `register1` is rather simple, it's connected right after the Instruction Memory. `register 2,3 and 4`, however, needs to be connected inside the ALU. So ALU block is divided into four parts, `regfile.sv` (Register File), `alu_e.sv`, `ram.sv` (Data Memory), and `alu_w.sv`. These parts are connected by three registers. 
 
-Apart from signal given in the slides, we added one more signals.
+Apart from signal given in the slides, we added some more signals and made some changes.
 
-1. `Jump` signal has also been extended to block `W`, in out design, `Jump` signal is requires in `alu_e`.
-2. `Jump` Signal has been extended from 1 bit to 2 bits. This is because we need **JAL, JALR** instructions.
-3. In order to generate the signal `PCSrcE`, control unit gives a new output `Zero_select`. It pass through register2, and stop at block `E`. Below is the code for `PCSrcE`.
+1. `Jump` signal was extended to block `W`, because in our design, `Jump` signal is requires in `alu_e`.
+
+2. In order to generate the signal `PCSrcE`, control unit gives a new output `Zero_select`. It pass through register2, and stop at block `E`. Below is the code for `PCSrcE`.
    
 ```systemverilog
 logic PCsrcE_inter;
@@ -83,17 +84,10 @@ assign PCsrcE_inter = (Zero_selectE ? !ZeroE : ZeroE) & BranchE;
 
 assign PCsrcE = PCsrcE_inter | JumpE[0];
 ```
+----
+# Mistakes and Experience
 
-
-
-
-
-
-
-
-## Mistakes and Experience
-
-1. Many components have different names for the same signal. This caused many mistakes when assembling the CPU.
+1. Many components have different names for the same signal. This caused many mistakes when assembling the CPU, especially when assembling the Pipeline version.
    
 - discuss with the team in advance, decide all the names or the rule of naming.
 
@@ -105,6 +99,9 @@ input logic [ADDRESS_WIDTH-1:0] a0
 
 - In components like `ram.sv` or `top_pc.sv`, parameters can make it easier for changing the Address-width and Data_width, but it's not necessary for every components to have them. Removing redundant parameter can make the code more efficient.
 
+3. Control signals and corresponding instructions can be confussing for those who don't understand instruction set well.
+
+- These important informations should be documented in the `readme.md` file. 
 
 ---
 ---

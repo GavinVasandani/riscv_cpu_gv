@@ -57,7 +57,7 @@
 
      source ./doit.sh
      ```
-     The [testbench](rtl/riscv_tb.cpp) has been set up in order to allow for execution of the light sequence to start once the rotary encoder has been pressed. For more details on how the code works, look at [Arnav's personal statement](personal-statements/arnav.md)
+     The [testbench](rtl/riscv_tb.cpp) has been set up in order to allow for execution of the light sequence to start **once the rotary encoder has been pressed**. For more details on how the code works, look at [Arnav's personal statement](personal-statements/arnav.md)
 
     The remaining personal statements can be found below:
     1. [Gavin's personal statement](personal-statements/gavin.md)
