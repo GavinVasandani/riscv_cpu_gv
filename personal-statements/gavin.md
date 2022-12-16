@@ -166,10 +166,24 @@ This gave me an understanding of the smaller nuances that enable the cache and R
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
 
-
 ## Future Changes
 
 With more time available, I would change the cache organization to be 2-way associative cache with LRU replacement. Currently, I have implemented direct-mapped cache with 4 word blocks per set as it allows for spatial locality. This is optimal for the reference program as we’re reading and writing data in successive memory addresses. With spatial locality, these data values can now be easily fetched from the cache when its address is inputted. 
 
 For more general programs, a 2-way associative cache allows for less cache misses and maximizes temporal locality by only replacing the least recently used way in the cache line.
 
+## Relevant Commits
+
+1. [Added ALU Testbench](https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/bd980b135346e9d3d028c2f2964a3364bbe4fc6c)
+2. [Finished preliminary ALU top level module](https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/419176ac8268adaa859bfe848e70f10030b9b965#diff-85fa15b9cdeeed017ecbd79a07693f89b4440de60fa5cdc46f4aef6f3ec99792) 
+3. [Added JALR functionality to ALU](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/522dafed0072c6ebd6b95b8631660c87453bf0e8)
+4. [Added trigger functionality to register file](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/b89a58118fb3558cbb95ed10534bcd5a2cef751f)
+5. [Added byte, halfword and word read operations in RAM](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/5736ada10284079c1be196699f13b941b8193877)
+6. [Introduced conditional to check register x0 isn't written to](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/2ba89d1feb0713f7a6c92d9da070f00c50436e7c)
+7. [Modified ram-cache to write to cache when ram is written to](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/3287fe0ea90ab4cdc63a85b185fa81b3e98cb173)
+8. [Added ability for ram-cache to write neighbouring data values into cache](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/b44095934f1b94ca0d7027b44b0d5f232578d516)
+9. [Added read byte functionality to cache using byte offset](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/9f99eb153cb65133b1436d30a77fef9787cb6dc8)
+10. [Fixed ram-cache so it considers 2 bit WE control signal](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/31202d14ac7f658ebaaba72a290d1ea0d8af2069), explanation of reasoning in Arnav personal statement
+11. [Added store byte functionality using block and byte offsets](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/605fdf44b0ed3098e5675e13e47fbf5faec8c2c1)
+12. [Added ALU execute and writeback stages in pipeline branch](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/34ce6a0f9289d61512700ce66196bdf449f2195f)
+13. [Modified ALU execute stage to include PC, ImmExt add](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/1b3c8a8611285680e334b8017d93cd01a00290e7)
