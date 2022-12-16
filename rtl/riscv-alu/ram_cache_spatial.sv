@@ -65,14 +65,39 @@ logic [CACHE_DATA_WIDTH-1:0] cache_data;
 assign cache_data = cache_array[A[7:4]]; //data in cache location given by A[7:4]
 
 logic flagMiss; //1-Miss, 0-Hit
+logic [DATA_WIDTH-1:0] outputWord;
 
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
     if (!WE) begin //Read instruction so cache is checked first
         if(cache_data[152]) begin //so if V is 1 //137
             if(cache_data[151:128]==A[31:8]) begin //compare tag
+                //use byte offset to determine which byte to output within the word
                 //Use mux:
                 //Select data based on block offset
-                assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
+                assign outputWord = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
+                //Choosing byte within RD:
+                //Bits A[1:0] is used for byte offset:
+                if (dataType==2'b00) begin //so 00 dataType, so output entire Word
+                    assign RD = outputWord;
+                end
+                else begin //byte, the byte chosen is based on byte offset
+                    case (A[1:0]) //byte offset
+                        2'b00: begin //so use 1st byte of outputWord
+                            assign RD = {{24{1'b0}}, outputWord[7:0]};
+                        end
+                        2'b01: begin //use 2nd byte of outputWord
+                            assign RD = {{24{1'b0}}, outputWord[15:8]};
+                        end
+                        2'b10: begin //use 3rd byte of outputWord
+                            assign RD = {{24{1'b0}}, outputWord[23:16]};
+                        end
+                        2'b11: begin //use 4th byte of outputWord
+                            assign RD = {{24{1'b0}}, outputWord[31:24]};
+                        end
+                        default: $display("No dataType selected. Please choose word, byte or halfword.");
+                endcase
+                end
+
                 assign flagMiss = 1'b0; //hit
 
                 //Don't cares
@@ -88,7 +113,20 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                 assign RD4 = 32'b0;
             end
             else begin //tag doesn't match so miss, so read from RAM
-                assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
+                //Outputs desired data type 
+                case (dataType)
+                    2'b00: begin //00 then use word
+                        assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; 
+                    end 
+                    2'b01: begin //01 then use byte unsigned - changed accordingly in ALU control
+                        assign RD = {{24{1'b0}}, ram_array[A]};
+                    end
+                    2'b10: begin //10 then use half word unsigned - changed accordingly in ALU control
+                        assign RD = {{16{1'b0}}, ram_array[A+1], ram_array[A]};
+                    end
+                    default: $display("No dataType selected. Please choose word, byte or halfword.");
+                endcase
+                //assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
                 assign flagMiss = 1'b1; //miss
 
                 //Addresses of neighbours in main mem that are fetched and written to same cache set.
@@ -106,7 +144,19 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             end
         end
         else begin //0 V-bit so miss, so read fom RAM
-            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
+            //Outputs desired data type 
+            case (dataType)
+                2'b00: begin //00 then use word
+                    assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; 
+                end 
+                2'b01: begin //01 then use byte unsigned - changed accordingly in ALU control
+                    assign RD = {{24{1'b0}}, ram_array[A]};
+                end
+                2'b10: begin //10 then use half word unsigned - changed accordingly in ALU control
+                    assign RD = {{16{1'b0}}, ram_array[A+1], ram_array[A]};
+                end
+                default: $display("No dataType selected. Please choose word, byte or halfword.");
+            endcase
             assign flagMiss = 1'b1; //miss
 
             //Addresses of neighbours in main mem that are fetched and written to same cache set

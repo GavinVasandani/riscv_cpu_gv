@@ -3,7 +3,7 @@ module topLevelALU# (
               // NumberOfReg = 32,
               Address_Width_RegFile = 5, //32 registers so address size is 5 bits
               Data_Width = 32
-              //CACHE_DATA_WIDTH = 137
+              //CACHE_DATA_WIDTH = 153
 ) (
 //Interface Signals
 
