@@ -1,5 +1,7 @@
 # Contribution:
 
+Note: Due to issues with syncing my local git with my GitHub account, my commits have not been reflected on my profile. The name with which al my commits have been made is my own (arnavxkohli, Arnav Kohli).
+
 All of the proof for contribution can be seen in commits and the respective folders on this branch. They are further documented with explanations below:
 
 ## Single Cycle CPU:
