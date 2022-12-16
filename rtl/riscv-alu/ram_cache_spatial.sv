@@ -42,13 +42,11 @@ logic [DATA_WIDTH-1:0] RD4;
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
-/*
 initial begin
     $display("Loading cache.");
-    $readmemh("cachedata.mem", cache_array); //65536 values so 16 bits address width
+    $readmemh("reference/cachedata.mem", cache_array); //16 cache sets to load
     $display("Cache successfully loaded.");
 end;
-*/
 
 //Initializing RAM and RAM variables:
 //logic [BYTE_WIDTH-1:0] ram_array [2**RAM_ADDRESS_WIDTH-1:0];
