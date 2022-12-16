@@ -4,7 +4,7 @@ module mainDecoder(
     output logic[2:0]   ImmSrc,
     output logic        Branch,
     output logic        ResultSrc,
-    output logic        MemWrite,
+    output logic [1:0]      MemWrite,
     output logic        ALUSrc,
     output logic        RegWrite,
     output logic[1:0]   ALUOp,
@@ -17,7 +17,7 @@ always_comb begin
             RegWrite = 1;
             ImmSrc = 3'b000;
             ALUSrc = 1;
-            MemWrite = 0;
+            MemWrite = 2'b01;
             ResultSrc = 1;
             Branch = 0;
             ALUOp = 2'b00;
@@ -29,7 +29,7 @@ always_comb begin
             RegWrite = 0;
             ImmSrc = 3'b001;
             ALUSrc = 1;
-            MemWrite = 1;
+            MemWrite = 2'b10;
             ResultSrc = 1'b0;
             Branch = 0;
             ALUOp = 2'b00;
@@ -106,7 +106,7 @@ always_comb begin
             RegWrite = 1'b0;
             ImmSrc = 3'bxx;
             ALUSrc = 1'bx;
-            MemWrite = 1'b0;
+            MemWrite = 2'b0;
             ResultSrc = 1'b0;
             Branch = 1'b0;
             ALUOp = 2'bxx;

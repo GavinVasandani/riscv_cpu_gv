@@ -40,7 +40,7 @@ module top#(
     logic [ADDRESS_WIDTH-1:0] jalr_PC;
     logic [DATA_WIDTH-1:0] next_PC;
     logic [2:0]  ImmSrc;
-    logic MemWrite;
+    logic [1:0] MemWrite;
     logic ResultSrc;
     logic JumpSel;
 
