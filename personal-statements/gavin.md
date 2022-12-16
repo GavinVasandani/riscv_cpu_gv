@@ -56,6 +56,13 @@ Finally, a design decision was to initialize each register in the register file 
 
 As an extension to the pipelined processor, I implemented a data cache to the main memory giving a new combined memory component called: RAM-cache. 
 
+- ### Iteration 1 of Cache
+
+Initially, I planned on creating a separate cache component that would be wired to the existing RAM. 
+
+- ![Initial Design](images-logbook/Image1Cache.png)
+
+
 Initially, I planned on creating a separate cache component that would be wired to the existing RAM. This data cache would have an input DataIn that would be stored in the cache location if there was a cache miss. However, as DataIn is the data stored in main memory address A then the cache is unnecessary as regardless of a hit or miss, the data from main memory is fetched to be inputted into the cache component. Therefore, fetching data from the cache would take equal amount of cycles as fetching from main memory. 
 
 As an alternative, I considered combining the RAM and data cache into one memory component called the RAM-Cache. This component has input address A where bits A[7:4], known as the set bits, are used to establish cache set location. As each set stores 4 32-bit data values, bits A[3:2] known as the block offset is used as the control signal for a multiplexer which outputs the data stored in the corresponding block. Finally, to check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data.
