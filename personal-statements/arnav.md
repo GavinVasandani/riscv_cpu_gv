@@ -130,8 +130,10 @@ All of the proof for contribution can be seen in commits and the respective fold
   To test the pipelined CPU with both the [reference program]() and the [f1 program](), I needed to make some modifications to solve the data and control hazards in software. The modifications were made based on two key observations:
   1. Writing to a register and using the same register in any operation before it's value was updated after the execute cycle would lead to a **data hazard**. Due to this reason, I added three nops in between any such operations (**fetch**->**decode**->**execute** + 1 cycle to update regfile = 4 cycles, so initial instruction + 3 nops).
   2. If any instruction was present immediately after a branch operation, it would be executed before the branch condition was checked. This would lead to a **control hazard** and is undefined behaviour. This is because the branch condition is checked in the execute cycle along with inputs from **Zero** and **Branch** (**fetch**->**decode**->**execute** = 3 cycles, so initial instruction + 2 nops).
-  With these modifications in mind, I executed the [new f1 code]() and [reference program](). The test results can be found in the videos on the **pipeline** branch, details for navigating there are in the [documentation](../README.md)
-
+  With these modifications in mind, I executed the [new f1 code]() and [reference program](). The test results can be found in the videos on the **pipeline** branch, details for navigating there are in the [documentation](../README.md):
+  a) [Gaussian]
+  b) [Sine]
+  c) [Triangle]
 
 
 ---
@@ -155,6 +157,13 @@ All of the proof for contribution can be seen in commits and the respective fold
 7. [Added jumps to PC block](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/d113900e8ffbc0f16ea7ff48fec60cac391d4eaa#diff-de8c2bd4c5bcf5671f203b5720abaf7a86bf796e6dbe5ffdb3341bf0f268f273)
 8. [Made data memory little endian](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/b2fb426193bf4743a36e041c903fe88a37a43b5f)
 9. [Created the initial version of the data memory](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/9731e8db4b6acc4904fd35dabb4d029d2b53cd8c)
+10. [Adding nops and debugging jump/branch](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/c09d5f40656779f54d54e6add81a4dce7c7ca8cf)
+11. [LUI in pipelined CPU](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/c7a0c4751418c031bb3062972ad4b5ef35695aae)
+12. [Debugging pipeline top level module](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/61475dec9c4afdc734faaff9ba705234804c6fe2)
+13. [More debugging](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/f98fc821255cfbf7f2118290ca647bf9776146e6)
+14. [JALR input from ALU bug fix](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/7ecccb3ae8805b2316b9d7dcf36ab72e0e67abf2)
+15. [Renamed signals for ease in connecting during pipelining](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/74c4f6d3fb7976e54d12608639a7652e5115a191)
+16. [Ensured jump is read on the same cycle as execute](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/dc46ec40e186b8df67feb353696fa1ddc9a294bb)
 
 
 
