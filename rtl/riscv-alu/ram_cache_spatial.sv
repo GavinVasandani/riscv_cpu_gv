@@ -66,6 +66,81 @@ assign cache_data = cache_array[A[7:4]]; //data in cache location given by A[7:4
 
 logic flagMiss; //1-Miss, 0-Hit
 
+always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
+    if (!WE) begin //Read instruction so cache is checked first
+        if(cache_data[152]) begin //so if V is 1 //137
+            if(cache_data[151:128]==A[31:8]) begin //compare tag
+                //Use mux:
+                //Select data based on block offset
+                assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
+                assign flagMiss = 1'b0; //hit
+
+                //Don't cares
+                assign A_RD1 = 32'b0;
+                assign A_RD2 = 32'b0;
+                assign A_RD3 = 32'b0;
+                assign A_RD4 = 32'b0;
+
+                //Concatenating 4 bytes gives the data word RD
+                assign RD1 = 32'b0;
+                assign RD2 = 32'b0;
+                assign RD3 = 32'b0;
+                assign RD4 = 32'b0;
+            end
+            else begin //tag doesn't match so miss, so read from RAM
+                assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
+                assign flagMiss = 1'b1; //miss
+
+                //Addresses of neighbours in main mem that are fetched and written to same cache set.
+                //Only write neighbours if we have cache miss situation.
+                assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
+                assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
+                assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
+                assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
+
+                //Concatenating 4 bytes gives the data word RD
+                assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
+                assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
+                assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
+                assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
+            end
+        end
+        else begin //0 V-bit so miss, so read fom RAM
+            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
+            assign flagMiss = 1'b1; //miss
+
+            //Addresses of neighbours in main mem that are fetched and written to same cache set
+            assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
+            assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
+            assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
+            assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
+
+            //Concatenating 4 bytes gives the data word RD
+            assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
+            assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
+            assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
+            assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
+        end
+    end
+    else begin //if write enable then don't do anything, rewrite value in positive clock edge
+        assign RD = 32'b0;
+        assign flagMiss = 1'b0; //so it doesn't rewrite
+
+        //Don't cares
+        assign A_RD1 = 32'b0;
+        assign A_RD2 = 32'b0;
+        assign A_RD3 = 32'b0;
+        assign A_RD4 = 32'b0;
+
+        //Concatenating 4 bytes gives the data word RD
+        assign RD1 = 32'b0;
+        assign RD2 = 32'b0;
+        assign RD3 = 32'b0;
+        assign RD4 = 32'b0;
+
+    end
+end
+
 always_ff @(posedge clk) begin 
     //synchronous write
     if (WE) begin //if writing to RAM then also write to cache so that cache value is updated
@@ -137,60 +212,13 @@ always_ff @(posedge clk) begin
                 default: $display("No dataType selected. Please choose word, byte or halfword.");
             endcase
     end
-end
-
-always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
-    if (!WE) begin //Read instruction so cache is checked first
-        if(cache_data[152]) begin //so if V is 1 //137
-            if(cache_data[151:128]==A[31:8]) begin //compare tag
-                //Use mux:
-                //Select data based on block offset
-                 assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
-                 assign flagMiss = 1'b0; //hit
-            end
-            else begin //tag doesn't match so miss, so read from RAM
-                assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
-                assign flagMiss = 1'b1; //miss
-
-                //Addresses of neighbours in main mem that are fetched and written to same cache set.
-                //Only write neighbours if we have cache miss situation.
-                assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
-                assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
-                assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
-                assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
-
-                //Concatenating 4 bytes gives the data word RD
-                assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
-                assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
-                assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
-                assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
-            end
+    else begin //if !WE then check flag as we must be reading so flag must've been evaluated
+        //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
+        //Add spatial locality, so copy neighbouring data into cache
+        if (flagMiss) begin //Write to cache if miss
+            //Cache address given by A[7:4], and is filled with all neighbours.
+            cache_array[A[7:4]] <= {1'b1, A[31:8], RD4, RD3, RD2, RD1};  
         end
-        else begin //0 V-bit so miss, so read fom RAM
-            assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
-            assign flagMiss = 1'b1; //miss
-
-            //Addresses of neighbours in main mem that are fetched and written to same cache set
-            assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
-            assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
-            assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
-            assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
-
-            //Concatenating 4 bytes gives the data word RD
-            assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
-            assign RD2 = {ram_array[A_RD2+3],ram_array[A_RD2+2],ram_array[A_RD2+1],ram_array[A_RD2]};
-            assign RD3 = {ram_array[A_RD3+3],ram_array[A_RD3+2],ram_array[A_RD3+1],ram_array[A_RD3]};
-            assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
-        end
-    end
-end
-
-always_ff @(posedge clk) begin
-    //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
-    //Add spatial locality, so copy neighbouring data into cache
-    if (flagMiss) begin //Write to cache if miss
-      //Cache address given by A[7:4], and is filled with all neighbours.
-      cache_array[A[7:4]] <= {1'b1, A[31:8], RD4, RD3, RD2, RD1};  
     end
 end
 
@@ -199,3 +227,6 @@ end
 //assign cache_array_value = cache_array[A[7:4]];
 
 endmodule
+
+
+
