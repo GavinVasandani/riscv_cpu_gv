@@ -41,6 +41,8 @@
 - ## Branches:
   This repository has been split up into three branches. The current branch contains the code for the single cycle RISC-V CPU. The pipeline branch and the cache branch, as the names suggest are the stretched goals mentioned in the project brief.
 
+  [A brief diagram of our branches](https://www.edrawmax.com/online/share.html?code=4a5c05d07d2611ed98580a951ba8b83d).
+
 - ## Single Cycle branch (main):
   The results for the reference program can be found in the [tests](tests/) directory:
   1. [F1 program code](tests/f1.s)
@@ -49,7 +51,7 @@
   4. [Sine distribution](tests/sc-sine.mp4)
   5. [Triangle distribution](tests/sc-triangle.mp4)
     
-    To test the f1 code, navigate to the rtl directory using the first command below and then execute the shell file using the commands one after the other:
+    To test the f1 code, navigate to the rtl directory using the first command below and then execute the shell file using the second one:
      ```shell
      cd rtl
 
