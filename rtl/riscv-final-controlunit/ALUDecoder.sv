@@ -56,7 +56,7 @@ always_comb begin
                     ALUControl = 4'b0001;     //beq
                 
                 3'b101:
-                    ALUControl = 4'b1000;
+                    ALUControl = 4'b1000;     //bge
                 default: begin
                     ALUControl = 4'b0001;
                 end
