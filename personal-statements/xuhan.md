@@ -38,10 +38,10 @@ This was our old repo, one person transferred my work to this repo.
         ```
 
     - **ALU Decoder:** The mainDecoder provides the information of the instruction type via **ALUOp**. As shown in the diagram below, each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). If funct7 is not needed, it will become part of immediate - in order to use the space efficiently. There are 2 outputs from this block - 
-        - ALUControl - 4-bits signal specifying induvidual ALU instruction.
-        - Datatype - For Load/Store, this variable diffenciate between word/half word/byte read from/store to the memory. This is a new variable not mentioned in lecture.
+        - **ALUControl** - 4-bits signal specifying induvidual ALU instruction.
+        - **Datatype** - For Load/Store, this variable diffenciate between word/half word/byte read from/store to the memory. This is a new variable not mentioned in lecture.
 
-        Diagram below shows the low-level overview of control unit and the relationship between mainDecoder and ALUDecoder.
+    Diagram below shows the low-level overview of control unit and the relationship between mainDecoder and ALUDecoder.
     ![Control Block](../images-logbook/ControlBlock.png)
 
     - **Sign Extension:** To extend a 2's complement number, we made copies of the most significant bit(sign bit) the add to the front. In order to use the 32-bit instruction space efficiently, immediate signal may have positioned everywhere exept for the opcode. These information could be find from the look up table in risc-v spec. Code below shows 2 examples of extending Imm from different location.
@@ -64,9 +64,9 @@ This was our old repo, one person transferred my work to this repo.
     - **Challenges:** The main challenge encountered during the development of the control unit was the complexity of the decoding logic. The lookup table had to be found in the risc-v spec, which was a time-consuming process. Additionally, I need to understand how the whole CPU work to think about the value of control signal to output. 
     - **Mistakes:** 
         - When I was testing my top level control.sv, I realized it is combinational logic unlike other components. I must add a temporary clk signal for testing. 
-        - In terms of logic, for subtract operation, the **funct7[5]** should be 1. However, **funct7[5]** could also be in immediate signal for add operation, which is considered as same set in ALUDecoder. This leads to error in special cases. This was solved by include **op[5]** in ALUDecoder. 
         - Initially I included all instructions in one control.sv file. I found this so complicated when instructions gots more and more. So I split them to mainDecoder and ALUDecoder, as explained above.
-
+        - In terms of logic, for subtract operation, the **funct7[5]** should be 1. However, **funct7[5]** could also be in immediate signal for add operation, which is considered as same set in ALUDecoder. This leads to error in special cases. This was solved by include **op[5]** in ALUDecoder. 
+        
 
     
 
