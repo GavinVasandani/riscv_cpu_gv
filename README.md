@@ -10,10 +10,4 @@
 
 ---
 
-# Personal Statement
-## Junyi Wu
----
-### bug fixed:
-1. in ALUDECODER, : in line 16
-2. begin and end missing in case in line 13 and 16
-3. default missing in ALUDECODER, MAINDECODER
+This branch deals with single cycle along with cache, it is for testing purposes only, navigate to pipeline_with_cache to test the reference program.
