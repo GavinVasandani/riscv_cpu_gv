@@ -121,7 +121,7 @@ Remainder of the bits, in the case of halfword or byte, are filled with 0s for u
 
 ## Reflection
 
-Through this project, I have grown my understanding of the RISC-V architecture. Initially, I had a theoretical grasp of how an instruction is translated into an operation, by now creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked. 
+Through this project, I have grown my understanding of the RISC-V architecture. Initially, I had a theoretical grasp of how instructions are translated into operations, by now creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked.
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
 
