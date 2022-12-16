@@ -2,12 +2,8 @@ module topLevelALU# (
     parameter 
               // NumberOfReg = 32,
               Address_Width_RegFile = 5, //32 registers so address size is 5 bits
-              Data_Width = 32,
-              CACHE_DATA_WIDTH = 41,
-              BYTE_WIDTH = 8,
-              RAM_ADDRESS_WIDTH = 16,
-              CACHE_ADDRESS_WIDTH = 6
-              //ALU_Instruction_Width = 10;
+              Data_Width = 32
+              //CACHE_DATA_WIDTH = 137
 ) (
 //Interface Signals
 
@@ -40,8 +36,8 @@ module topLevelALU# (
     //Outputs
     output logic eq,
     output logic [Data_Width-1:0] a0,
-    output logic [Data_Width-1:0] RAM_array_value,
-    output logic [CACHE_DATA_WIDTH-1:0] cache_array_value,
+    //output logic [Data_Width-1:0] RAM_array_value,
+    //output logic [CACHE_DATA_WIDTH-1:0] cache_array_value,
     output logic [Data_Width-1:0] delay,
     output logic [Data_Width-1:0] jalrOutput
   
@@ -90,31 +86,30 @@ regfileALU alu1 (
     .jalrOutput(jalrOutput)
 );
 
-ram_cache_spatial ramCacheSpatial1 (
-    .clk(clk),
-    .A(ALUout),
-    .WE(MemWrite),
-    .WD(rd2),
-    .dataType(dataType),
-    .RD(ReadData),
-    .RAM_array_value(RAM_array_value),
-    .cache_array_value(cache_array_value)
-
-);
-
-
 /*
-ram_cache ramCache1 (
+ram ram1 ( this works, presumably when doing sw, the address stored in the register
+that is used is such that when added with offset it gives an LS Byte so it corresponds to
+beginning of a word.
+//need to add signals for WW (Write Word), RB (Read Byte)
     .clk(clk),
-    .A(ALUout),
     .WE(MemWrite),
-    .WD(rd2),
     .dataType(dataType),
-    .RD(ReadData),
-    .RAM_array_value(RAM_array_value),
-    .cache_array_value(cache_array_value)
+    .A(ALUout),
+    .WD(rd2),
+    .RD(ReadData)
 );
 */
+
+ram_cache_spatial ramCacheSpatial1 (
+    .clk(clk),
+    .WE(MemWrite),
+    .A(ALUout),
+    .dataType(dataType),
+    .WD(rd2),
+    .RD(ReadData)
+    //.RAM_array_value(RAM_array_value),
+    //.cache_array_value(cache_array_value)
+);
 
 resultSrcMux resultSrcMux1 (
     .ALUResult(ALUout),

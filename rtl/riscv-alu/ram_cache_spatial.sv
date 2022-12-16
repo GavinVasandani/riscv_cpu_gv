@@ -3,7 +3,7 @@
 //Benefit of spatial locality is that it pre-writes next 4 values so we can read immediately
 //instead of only reading once we write them when we specifically receive them, but in this case we receive its neighbour and indirectly right it
 module ram_cache_spatial # (
-    parameter RAM_ADDRESS_WIDTH = 16, //should be 32
+    parameter RAM_ADDRESS_WIDTH = 32, //should be 32
     // A[15:8] = tag, A[7:4] = cache address, A[3:2] = block offset, A[1:0] = byte offset
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
@@ -15,10 +15,10 @@ module ram_cache_spatial # (
 
     //Input:
     input logic clk,
-    input logic [RAM_ADDRESS_WIDTH-1:0] A,
     input logic WE, //write enable
-    input logic [DATA_WIDTH-1:0] WD, //write input (DataIn)
+    input logic [RAM_ADDRESS_WIDTH-1:0] A,
     input logic [1:0] dataType, //input signal where 00: word, 01: byte, 10: half word
+    input logic [DATA_WIDTH-1:0] WD, //write input (DataIn)
 
     //Output:
     output logic [DATA_WIDTH-1:0] RD, //DataOut
@@ -38,21 +38,25 @@ logic [DATA_WIDTH-1:0] RD2;
 logic [DATA_WIDTH-1:0] RD3;
 logic [DATA_WIDTH-1:0] RD4;
 
+
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
+/*
 initial begin
     $display("Loading cache.");
     $readmemh("cachedata.mem", cache_array); //65536 values so 16 bits address width
     $display("Cache successfully loaded.");
 end;
+*/
 
 //Initializing RAM and RAM variables:
-logic [BYTE_WIDTH-1:0] ram_array [2**RAM_ADDRESS_WIDTH-1:0];
+//logic [BYTE_WIDTH-1:0] ram_array [2**RAM_ADDRESS_WIDTH-1:0];
+logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("sine.mem", ram_array); //65536 values so 16 bits address width
+    $readmemh("sine.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
@@ -148,7 +152,8 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                 assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
                 assign flagMiss = 1'b1; //miss
 
-                //Addresses of neighbours in main mem that are fetched and written to same cache set
+                //Addresses of neighbours in main mem that are fetched and written to same cache set.
+                //Only write neighbours if we have cache miss situation.
                 assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
                 assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
                 assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
