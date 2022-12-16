@@ -7,7 +7,9 @@ All of the proof for contribution can be seen in commits and the respective fold
 ## Single Cycle CPU:
 
 - ### PC Block & Instruction Memory:
-  The relevant files for this part of the module can be found in the main branch, in the directory rtl/riscv-final-pc. This directory contains a test bench for the entire block, the program counter files and the rom file. The top level module for this block is called  [***top_pc.sv***](../rtl/riscv-final-pc/top_pc.sv).
+  The relevant files for this part of the module can be found in the main branch, in the directory rtl/riscv-final-pc. This directory contains a test bench for the entire block, the program counter files and the rom file. The top level module for this block is called  [***top_pc.sv***](../rtl/riscv-final-pc/top_pc.sv). The block diagram for the single cycled instruction memory is:
+    
+    ![Instruction Memory](../images-logbook/sc-pcblock.jpeg)
   - #### **Functioning** :
 
     - **Counter & Mux:** The PC block is responsible for smooth progressing of the program. It consists of a counter (called a program counter) which moves up in increments depending upon outputs from a mux block. The mux block in question takes inputs depending on if the operation requires a branch/jump (where the address to jump to is specified in the instruction) or a regular operation. These two functions are handled by **alt_PC** and **inc_PC**.
@@ -19,6 +21,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     - **PC Register:** To avoid a combinational loop, a register is added between the mux and the memory block. This is because at cycle 0, PC is required to determine PC. In case there was no PC register in between, this would latch and cause a combinational loop. The register initially contains 0, so this will not hamper the functioning of the program.
 
       **insert picture of PC reg here**
+
 
   - #### [**PC Register & Counter & Mux**:](../rtl/riscv-final-pc/pc_reg.sv)
     The **pcreg** module handled the creation of a register and the mux based on the picture above, it handled the mux block, as well as the pc register. The mux block depends on **PCsrc**, a control input. When **PCsrc** is high, the program counter accepts input from the branch component. The Jump instruction would also require PC to be dynamically changed according to the previous PC and the offset which is stored as an immediate as part of the instruction. This functionality is common for both the branch operation and the jump operation. The only difference being the jalr operation, which allocates PC according to a value stored in a register. JALR works like a return operation when the register to which the JAL operation was stored is accessed. It allows PC to increment after returning from a subroutine. For jalr specifically, the input to the rom should come from the alu block since the operation to be performed is  **PCsrc_inter** is responsible for checking if the instruction is a jump or not. Since J is a 2 bit input which is **2'b10** when a jalr operation is requested, the most significant bit is used to allocate the PC value which also comes as an input from the ALU. When **PCsrc_inter** is low, the program counter increments by 4 (due to byte addressing). This can be seen in the code snippet below:
