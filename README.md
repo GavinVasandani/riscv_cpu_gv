@@ -68,6 +68,12 @@
   ```bash
   git checkout pipeline
   ```
+
+  To test the reference program on single cycle type:
+  ```bash
+  git checkout sc-reference
+  ```
+
   And for the cache branch type:
   ```bash
   git checkout pipeline_with_cache
