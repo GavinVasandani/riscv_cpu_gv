@@ -2,12 +2,25 @@
 ##### *By: Arnav Kohli (sk1421), Gavin Vasandani, Junyi Wu, Xuhan Pan*
 
 ---
-- ## Breakdown of tasks:
-    - PC block, Instruction memory, Pipelining, Code for F1 light, Debuggging, Testing and Verification, Documentation : **Arnav Kohli**
-    - ALU Block, Register Files, Data memory (including unit testing suites) : **Gavin Vasandani**
-    - Control Block, Sign extension block, Pipelining: **Xuhan Pan**
-    - Final CPU Assembly, Pipelining: **Junyi Wu**
+## Cache (in Single-Cycle Design)
 
----
+This branch consists of the single cycle CPU design with a RAM-Cache component instead of a normal RAM. The RAM-Cache component can be viewed in the file 
+[ram_cache_spatial.sv](rtl/riscv-alu/ram_cache_spatial.sv). 
 
-This branch deals with single cycle along with cache, it is for testing purposes only, navigate to pipeline_with_cache to test the reference program.
+We've chosen to build a direct mapped cache with 4 words per cache set. This cache organisation implements both spatial and temporal locality. 
+
+As our reference programs often fetch data from neighbouring or successive memory addresses, this cache design is optimal and in a more complex CPU architecture it would drastically reduce time taken for the reference program to run. In a more complex CPU architecture, this cache organization would drastically reduce time taken for the reference program to run.
+
+## Test
+
+To test the Gaussian reference code in Single-Cycle design with cache, navigate to this cache branch:
+ ```shell
+git checkout cache
+ ```
+ 
+Navigate to the rtl directory using the first command below and then execute the shell file using the second one:
+ ```shell
+ cd rtl
+
+ source ./doit.sh
+ ```
