@@ -70,7 +70,7 @@
   ```
   And for the cache branch type:
   ```bash
-  git checkout cache
+  git checkout pipeline_with_cache
   ```
 
 
