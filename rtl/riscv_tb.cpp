@@ -17,7 +17,7 @@ int main(int argc, char **argv, char **env) {
     tfp->open("top.vcd");
 
     if (vbdOpen()!=1) return(-1);
-    vbdHeader("Gaussian distribution");
+    vbdHeader("Cache branch");
 
     top->trigger = 0;
     top->rst = 1;

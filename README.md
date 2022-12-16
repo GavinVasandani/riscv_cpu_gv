@@ -13,7 +13,7 @@ As our reference programs often fetch data from neighbouring or successive memor
 
 ## Test
 
-A [video](tests/cache-reference.mp4) of the cache with single cycle (actually tested on pipeline with cache branch, but execution will prove both work) working is included in the [tests](tests/) directory.
+A [video](tests/cache-sc.mp4) of the cache with single cycle working is included in the [tests](tests/) directory.
 
 To test the Gaussian reference code in Single-Cycle design with cache, navigate to this cache branch:
  ```shell
