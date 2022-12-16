@@ -90,7 +90,7 @@ end
 
 To check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data. If the following conditions are satisfied, the word is fetched from the cache and flagMiss is LOW.
 
-A direct mapped cache with 4 words per cache set was chosen for the cache organisation as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. Furthermore, smaller data sizes such as bytes and halfword stored and loaded onto block in acache set by evaluating block and byte offset.
+A direct mapped cache with 4 words per cache set was chosen for the cache organisation as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried.
 
 All write operations were executed in an always_ff block that executes at a positive edge, whereas all read operations were done in an always_comb block. This ensures that the clock cycles to read and write to the RAM-cache is identical to RAM which ensures that programs are still able to execute normally. In the case of a more complex CPU design, this implementation of the cache ensures that fetching from cache is far more quicker than reading from main memory.
 
@@ -160,7 +160,7 @@ always_ff @(posedge clk) begin
     endcase
 end
 ```
-This gave me an understanding of the smaller nuances that help the cache and RISC-V architecture function. 
+This gave me an understanding of the smaller nuances that enable the cache and RISC-V architecture to function. 
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
 
