@@ -186,4 +186,4 @@ For more general programs, a 2-way associative cache allows for less cache misse
 10. [Fixed ram-cache so it considers 2 bit WE control signal](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/31202d14ac7f658ebaaba72a290d1ea0d8af2069), explanation of reasoning in Arnav personal statement
 11. [Added store byte functionality using block and byte offsets](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/605fdf44b0ed3098e5675e13e47fbf5faec8c2c1)
 12. [Added ALU execute and writeback stages in pipeline branch](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/34ce6a0f9289d61512700ce66196bdf449f2195f)
-13. [Modified ALU execute stage to include PC, ImmExt add](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/1b3c8a8611285680e334b8017d93cd01a00290e7)
+13. [Modified ALU execute stage to add PC, ImmExt](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/1b3c8a8611285680e334b8017d93cd01a00290e7)
