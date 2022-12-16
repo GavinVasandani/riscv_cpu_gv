@@ -79,7 +79,13 @@
   git checkout pp-reference
   ```
 
-  And for the cache branch (reference program test, since only the ram is changing) type:
+  To navigate to the cache branch:
+  ```bash
+  git checkout cache
+  ```
+  Follow test instructions to test reference program on single cycle design with cache.
+  
+  To test reference program in pipelined processor with cache (reference program test, since only the ram is changing) type:
   ```bash
   git checkout pipeline_with_cache
   ```
