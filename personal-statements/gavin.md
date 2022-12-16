@@ -121,6 +121,29 @@ Remainder of the bits, in the case of halfword or byte, are filled with 0s for u
 
 ## Testing and Verification
 
+Before implementing any of my components into the CPU top level file, I developed test benches to examine each components behavior to a variety of instruction types. The test bench regfile_ALU_tb.cpp tests the ALU top level module using load, store and arithmetic instructions. Each instruction has a comment stating the expected outcome and number of cycles required which allows for easy cross-checking to verify the components work as expected. 
+
+```cpp
+//Store byte instruction:
+//sb a2, 2(a1) so mem[a1+2] = a2
+//Load register datamem file with a1 register = 10000, a2 register = 5.
+//Load cache with 0s and RAM with gaussian.mem
+//Expected: input address A = 10003. Cache miss, so byte A[1:0] in block A[3:2] in cache set A[7:4] is rewritten to a2.
+//Now value at RAM address 10003: RAM[10003] = 5.
+//Expected 2 cycles to write cache and RAM.
+
+top->rs1 = 1;
+top->rs2 = 2;
+top->ImmOp = 2;
+...
+
+```
+I had also introduced several methods to help with debugging. For instance, I used initialization files for the register file, RAM and RAM-cache components. This allowed me to pre-load a wide range of values to test store and load instructions. Furthermore, as the RAM had 32-bit address width, the waveform for each memory location wasn’t viewable. Therefore, I added signals to output data values in relevant memory locations, for instance memory locations used in store/load instructions.
+
+For evidence of my developed components working, please refer to the videos showing the reference program successfully running on the vbuddy.
+
+For evidence of the RAM-Cache working, please refer to the cache branch which details how a reference program can be run and tested.
+
 ## Reflection
 
 Through this project, I have grown my understanding of the RISC-V architecture. Previously, I had a theoretical grasp of how instructions are translated into operations, however, by creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked. 
