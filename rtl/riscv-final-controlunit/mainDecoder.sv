@@ -30,7 +30,7 @@ always_comb begin
             ImmSrc = 3'b001;
             ALUSrc = 1;
             MemWrite = 1;
-            ResultSrc = 1'bx;
+            ResultSrc = 1'b0;
             Branch = 0;
             ALUOp = 2'b00;
             J = 2'b00;
@@ -107,7 +107,7 @@ always_comb begin
             ImmSrc = 3'bxx;
             ALUSrc = 1'bx;
             MemWrite = 1'b0;
-            ResultSrc = 1'bx;
+            ResultSrc = 1'b0;
             Branch = 1'b0;
             ALUOp = 2'bxx;
             J = 2'b00;
