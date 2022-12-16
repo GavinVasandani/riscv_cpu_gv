@@ -1,5 +1,5 @@
 # Group 18's RISC - V CPU
-##### *By: Arnav Kohli (sk1421), Gavin Vasandani, Junyi Wu, Xuhan Pan*
+##### *By: Arnav Kohli (sk1421), Gavin Vasandani (gv220), Junyi Wu, Xuhan Pan*
 
 ---
 ## Cache (in Single-Cycle Design)
