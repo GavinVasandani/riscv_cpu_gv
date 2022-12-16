@@ -1,10 +1,8 @@
 //RAM-Cache module with spatial locality.
 //Spatial locality only considering 3 neighbours.
 //Benefit of spatial locality is that it pre-writes next 4 values so we can read immediately
-//instead of only reading once we write them when we specifically receive them, but in this case we receive its neighbour and indirectly right it
 module ram_cache_spatial # (
-    parameter RAM_ADDRESS_WIDTH = 32, //should be 32
-    // A[15:8] = tag, A[7:4] = cache address, A[3:2] = block offset, A[1:0] = byte offset
+    parameter RAM_ADDRESS_WIDTH = 32,
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
     CACHE_DATA_WIDTH = 153, //4 x 32 bit = 128 bit for data, 24 bit for tag, 1 bit for flag = 153
@@ -49,7 +47,7 @@ end;
 
 //Initializing RAM and RAM variables:
 //logic [BYTE_WIDTH-1:0] ram_array [2**RAM_ADDRESS_WIDTH-1:0];
-logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
+logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h100];
 
 initial begin
     $display("Loading ram.");
@@ -65,8 +63,6 @@ logic flagMiss; //1-Miss, 0-Hit
 logic [DATA_WIDTH-1:0] outputWord;
 
 //Make WE 2 bits so: 01 = read, 10 = write, 00 = do nothing
-//is cache_data being updated at every instruction when cache_array[A[7:4]] is rewritten?
-//or is cache_data the same always?
 
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
     if (WE==2'b01) begin //Read instruction so cache is checked first
