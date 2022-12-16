@@ -14,11 +14,6 @@ As our reference programs often fetch data from neighbouring or successive memor
 ## Test
 
 A [video](tests/cache-sc.mp4) of the cache with single cycle working is included in the [tests](tests/) directory.
-
-To test the Gaussian reference code in Single-Cycle design with cache, navigate to this cache branch:
- ```shell
-git checkout cache
- ```
  
 Navigate to the rtl directory using the first command below and then execute the shell file using the second one:
  ```shell
@@ -26,3 +21,11 @@ Navigate to the rtl directory using the first command below and then execute the
 
  source ./doit.sh
  ```
+ 
+ To navigate back to the main branch type:
+ ```shell
+git checkout main
+ ```
+ 
+ ###### Authored by: Arnav Kohli
+ ###### Videos by: Arnav Kohli
