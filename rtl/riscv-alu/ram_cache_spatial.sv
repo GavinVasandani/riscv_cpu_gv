@@ -44,7 +44,7 @@ logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
 initial begin
     $display("Loading cache.");
-    $readmemh("reference/cachedata.mem", cache_array); //16 cache sets to load
+    $readmemh("cachedata.mem", cache_array); //16 cache sets to load
     $display("Cache successfully loaded.");
 end;
 
@@ -54,7 +54,7 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
+    $readmemh("gaussian.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
@@ -200,7 +200,7 @@ always_ff @(posedge clk) begin
                     ram_array[A+3] <= WD[31:24]; //MS Byte
                     //Writing word to specific data in cache:
                     //Using block offset of A, so A[3:2]
-                    case (A[3:2]) 
+                    case (A[3:2]) //which block to write in
                         2'b00: begin
                             cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD};
                         end
@@ -217,10 +217,11 @@ always_ff @(posedge clk) begin
                     endcase
                 end
                 2'b01: begin //write byte to mem location given by A
+                    //RAM Write
                     ram_array[A] <= WD[7:0];
                     //cache_array[A[7:2]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0]}; //writing byte to cache
                     //Writing byte to specific data in cache:
-                    case (A[3:2]) 
+                    case (A[3:2]) //which block to write in
                         2'b00: begin
                             cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {24{1'b0}}, WD[7:0]};
                         end
@@ -237,6 +238,7 @@ always_ff @(posedge clk) begin
                     endcase
                 end
                 2'b10: begin
+                    //RAM Write
                     ram_array[A] <= WD[7:0]; //LS Byte
                     ram_array[A+1] <= WD[15:8];
                     //cache_array[A[7:2]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:8], WD[7:0]}; //writing halfword to cache
