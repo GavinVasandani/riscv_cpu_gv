@@ -10,15 +10,11 @@ All of the proof for contribution can be seen in commits and the respective fold
   The relevant files for this part of the module can be found in the main branch, in the directory rtl/riscv-final-pc. This directory contains a test bench for the entire block, the program counter files and the rom file. The top level module for this block is called  [***top_pc.sv***](../rtl/riscv-final-pc/top_pc.sv).
   - #### **Functioning** :
 
-    - **Counter & Mux:** The PC block is responsible for smooth progressing of the program. It consists of a counter (called a program counter) which moves up in increments depending upon outputs from a mux block. The mux block in question takes inputs depending on if the operation requires a branch/jump (where the address to jump to is specified in the instruction) or a regular operation. These two functions are handled by **alt_PC** and **inc_PC** as shown below.
-
-      **insert image of mux block here.**
+    - **Counter & Mux:** The PC block is responsible for smooth progressing of the program. It consists of a counter (called a program counter) which moves up in increments depending upon outputs from a mux block. The mux block in question takes inputs depending on if the operation requires a branch/jump (where the address to jump to is specified in the instruction) or a regular operation. These two functions are handled by **alt_PC** and **inc_PC**.
 
       Apart from these two functions, jumps were handled by an input from the control block called "**J**". When J was 0, there would be no jumps. With J = 1 there would be a **jal** operation, but this was easily handled by **alt_PC**. Finally if J = 2, a **jalr** operation would be executed. This is explained in further detail below.
 
     - **Instruction Memory:** Apart from the counter and mux block, there is also a memory block(in this particular use case we have used a ROM, but a RAM would work perfectly fine as well). Typically a RAM would be implemented in case of a Von Neumann architecture where we require dynamic access to the memory location in case it needs to be changed mid-program). The memory block currently contains 65536 (hex FFF as per the memory map) addresses, with 32 bit instruction words stored in each of these addresses. The reasoning for this decision was due to optimization of the memory to fit the memory map provided in the project speicifcation. It was decided that only 0xFFF locations would be allocated because allocating all $2^{32}$ memory address would require 4 Gigs of system memory which verilator would not be able to handle.
-
-      **insert picture of memory block here.**
 
     - **PC Register:** To avoid a combinational loop, a register is added between the mux and the memory block. This is because at cycle 0, PC is required to determine PC. In case there was no PC register in between, this would latch and cause a combinational loop. The register initially contains 0, so this will not hamper the functioning of the program.
 
