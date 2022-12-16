@@ -123,7 +123,7 @@ All of the proof for contribution can be seen in commits and the respective fold
 - ### PC Block & Instruction Memory:
    For the pipelined version of the RISC-V CPU to work, I changed the input and output names to match the block diagram present below. This was so that it would be easy to connect these parts in the top level module.
 
-   **insert image of mux block here.**
+   ![Pipelined block diagram](../images-logbook/pp-pcblock.jpeg)
 
 - ### Testing & Verification:
   To test the pipelined CPU with both the [reference program](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/rtl/reference/pdf.s) and the [f1 program](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/f1.s), I needed to make some modifications to solve the data and control hazards in software. The modifications were made based on two key observations:
