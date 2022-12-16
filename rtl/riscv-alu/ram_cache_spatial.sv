@@ -38,13 +38,12 @@ logic [DATA_WIDTH-1:0] RD2;
 logic [DATA_WIDTH-1:0] RD3;
 logic [DATA_WIDTH-1:0] RD4;
 
-
 //Initializing Cache and cache variables:
 logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
 initial begin
     $display("Loading cache.");
-    $readmemh("reference/cachedata.mem", cache_array); //16 cache sets to load
+    $readmemh("cachedata.mem", cache_array); //16 cache sets to load
     $display("Cache successfully loaded.");
 end;
 
@@ -54,7 +53,7 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
+    $readmemh("gaussian.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
@@ -66,6 +65,8 @@ logic flagMiss; //1-Miss, 0-Hit
 logic [DATA_WIDTH-1:0] outputWord;
 
 //Make WE 2 bits so: 01 = read, 10 = write, 00 = do nothing
+//is cache_data being updated at every instruction when cache_array[A[7:4]] is rewritten?
+//or is cache_data the same always?
 
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
     if (WE==2'b01) begin //Read instruction so cache is checked first
@@ -81,7 +82,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                     assign RD = outputWord;
                 end
                 else begin //byte, the byte chosen is based on byte offset
-                    case (A[1:0]) //byte offset
+                    case (A[1:0]) //byte offset is considered, output is unsign extended
                         2'b00: begin //so use 1st byte of outputWord
                             assign RD = {{24{1'b0}}, outputWord[7:0]};
                         end
@@ -118,7 +119,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
                     2'b00: begin //00 then use word
                         assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]}; 
                     end 
-                    2'b01: begin //01 then use byte unsigned - changed accordingly in ALU control
+                    2'b01: begin //01 then use byte unsigned
                         assign RD = {{24{1'b0}}, ram_array[A]};
                     end
                     2'b10: begin //10 then use half word unsigned - changed accordingly in ALU control
@@ -202,6 +203,7 @@ always_ff @(posedge clk) begin
                     ram_array[A+3] <= WD[31:24]; //MS Byte
                     //Writing word to specific data in cache:
                     //Using block offset of A, so A[3:2]
+                    //byte offset is irrelevant for word as entire word is being replaced so byte offset isn't needed
                     case (A[3:2]) //which block to write in
                         2'b00: begin
                             cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD};
@@ -223,47 +225,82 @@ always_ff @(posedge clk) begin
                     ram_array[A] <= WD[7:0];
                     //cache_array[A[7:2]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0]}; //writing byte to cache
                     //Writing byte to specific data in cache:
+                    //Then use byte offset to replace correct byte while maintaining all other bytes
                     case (A[3:2]) //which block to write in
-                        2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {24{1'b0}}, WD[7:0]};
+                        2'b00: begin //block to write in as well as byte offset within the block //1st block
+                            case (A[1:0]) 
+                                2'b00: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], cache_data[31:8], WD[7:0]};
+                                end
+                                2'b01: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], cache_data[31:16], WD[7:0], cache_data[7:0]};
+                                end
+                                2'b10: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], cache_data[31:24], WD[7:0], cache_data[15:0]};
+                                end
+                                2'b11: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD[7:0], cache_data[23:0]};
+                                end
+                                default: $display("No byte offset present.");
+                            endcase
                         end
-                        2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], {24{1'b0}}, WD[7:0], cache_data[31:0]};
+                        2'b01: begin //so 2nd block
+                            case (A[1:0]) 
+                                2'b00: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:40], WD[7:0], cache_data[31:0]};
+                                end
+                                2'b01: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:48], WD[7:0], cache_data[39:0]};
+                                end
+                                2'b10: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:56], WD[7:0], cache_data[47:0]};
+                                end
+                                2'b11: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], WD[7:0], cache_data[55:0]};
+                                end
+                                default: $display("No byte offset present.");
+                            endcase
                         end
-                        2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], {24{1'b0}}, WD[7:0], cache_data[63:32], cache_data[31:0]};
+                        2'b10: begin //so 3rd block
+                            case (A[1:0]) 
+                                2'b00: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:72], WD[7:0], cache_data[63:0]};
+                                end
+                                2'b01: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:80], WD[7:0], cache_data[71:0]};
+                                end
+                                2'b10: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:88], WD[7:0], cache_data[79:0]};
+                                end
+                                2'b11: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], WD[7:0], cache_data[87:0]};
+                                end
+                                default: $display("No byte offset present.");
+                            endcase
                         end
-                        2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], {24{1'b0}}, WD[7:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
+                        2'b11: begin //4th block
+                            case (A[1:0]) 
+                                2'b00: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:104], WD[7:0], cache_data[95:0]};
+                                end
+                                2'b01: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:112], WD[7:0], cache_data[103:0];
+                                end
+                                2'b10: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:120], WD[7:0], cache_data[111:0]};
+                                end
+                                2'b11: begin
+                                    cache_array[A[7:4]] <= {1'b1, A[31:8], WD[7:0], cache_data[119:0]};
+                                end
+                                default: $display("No byte offset present.");
+                            endcase
                         end
                         default: $display("No block offset present.");
-                    endcase
-                end
-                2'b10: begin
-                    //RAM Write
-                    ram_array[A] <= WD[7:0]; //LS Byte
-                    ram_array[A+1] <= WD[15:8];
-                    //cache_array[A[7:2]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:8], WD[7:0]}; //writing halfword to cache
-                    //Writing halfword to specific data in cache:
-                    case (A[3:2]) 
-                        2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {16{1'b0}}, WD[15:0]};
-                        end
-                        2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], {16{1'b0}}, WD[15:0], cache_data[31:0]};
-                        end
-                        2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], {16{1'b0}}, WD[15:0], cache_data[63:32], cache_data[31:0]};
-                        end
-                        2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[31:8], {16{1'b0}}, WD[15:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
-                        end
-                        default: $display("No block offset present.");
-                    endcase
-                end
-                default: $display("No dataType selected. Please choose word, byte or halfword.");
+                    endcase //block offset endcase
+                end //end of byte case
+                default: $display("No dataType selected.");
             endcase
-    end
+        end
     else if (WE==2'b01) begin //if WE==2'b01 then read operation so check flag as we must be reading so flag must've been evaluated
         //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
         //Add spatial locality, so copy neighbouring data into cache

@@ -175,11 +175,16 @@ int main(int argc, char **argv, char **env) {
     top->ALUSrc = 1; //we want to add immediate (offset) to rs1 to get effective address, assign 0 if adding value from 2 registers
     top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
     top->ALU_ctrl = 0000; //add operation
-    top->MemWrite = 10; //Writing to RAM
-    top->dataType = 01; //Writing byte
+    top->MemWrite = 2; //Writing to RAM
+    top->dataType = 00; //Writing word
     top->SrcSel = 1; //irelevant as we aren't writing to rd so no effect
     top->newPC = 0x0; //irelevant as we aren't writing to rd so no effect
     top->JumpSel = 0; //irelevant as we aren't writing to rd so no effect
+    //Expected: 10003 is A which is sent to RAM, RAM[10003] is rewritten = a2 (6) which is byte.
+    //A = 10003 is 0000000000000001000000011, so cache set is 0, 
+    //cache set is A[7:4] and block to be written to is A[3:2] within cache_array[A[7:4]]
+    //So some byte in the cache should be 6 unsign extended (word in this case)
+
     //Expected: 0003 is A which is sent to RAM, WD is 5 so RAM[0003] = 5
     //Also cache is empty so cache at address A[7:2] where A = 0003 = 00011, so at cache[000] = 1000...(tag)000005(data)
     //1 is byte and is written in RAM and cache
