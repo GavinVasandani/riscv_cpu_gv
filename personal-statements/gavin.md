@@ -41,13 +41,16 @@ I considered using the ADD logic to add rs1 with itself rs2 times. This has the 
 
 ## Register File
 
-To create the register file, I instantiated a set of 32 registers each storing a word of 32-bit size. Furthermore, registers are given specific uses as mentioned in Lecture 6 Slide 8. For instance, the register x0 only holds a constant value 0. This is useful for instructions like writing an immediate to a register, in this case register x0 can be used for rs1 as it has no effect on the immediate. 
+- ### Design Decisions
 
-(An example of this instruction is: addi x1, x0, 255.) - ADD as code snippet
+To create the register file, I instantiated a set of 32 registers each storing a word of 32-bit size. Registers are given specific uses as mentioned in Lecture 6 Slide 8. The register x0 only holds a constant value 0 which is useful for instructions like writing an immediate to a register:
 
-Hence, before any register is written to, a conditional evaluates the destination register (rd) to ensure it isn’t register x0. Thus, after initialization, register x0 always holds constant value 0.
+```systemverilog
+addi x1, x0, 255 // Register x0 is used for rs1 as it has no effect on immediate
+```
+To ensure the value in register x0 isn’t overwritten, a conditional evaluates the destination register (rd) to ensure it isn’t x0.
 
-Finally, another design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held within each register is unknown and could effect the program result if a value is read and used from the register before an instruction writes to the register. Therefore, to have full knowledge of register values throughout the program execution, the design decision of initializing the register file with 0s was made.
+Finally, a design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held within each register is unknown and could effect the program result if a value is used from the register before an instruction writes to it. Therefore, to have full knowledge of register values throughout the program execution, the design decision of initializing the register file with 0s was made.
 
 ## RAM-Cache
 
