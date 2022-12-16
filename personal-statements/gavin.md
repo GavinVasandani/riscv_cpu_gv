@@ -94,7 +94,7 @@ end
 
 To check for a cache hit, the most significant bit of the data stored in the cache set, the valid bit is evaluated. Additionally, bits A[15:8] is compared with the cache’s tag to determine whether the cache contains the requested data. If the following conditions are satisfied, the word is fetched from the cache and flagMiss is LOW.
 
-A direct mapped cache with 4 words per cache set was chosen for the cache organisation as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. 
+A direct mapped cache with 4 words per cache set was chosen for the cache organisation as it considers both temporal and spatial locality. In the situation of a cache miss, the data is read from the main memory and flagMiss is HIGH. A conditional then evaluates flagMiss and writes the recently accessed data from the main memory into a specific block within the cache set. The neighboring memory locations for the given address are also simultaneously fetched from main memory and written to the same cache set in the remaining blocks. This allows data to be fetched from the cache set even if the address containing the data wasn’t previously queried. Furthermore, smaller data sizes such as bytes and halfword stored and loaded onto block in acache set by evaluating block and byte offset.
 
 All write operations were executed in an always_ff block that executes at a positive edge, whereas all read operations were done in an always_comb block. This ensures that the clock cycles to read and write to the RAM-cache is identical to RAM which ensures that programs are still able to execute normally. In the case of a more complex CPU design, this implementation of the cache ensures that fetching from cache is far more quicker than reading from main memory.
 
@@ -118,6 +118,8 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h10000];
 To implement store byte, word and halfword instructions, a special design decision was to introduce a control signal called DataType into the RAM. This is a 2-bit signal evaluated by a case statement that concatenates and outputs successive bytes depending on if dataType is 00 (word), 10 (halfword) or 01 (byte).
 
 Remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
+
+## Testing and Verification
 
 ## Reflection
 
