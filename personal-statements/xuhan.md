@@ -17,48 +17,35 @@ This was our old repo, one person transferred my work to this repo.
         - **ALUOp** - Specify types of instruction which have the same ALU feature.
         - **J** - J stands for Jump, is 01 for JAL and 10 for JALR.
 
-    This block is in combinational logic, and each instruction was differentiated from **op** using case statement.
-    ```systemverilog
-    case(op)
-        7'b0000011: begin           // Load
-            RegWrite = 1;
-            ImmSrc = 3'b000;
-            ALUSrc = 1;
-            MemWrite = 0;
-            ResultSrc = 1;
-            Branch = 0;
-            ALUOp = 2'b00;
-            J = 2'b00;
-        end
-        7'b0100011:                 //Store
-            //set all signals
-        7'b0110011:
-            //.....
-
-    ```
-
-
-    - **ALU Decoder:** The mainDecoder provides the information of the instruction type via **ALUOp**. As shown in the diagram below, each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). Since there are many instructions belongs to one type, so I used case statement like the code above.
-    ```systemverilog
-    case(ALUOp) 
-        2'b01: begin 
-                case(funct3)
-                    3'b000:
-                        ALUControl = 4'b0001;     //beq 
-                    3'b101:
-                        ALUControl = 4'b1000;     //bge
-                    default: begin
-                        ALUControl = 4'b0001;
-                    end
-                endcase
+        This block is in combinational logic, and each instruction was differentiated from **op** using case statement.
+        ```systemverilog
+        case(op)
+            7'b0000011: begin           // Load
+                RegWrite = 1;
+                ImmSrc = 3'b000;
+                ALUSrc = 1;
+                MemWrite = 0;
+                ResultSrc = 1;
+                Branch = 0;
+                ALUOp = 2'b00;
+                J = 2'b00;
             end
-    ```
+            7'b0100011:                 //Store
+                //set all signals
+            7'b0110011:
+                //.....
 
-    I discussed with Gavin who is doing ALU, and we decided to add a new variable **dataType** that specify whether to load word/half word/byte. There are many instructions belongs to ALUOp, so I used case statement like the code above. 
-    - ![Control Block](../images-logbook/ControlBlock.png)
+        ```
+
+    - **ALU Decoder:** The mainDecoder provides the information of the instruction type via **ALUOp**. As shown in the diagram below, each individual instruction is determined by function 3(**funct3**) and the 5th digit of function7(**funct75**). There are 2 outputs from this block - 
+        - ALUControl - 4-bits signal specifying induvidual ALU instruction.
+        - Datatype - For Load/Store, this variable diffenciate between word/half word/byte read from/store to the memory. This is a new variable not mentioned in lecture.
+
+        Diagram below shows the low-level overview of control unit and the relationship between mainDecoder and ALUDecoder.
+    ![Control Block](../images-logbook/ControlBlock.png)
 
     - **Sign Extension:** To extend a 2's complement number, we made copies of the sign bit the add to the front. In order to use the 32-bit instruction space efficiently, immediate signal may have positioned everywhere exept for the opcode. These information could be find from the look up table in risc-v spec. Code below shows 2 examples of extending Imm from different location.
-    ```systemverilog
+        ```systemverilog
         always_comb 
             case(ImmSrc)
                 3'b000:             //Immediate and JALR
@@ -67,12 +54,36 @@ This was our old repo, one person transferred my work to this repo.
                 3'b001:             //Store
                     ImmExt = {{20{imm[31]}}, imm[31:25], imm[11:7]};
 
-    ```
+        ```
 
 
 - ## Pipelining
     - 4 registers is added to the top level. I was responsible for the **fetch** and **Decode** stage. The main challenge in this part was the designing process. We have introduced new signal which is not mentioned in lecture. I also need to communicate with Gavin about splitting ALU into 3 parts. This is because parts of ALU was for **Decode**, **Execute** and **Memory Read/Write** stages. There should be 1 register between each stage. My work also includes debugging after we connected all registers.
 
 - ## Mistakes and Experience
-    - **Challenges:** The main challenge encountered during the development of the control unit was the complexity of the decoding logic. The lookup table had to be found in the risc-v spec, which was a time-consuming process. Additionally, I need to understand how the whole CPU work to think about what control signal to output. 
+    - **Challenges:** The main challenge encountered during the development of the control unit was the complexity of the decoding logic. The lookup table had to be found in the risc-v spec, which was a time-consuming process. Additionally, I need to understand how the whole CPU work to think about the value of control signal to output. 
     - **Mistakes:** When I was testing my top level control.sv, I realized it is combinational logic unlike other components. I must add a temporary clk signal for testing. In terms of logic, there was a case I haven't thought about - For subtract operation, the **funct7[5]** should be 1. However, **funct7[5]** could also be in immediate signal for add operation, which is considered as same set in ALUDecoder. This leads to error in special cases. This was solved by include **op[5]** in ALUDecoder. 
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+- ## Evidence 
+    - control testbench - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/70863a553780b7dad3675f2c69664da6497114f0#diff-96e7efdb42afd3960e4915a04763a9e436ab370698b0004699545a34b6d8a902
+    - sign extention block - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/500a30d53ff6527ed01c0873f0a3aa12f0674b7f
+    - sign extension 2 - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/500a30d53ff6527ed01c0873f0a3aa12f0674b7f
+    - control.sv initial version - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/b3f288b3fa7cb9ab015b3405170140dd930273e5
+    - new control block - https://github.com/GavinVasandani/Lab4-Reduced-RISC-V-Architecture/commit/2b9cae481cb5b3e2993073b5243c7051a697227e
+    - pipeline registers 1 - https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/45e157ffa7bf6a00ea1d942231b296effaf3f3b0#diff-8287d3dda2092f633f3c3802f4b4bc91f80c073d77d68cfe48139f58d66a42e2
+    - pipeline register 2 - https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/024b4ca999651b9f723474c070c306f8b8b3f47d
+    
