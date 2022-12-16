@@ -140,6 +140,10 @@ All of the proof for contribution can be seen in commits and the respective fold
 
 
 ---
+## Cache 
+  In the cache block, I helped [Gavin](gavin.md) with debugging the cache by testing it with my testbench which we had access to since it was a branch of the main. I also noticed [a bug](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/389aa31b30a7ea1b3ecae87960eebc13914b3922) in the initial version, we assumed that using !WE would allow us to capture all cases where there was a read operation, but this isn't the case because during operations like add, sub, lsl and all the others, WE was 0. To circumvent this issue, I suggested that we make MemWrite a 2 bit number (00 - nothing, 01 - read, 10 - write).
+
+---
 ## Reflection and possible improvements:
 - In the fsm program, it is possible to save register t5 from being used at all by instead replacing the decrement with: 
     ```asm
@@ -167,6 +171,7 @@ All of the proof for contribution can be seen in commits and the respective fold
 14. [JALR input from ALU bug fix](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/7ecccb3ae8805b2316b9d7dcf36ab72e0e67abf2)
 15. [Renamed signals for ease in connecting during pipelining](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/74c4f6d3fb7976e54d12608639a7652e5115a191)
 16. [Ensured jump is read on the same cycle as execute](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/dc46ec40e186b8df67feb353696fa1ddc9a294bb)
+17. [Fixed MemWrite in Cache](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/389aa31b30a7ea1b3ecae87960eebc13914b3922)
 
 
 
