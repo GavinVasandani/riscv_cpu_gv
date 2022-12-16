@@ -1,4 +1,4 @@
-# Contribution:
+# Contribution (sk1421 - 02018546):
 
 Note: Due to issues with syncing my local git with my GitHub account, my commits have not been reflected on my profile. The name with which all my commits have been made is my own (arnavxkohli, Arnav Kohli). I have included the relevant commits at the bottom of this document, but all the other commits (around 150 of them) [can be viewed in the commit log](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commits/main?after=a2c751e3dceb0eb88105e091be6df2f3789cc151+104&branch=main&qualified_name=refs%2Fheads%2Fmain).
 
