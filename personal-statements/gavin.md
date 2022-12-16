@@ -2,7 +2,7 @@
 
 # Contribution:
 
-## ALU
+## [ALU](rtl/riscv-alu/regfileALU.sv)
 
 - ### Preliminary Design
 
@@ -35,7 +35,7 @@ A mistake made was trying to overuse existing ALU logic instead of using a Syste
 
 I considered using the ADD logic to add rs1 with itself rs2 times. This has the same effect as shifting rs1 left by rs2 bits, and reuses an existing ALU logic. But, this requires overhead like introducing registers to store the ALU output and then feed it as an ALU input to prevent a combinational loop. This operation would take multiple clock cycles to get the desired output, therefore, it was more suitable to create a new ALU logic which uses the shift operator, an inbuilt operator that performs the shift operation immediately.
 
-## Register File
+## [Register File](rtl/riscv-alu/regfile.sv)
 
 - ### Design Decisions
 
@@ -48,7 +48,8 @@ To ensure the value in register x0 isn’t overwritten, a conditional evaluates 
 
 A design decision was to initialize each register in the register file with constant value 0 during start-up. After declaring the register file using a vector, the value held in each register is unknown and could effect the program result if a value is used from the register before an instruction writes to it. Therefore, to have full knowledge of register values throughout program execution, a design decision to initialize register file with 0s was made.
 
-## RAM-Cache
+## RAM-Cache 
+Code File: rtl/riscv-alu/ram_cache_spatial.sv in cache branch)
 
 As an extension to the pipelined processor, I implemented a data cache to the main memory giving a new combined memory component called: RAM-cache. 
 
@@ -104,7 +105,7 @@ always_ff @(posedge clk) begin
 end
 ```
 
-## RAM (in Single-Cycle CPU)
+## [RAM (in Single-Cycle CPU)](rtl/riscv-alu/ram.sv)
 
 Based on the RISC-V specifications, the RAM component uses byte addressing and the addresses are offset by 17’h1000 which allowed for easier debugging. This was implemented in the RAM declaration: 
 
@@ -116,6 +117,7 @@ To implement store byte, word and halfword instructions, a special design decisi
 Remainder of the bits, in the case of halfword or byte, are filled with 0s for unsigned extension to 32 bits. Similarly, memory write operations evaluate dataType to determine whether to write only to address A, in the case of store byte instruction, or the next 3 successive addresses, if we have a store word instruction and therefore dataType is 00 (word).
 
 ## Testing and Verification
+Code File: rtl/riscv-alu/regfile_ALU_tb.sv in cache branch)
 
 Before implementing any of my components into the CPU top level file, I developed test benches to examine each components behavior to a variety of instruction types. The test bench regfile_ALU_tb.cpp tests the ALU top level module using load, store and arithmetic instructions. Each instruction has a comment stating the expected outcome and number of cycles required which allows for easy cross-checking to verify the components work as expected. 
 
