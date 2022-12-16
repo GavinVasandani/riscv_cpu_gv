@@ -70,11 +70,12 @@ All of the proof for contribution can be seen in commits and the respective fold
     3. The **jalr** operation just before the end label is equivalent to a **RET** and allows the program to return from the mloop subroutine once a6 has reached 0.
 
 
-  - [**F1.s :**](../tests/f1.s) This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A video is also shown in the folder, and steps to execute the code are explained in the Documentation. This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
+  - [**F1.s :**](../tests/f1.s) This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A [video](../tests/sc-f1.mp4) is also shown in the folder, and steps to execute the code are explained in the [Documentation](../README.md). This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
     1. On start, the program would stay in the lfsr loop till a7 was fed with a value greater than zero (more details in the testbench for the code below).
-    2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant least bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly)
+    2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant three bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly). This was all done in assembly (and so in software), but a hardware representation of this code would be:
    
-    **insert picture of primitive polynomial here**
+  
+    ![primitive polynomial](../images-logbook/primpo.png)
 
 
     3. The isolated bits are placed in their own registers as can be seen in the code and would then be added to register **a1** before the branch check. If the branch was successful, **a1** would be stored back in **a5** which is the delay register. Otherwise, the lfsr loop would be executed and the LED array would be turned on sequentially.
