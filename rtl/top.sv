@@ -7,7 +7,7 @@
 `include "riscv-alu/regfileMux.sv"
 `include "riscv-alu/resultPCMux.sv"
 `include "riscv-alu/resultSrcMux.sv"
-`include "riscv-alu/ram.sv"
+`include "riscv-alu/ram_cache_spatial.sv"
 `include "riscv-final-controlunit/control.sv"
 `include "riscv-final-controlunit/ext.sv"
 `include "riscv-final-controlunit/ALUDecoder.sv"
