@@ -2,10 +2,6 @@
 
 # Contribution:
 
-Served as the principal author for the arithmetic logic unit (ALU), register file, ram and the combined ram-cache memory unit. I also built test benches for each of these components to validate that they work as expected before they’re implemented in the complete CPU. 
-
----
-
 ## ALU
 
 - ### Preliminary Design
