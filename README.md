@@ -12,23 +12,24 @@
 
 |Module                              |Arnav Kohli    |Gavin Vasandani    |Junyi Wu   |Xuhan Pan  |
 |:-----------------------------------|:-------------:|:-----------------:|:---------:|:---------:|
-|riscv-alu/regfile.sv                |               |      :star:       |           |           |
-|riscv-alu/regfileALU.sv             |               |      :star:       |           |           |
-|riscv-alu/regfile_ALU_tb.cpp        |               |      :star:       |           |           |
-|riscv-alu/ram.sv                    |      :o:      |      :star:       |           |           |
-|riscv-alu/ram_cache.sv              |               |      :star:       |           |           |
-|riscv-controlunit/control.sv        |      :o:      |                   |           |   :star:  |
-|riscv-controlunit/ext.sv            |      :o:      |                   |   :o:     |   :star:  |
-|riscv-controlunit/control_tb.cpp    |               |                   |           |   :star:  |
-|riscv-final-pc/rom.sv               |     :star:    |                   |           |           |
-|riscv-final-pc/pc_reg.sv            |     :star:    |                   |           |           |
-|riscv-final-pc/pc_tb.cpp            |     :star:    |                   |           |           |
-|top.sv                              |     :o:       |                   |   :star:  |    :o:    |
-|riscv_tb.cpp                        |     :star:    |                   |   :o:     |           |
-|pipeline register folder            |               |        :o:        |   :star:  |   :star:  |
-|pipeline stages                     |     :o:       |        :o:        |   :star:  |   :star:  |
-|pipeline assembly & debugging       |     :o:       |                   |   :star:  |   :o:     |
-|F1.s                                |     :star:    |                   |           |           |
+|[regfile.sv](rtl/riscv-alu/regfile.sv)                |               |      :star:       |           |           |
+|[regfileALU.sv](rtl/riscv-alu/regfileALU.sv)             |               |      :star:       |           |           |
+|[regfile_ALU_tb.cpp](rtl/riscv-alu/regFile_ALU_tb.cpp)        |               |      :star:       |           |           |
+|[ram.sv](rtl/riscv-alu/ram.sv)                    |      :o:      |      :star:       |           |           |
+|ram_cache.sv (in the cache branch)              |               |      :star:       |           |           |
+|[control.sv](rtl/riscv-final-controlunit/control.sv)        |      :o:      |                   |           |   :star:  |
+|[ext.sv](rtl/riscv-final-controlunit/ext.sv)           |      :o:      |                   |   :o:     |   :star:  |
+|[control_tb.cpp](rtl/riscv-final-controlunit/control_tb.cpp)    |               |                   |           |   :star:  |
+|[rom.sv](rtl/riscv-final-pc/rom.sv)               |     :star:    |                   |           |           |
+|[pc_reg.sv](rtl/riscv-final-pc/pc_reg.sv)            |     :star:    |                   |           |           |
+|[pc_tb.cpp](rtl/riscv-final-pc/pc_tb.cpp)            |     :star:    |                   |           |           |
+|[top_pc](rtl/riscv-final-pc/top_pc.sv)           |     :star:    |                   |           |           |
+|[top.sv](rtl/top.sv)                              |     :o:       |                   |   :star:  |    :o:    |
+|[riscv_tb.cpp](rtl/riscv_tb.cpp)                        |     :star:    |                   |   :o:     |           |
+|pipeline register folder (in the pipeline branch)            |               |        :o:        |   :star:  |   :star:  |
+|pipeline stages (in the pipeline branch)                    |     :o:       |        :o:        |   :star:  |   :star:  |
+|pipeline assembly & debugging (in the pipeline branch)       |     :o:       |                   |   :star:  |   :o:     |
+|[F1.s](tests/f1.s)                                |     :star:    |                   |           |           |
 
 :star: Principal Author
 
@@ -73,5 +74,7 @@
 
 ###### Videos by : Arnav Kohli
 ###### Authored by : Arnav Kohli
+
+---
 
 
