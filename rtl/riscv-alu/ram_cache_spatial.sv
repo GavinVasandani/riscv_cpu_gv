@@ -7,7 +7,7 @@ module ram_cache_spatial # (
     // A[15:8] = tag, A[7:4] = cache address, A[3:2] = block offset, A[1:0] = byte offset
     DATA_WIDTH = 32,
     BYTE_WIDTH = 8,
-    CACHE_DATA_WIDTH = 137, //4 x 32 bit = 128 bit for data, 8 bit for tag, 1 bit for flag = 137
+    CACHE_DATA_WIDTH = 153, //4 x 32 bit = 128 bit for data, 24 bit for tag, 1 bit for flag = 153
     CACHE_ADDRESS_WIDTH = 4
 )(
 
@@ -16,14 +16,14 @@ module ram_cache_spatial # (
     //Input:
     input logic clk,
     input logic WE, //write enable
-    input logic [RAM_ADDRESS_WIDTH-1:0] A,
+    input logic [RAM_ADDRESS_WIDTH-1:0] A, //A[31:8] = tag, A[7:4] = set number, A[3:2] = block offset
     input logic [1:0] dataType, //input signal where 00: word, 01: byte, 10: half word
     input logic [DATA_WIDTH-1:0] WD, //write input (DataIn)
 
     //Output:
-    output logic [DATA_WIDTH-1:0] RD, //DataOut
-    output logic [DATA_WIDTH-1:0] RAM_array_value,
-    output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
+    output logic [DATA_WIDTH-1:0] RD //DataOut
+    //output logic [DATA_WIDTH-1:0] RAM_array_value,
+    //output logic [CACHE_DATA_WIDTH-1:0] cache_array_value
 
 );
 
@@ -79,16 +79,16 @@ always_ff @(posedge clk) begin
                     //Using block offset of A, so A[3:2]
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], WD};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], WD, cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], WD, cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], WD, cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], WD, cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], WD, cache_data[95:64], cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], WD, cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -99,16 +99,16 @@ always_ff @(posedge clk) begin
                     //Writing byte to specific data in cache:
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {24{1'b0}}, WD[7:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {24{1'b0}}, WD[7:0]};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], {24{1'b0}}, WD[7:0], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], {24{1'b0}}, WD[7:0], cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], {24{1'b0}}, WD[7:0], cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], {24{1'b0}}, WD[7:0], cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], {24{1'b0}}, WD[7:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], {24{1'b0}}, WD[7:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -116,20 +116,20 @@ always_ff @(posedge clk) begin
                 2'b10: begin
                     ram_array[A] <= WD[7:0]; //LS Byte
                     ram_array[A+1] <= WD[15:8];
-                    cache_array[A[7:2]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:8], WD[7:0]}; //writing halfword to cache
+                    //cache_array[A[7:2]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:8], WD[7:0]}; //writing halfword to cache
                     //Writing halfword to specific data in cache:
                     case (A[3:2]) 
                         2'b00: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {16{1'b0}}, WD[15:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], {16{1'b0}}, WD[15:0]};
                         end
                         2'b01: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], cache_data[95:64], {16{1'b0}}, WD[15:0], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], {16{1'b0}}, WD[15:0], cache_data[31:0]};
                         end
                         2'b10: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], cache_data[127:96], {16{1'b0}}, WD[15:0], cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], {16{1'b0}}, WD[15:0], cache_data[63:32], cache_data[31:0]};
                         end
                         2'b11: begin
-                            cache_array[A[7:4]] <= {1'b1, A[15:8], {16{1'b0}}, WD[15:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
+                            cache_array[A[7:4]] <= {1'b1, A[31:8], {16{1'b0}}, WD[15:0], cache_data[95:64], cache_data[63:32], cache_data[31:0]};
                         end
                         default: $display("No block offset present.");
                     endcase
@@ -141,12 +141,12 @@ end
 
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
     if (!WE) begin //Read instruction so cache is checked first
-        if(cache_data[136]) begin //so if V is 1
-            if(cache_data[135:128]==A[15:8]) begin //compare tag
+        if(cache_data[152]) begin //so if V is 1 //137
+            if(cache_data[151:128]==A[31:8]) begin //compare tag
                 //Use mux:
                 //Select data based on block offset
-                assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
-                assign flagMiss = 1'b0; //hit
+                 assign RD = A[3] ? (A[2] ? cache_data[127:96] : cache_data[95:64]) : (A[2] ? cache_data[63:32] : cache_data[31:0]);
+                 assign flagMiss = 1'b0; //hit
             end
             else begin //tag doesn't match so miss, so read from RAM
                 assign RD = {ram_array[A+3], ram_array[A+2], ram_array[A+1], ram_array[A]};
@@ -154,10 +154,10 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
 
                 //Addresses of neighbours in main mem that are fetched and written to same cache set.
                 //Only write neighbours if we have cache miss situation.
-                assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
-                assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
-                assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
-                assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
+                assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
+                assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
+                assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
+                assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
 
                 //Concatenating 4 bytes gives the data word RD
                 assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
@@ -171,10 +171,10 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             assign flagMiss = 1'b1; //miss
 
             //Addresses of neighbours in main mem that are fetched and written to same cache set
-            assign A_RD1 = {A[15:4], 2'b00, A[1:0]};
-            assign A_RD2 = {A[15:4], 2'b01, A[1:0]};
-            assign A_RD3 = {A[15:4], 2'b10, A[1:0]};
-            assign A_RD4 = {A[15:4], 2'b11, A[1:0]};
+            assign A_RD1 = {A[31:4], 2'b00, A[1:0]};
+            assign A_RD2 = {A[31:4], 2'b01, A[1:0]};
+            assign A_RD3 = {A[31:4], 2'b10, A[1:0]};
+            assign A_RD4 = {A[31:4], 2'b11, A[1:0]};
 
             //Concatenating 4 bytes gives the data word RD
             assign RD1 = {ram_array[A_RD1+3],ram_array[A_RD1+2],ram_array[A_RD1+1],ram_array[A_RD1]};
@@ -190,12 +190,12 @@ always_ff @(posedge clk) begin
     //Add spatial locality, so copy neighbouring data into cache
     if (flagMiss) begin //Write to cache if miss
       //Cache address given by A[7:4], and is filled with all neighbours.
-      cache_array[A[7:4]] <= {1'b1, A[15:8], RD4, RD3, RD2, RD1};  
+      cache_array[A[7:4]] <= {1'b1, A[31:8], RD4, RD3, RD2, RD1};  
     end
 end
 
 //For debugging
-assign RAM_array_value = ram_array[3];
-assign cache_array_value = cache_array[A[7:4]];
+//assign RAM_array_value = ram_array[3];
+//assign cache_array_value = cache_array[A[7:4]];
 
 endmodule
