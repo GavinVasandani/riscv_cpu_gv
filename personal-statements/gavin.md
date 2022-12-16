@@ -121,11 +121,13 @@ Remainder of the bits, in the case of halfword or byte, are filled with 0s for u
 
 ## Reflection
 
-Through this project, I have grown my understanding of the RISC-V architecture. Whilst I had a theoretical grasp of how an instruction is translated into an operation, by now creating the components that make up the RISC-V architecture on SystemVerilog, I was able to apply theory into practice which gave me insight into details that I previously overlooked. For instance, to implement load byte, halfword or word, I hadn’t considered how the RAM would differentiate between the data size requests as an input signal wasn’t mentioned in the provided diagrams. This led me to implement the dataType control signal. 
+Through this project, I have grown my understanding of the RISC-V architecture. Initially, I had a theoretical grasp of how an instruction is translated into an operation, by now creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked. 
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
 
 ## Future Changes
 
-With more time available, I would change the cache organization to be 2-way associative cache with LRU replacement. Currently, I have implemented direct-mapped cache with 4 word blocks per set as it allows for spatial locality. This is optimal for the reference program as we’re reading and writing data in successive memory addresses. With spatial locality, these data values can now be easily fetched from the cache when its address is inputted. In a more complex CPU architecture, this cache organization would drastically reduce time taken for the reference program to run. However, for more general programs, a 2-way associative cache allows for less cache misses and maximizes temporal locality by only replacing the least recently used way in the cache line. 
+With more time available, I would change the cache organization to be 2-way associative cache with LRU replacement. Currently, I have implemented direct-mapped cache with 4 word blocks per set as it allows for spatial locality. This is optimal for the reference program as we’re reading and writing data in successive memory addresses. With spatial locality, these data values can now be easily fetched from the cache when its address is inputted. 
+
+For more general programs, a 2-way associative cache allows for less cache misses and maximizes temporal locality by only replacing the least recently used way in the cache line.
 
