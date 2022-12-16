@@ -56,7 +56,7 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("sine.mem", ram_array, 17'h10000);
+    $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
