@@ -33,9 +33,9 @@ All of the proof for contribution can be seen in commits and the respective fold
     assign inc_PC = PC + 32'h4;
 
     always_comb begin
-      if (J[1]) next_PC = jalr_PC; // //specifially for the jalr instruction
+      if (J[1]) next_PC = jalr_PC; 
       else begin
-        next_PC = PCsrc_inter ? alt_PC : inc_PC; // PCsrc is 1 during regular jump or branch operation
+        next_PC = PCsrc_inter ? alt_PC : inc_PC; 
       end 
     end 
     ```
@@ -127,13 +127,14 @@ All of the proof for contribution can be seen in commits and the respective fold
    **insert image of mux block here.**
 
 - ### Testing & Verification:
-  To test the pipelined CPU with both the [reference program]() and the [f1 program](), I needed to make some modifications to solve the data and control hazards in software. The modifications were made based on two key observations:
+  To test the pipelined CPU with both the [reference program](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/rtl/reference/pdf.s) and the [f1 program](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/f1.s), I needed to make some modifications to solve the data and control hazards in software. The modifications were made based on two key observations:
   1. Writing to a register and using the same register in any operation before it's value was updated after the execute cycle would lead to a **data hazard**. Due to this reason, I added three nops in between any such operations (**fetch**->**decode**->**execute** + 1 cycle to update regfile = 4 cycles, so initial instruction + 3 nops).
   2. If any instruction was present immediately after a branch operation, it would be executed before the branch condition was checked. This would lead to a **control hazard** and is undefined behaviour. This is because the branch condition is checked in the execute cycle along with inputs from **Zero** and **Branch** (**fetch**->**decode**->**execute** = 3 cycles, so initial instruction + 2 nops).
-  With these modifications in mind, I executed the [new f1 code]() and [reference program](). The test results can be found in the videos on the **pipeline** branch, details for navigating there are in the [documentation](../README.md):
-  a) [Gaussian]
-  b) [Sine]
-  c) [Triangle]
+  With these modifications in mind, I executed the [new f1 code](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/f1.s) and [reference program](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/rtl/reference/pdf.s). The test results can be found in the videos on the **pipeline** branch, details for navigating there are in the [documentation](../README.md):
+  a) [Gaussian](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/pp-gaussian.mp4)
+  b) [Sine](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/pp-sine.mp4)
+  c) [Triangle](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/pp-triangle.mp4)
+  d) [F1 video](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline/tests/pp-f1.mp4)
 
 
 ---
