@@ -121,9 +121,28 @@ Remainder of the bits, in the case of halfword or byte, are filled with 0s for u
 
 ## Reflection
 
-Through this project, I have grown my understanding of the RISC-V architecture. Initially, I had a theoretical grasp of how instructions are translated into operations, by now creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked.
+Through this project, I have grown my understanding of the RISC-V architecture. Previously, I had a theoretical grasp of how instructions are translated into operations, however, by creating the components making up the RISC-V architecture on SystemVerilog, I applied theory into practice which gave me insight into details that I previously overlooked. 
+
+For instance, I assumed all data could be located by simply searching for the location address in memory. However, as the RAM component was byte addressed, a word could only be created by concatenating the next 3 successive addresses. For the RAM-cache component, as each cache line stores 4 word blocks that each consist of 4 bytes, a store/load byte operation required evaluating the block and byte offset, given by the input address, to locate the byte to be outputted as shown below.
+
+```systemverilog
+always_ff @(posedge clk) begin
+    ...
+    case([A[3:2]) //statement to determine which block in the cache set to write to
+    	2'b00: begin
+	case([A[1:0]) //statement to determine which byte in the block to write to 
+		2'b00: begin
+		//writing a specific byte in a block in the cache set
+		cache_array[A[7:4]] <= {1'b1, A[31:8], cache_data[127:96], cache_data[95:64], cache_data[63:32], cache_data[31:8], WD[7:0]};
+		end
+		...
+    endcase
+end
+```
+This gave me an understanding of the smaller nuances that help the cache and RISC-V architecture function. 
 
 Our approach to building the complete CPU was constructing individual components, combining them in a top level module for ALU, control unit and PC and combining these components to form the complete system. This bottom-up and modular design approach was beneficial as I was able to repurpose components from the single-cycle CPU to build the different stages of the pipelined processor. So, from this project I have learned how to approach large programming tasks and I have improved my SystemVerilog proficiency.
+
 
 ## Future Changes
 
