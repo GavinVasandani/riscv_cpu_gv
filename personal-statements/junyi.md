@@ -11,7 +11,9 @@ The test bench is a C++ file that executes the whole CPU design. It's not compli
 
 - ### **Top Module**
   
-The top Module is an important part, It connects all components. To implement additional Instructions, a few changes have been made. Apart from `BNE` and other instructions at have been covered in the lectures, Instuctions `JALR`, `JAL`, and word, half-word and byte operation like `lw`, `lbu` have been added. 
+The top Module is an important part, It connects all components. 
+
+To implement additional Instructions, a few changes have been made. Apart from `BNE` and other instructions at have been covered in the lectures, Instuctions `JALR`, `JAL`, and word, half-word and byte operation like `lw`, `lbu` have been added. 
 
 1. #### `J`
    For the `JALR` and `JAL` operations, two-bit control signal jump `J` is added.
