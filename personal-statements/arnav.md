@@ -7,7 +7,7 @@ All of the proof for contribution can be seen in commits and the respective fold
 ## Single Cycle CPU:
 
 - ### PC Block & Instruction Memory:
-  The relevant files for this part of the module can be found in the main branch, in the directory rtl/riscv-final-pc. This directory contains a test bench for the entire block, the program counter files and the rom file. The top level module is called  ***top_pc.sv***
+  The relevant files for this part of the module can be found in the main branch, in the directory rtl/riscv-final-pc. This directory contains a test bench for the entire block, the program counter files and the rom file. The top level module is called  [***top_pc.sv***](../rtl/riscv-final-pc/top_pc.sv)
   - #### **Functioning** :
 
     - **Counter & Mux:** The PC block is responsible for smooth progressing of the program. It consists of a counter (called a program counter) which moves up in increments depending upon outputs from a mux block. The mux block in question takes inputs depending on if the operation requires a branch/jump (where the address to jump to is specified in the instruction) or a regular operation. These two functions are handled by **alt_PC** and **inc_PC** as shown below.
@@ -77,7 +77,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     **insert picture of primitive polynomial here**
 
 
-    3. The isolated bits would be added to register **a1** before the branch check. If the branch was successful, **a1** would be stored back in **a5** which is the delay register. Otherwise, the lfsr loop would be executed and the LED array would be turned on sequentially.
+    3. The isolated bits are placed in their own registers as can be seen in the code and would then be added to register **a1** before the branch check. If the branch was successful, **a1** would be stored back in **a5** which is the delay register. Otherwise, the lfsr loop would be executed and the LED array would be turned on sequentially.
     4. **mainclkdiv** was the subroutine which would execute the clkdiv function along with the **hold** label.
     5. **checkdelay** was executed after all 8 lights were turned on. As the name suggests, it would check the value of register **a5** and decrement it till it reached 0. 
     6. **maindelay** was required so that in the worst case (if the delay was 1), the lights would not turn off immediately. **maindelay** performed the same function as mainclkdiv, except the delay between each loop in **checkdelay** would be about 0.5 seconds.
@@ -108,7 +108,7 @@ All of the proof for contribution can be seen in commits and the respective fold
     ```
 
 - ### **LUI, LBU, SB operations (co-authored with Gavin):**
-  It was also my responsibility to add the logic for these functions to [ALU decoder](../rtl/riscv-final-controlunit/ALUDecoder.sv), the [main decoder](../rtl/riscv-final-controlunit/mainDecoder.sv), [ext](../rtl/riscv-final-controlunit/ext.sv) and the [ALU](../rtl/riscv-alu/regfileALU.sv). The proof of this can be seen in the relevant commits section.
+  It was also my responsibility to add the logic for these functions to [ALU decoder](../rtl/riscv-final-controlunit/ALUDecoder.sv), the [main decoder](../rtl/riscv-final-controlunit/mainDecoder.sv), [ext](../rtl/riscv-final-controlunit/ext.sv) and the [ALU](../rtl/riscv-alu/regfileALU.sv). The proof of this can be seen in the **relevant commits** section.
 ---
 ## Reflection and possible improvements:
 - In the fsm program, it is possible to save register t5 from being used at all by instead replacing the decrement with: 
