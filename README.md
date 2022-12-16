@@ -1,10 +1,10 @@
 # Group 18's RISC - V CPU
-##### *By: Arnav Kohli (sk1421), Gavin Vasandani (gv220), Junyi Wu, Xuhan Pan*
+##### *By: Arnav Kohli (sk1421), Gavin Vasandani (gv220), Junyi Wu (jw3621), Xuhan Pan (hp921)*
 
 ---
 - ## Breakdown of tasks:
     - PC block, Instruction memory, Pipelining, Code for F1 light, Debugging, Testing and Verification, Documentation : **Arnav Kohli**
-    - ALU Block, Register Files, Data memory (including unit testing suites) : **Gavin Vasandani**
+    - ALU Block, Register Files, Data memory and cache (including unit testing suites) : **Gavin Vasandani**
     - Control Block, Sign extension block, Pipelining: **Xuhan Pan**
     - Final CPU Assembly, Pipelining: **Junyi Wu**
 
@@ -16,7 +16,7 @@
 |[regfileALU.sv](rtl/riscv-alu/regfileALU.sv)             |               |      :star:       |           |           |
 |[regfile_ALU_tb.cpp](rtl/riscv-alu/regFile_ALU_tb.cpp)        |               |      :star:       |           |           |
 |[ram.sv](rtl/riscv-alu/ram.sv)                    |      :o:      |      :star:       |           |           |
-|ram_cache.sv (in the cache branch)              |               |      :star:       |           |           |
+|ram_cache_spatial.sv (in the cache branch)              |               |      :star:       |           |           |
 |[control.sv](rtl/riscv-final-controlunit/control.sv)        |      :o:      |                   |           |   :star:  |
 |[ext.sv](rtl/riscv-final-controlunit/ext.sv)           |      :o:      |                   |   :o:     |   :star:  |
 |[control_tb.cpp](rtl/riscv-final-controlunit/control_tb.cpp)    |               |                   |           |   :star:  |
@@ -40,8 +40,6 @@
 
 - ## Branches:
   This repository has been split up into three branches. The current branch contains the code for the single cycle RISC-V CPU. The pipeline branch and the cache branch, as the names suggest are the stretched goals mentioned in the project brief.
-
-  [A brief diagram of our branches](https://www.edrawmax.com/online/share.html?code=4a5c05d07d2611ed98580a951ba8b83d).
 
 - ## Single Cycle branch (main):
   The results for the reference program can be found in the [tests](tests/) directory:
@@ -68,11 +66,35 @@
   ```bash
   git checkout pipeline
   ```
-  And for the cache branch type:
+
+  To test the reference program on single cycle type:
+  ```bash
+  git checkout sc-reference
+  ```
+
+  To test the reference program on pipeline type:
+  ```bash
+  git checkout pp-reference
+  ```
+
+  To navigate to the cache branch:
+  ```bash
+  git checkout cache
+  ```
+  Follow test instructions to test reference program on single cycle design with cache.
+  
+  To test reference program in pipelined processor with cache (reference program test, since only the ram is changing) type:
   ```bash
   git checkout pipeline_with_cache
   ```
 
+In any of the branches that test reference programs, the data in the ram can be changed from
+
+```systemverilog
+  $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
+```
+
+to whatever distribution the assessor wants to check. For simplicity, the default distribution on running each branch is the Gaussian distribution
 
 ###### Videos by : Arnav Kohli
 ###### Authored by : Arnav Kohli
