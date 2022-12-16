@@ -23,7 +23,7 @@ module topLevelALU# (
     input logic [3:0] ALU_ctrl,
 
     //RAM signals
-    input logic MemWrite, //WE (Write Enable)
+    input logic [1:0] MemWrite, //WE (Write Enable)
     input logic [1:0] dataType, //00: word, 01: byte, 10: halfword
 
     //ResultSrcMux signal

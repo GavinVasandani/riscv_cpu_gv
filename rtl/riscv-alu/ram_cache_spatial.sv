@@ -15,7 +15,7 @@ module ram_cache_spatial # (
 
     //Input:
     input logic clk,
-    input logic WE, //write enable
+    input logic [1:0] WE, //write enable
     input logic [RAM_ADDRESS_WIDTH-1:0] A, //A[31:8] = tag, A[7:4] = set number, A[3:2] = block offset
     input logic [1:0] dataType, //input signal where 00: word, 01: byte, 10: half word
     input logic [DATA_WIDTH-1:0] WD, //write input (DataIn)
@@ -44,7 +44,7 @@ logic [CACHE_DATA_WIDTH-1:0] cache_array [2**CACHE_ADDRESS_WIDTH-1:0];
 
 initial begin
     $display("Loading cache.");
-    $readmemh("cachedata.mem", cache_array); //16 cache sets to load
+    $readmemh("reference/cachedata.mem", cache_array); //16 cache sets to load
     $display("Cache successfully loaded.");
 end;
 
@@ -54,7 +54,7 @@ logic [BYTE_WIDTH-1:0] ram_array [17'h1FFFF:17'h0];
 
 initial begin
     $display("Loading ram.");
-    $readmemh("gaussian.mem", ram_array, 17'h10000);
+    $readmemh("reference/gaussian.mem", ram_array, 17'h10000);
     $display("Ram successfully loaded.");
 end;
 
@@ -65,8 +65,10 @@ assign cache_data = cache_array[A[7:4]]; //data in cache location given by A[7:4
 logic flagMiss; //1-Miss, 0-Hit
 logic [DATA_WIDTH-1:0] outputWord;
 
+//Make WE 2 bits so: 01 = read, 10 = write, 00 = do nothing
+
 always_comb begin //new instruction comes with new clk cycle, so flagMiss can still be used at clk posedge for current instruction
-    if (!WE) begin //Read instruction so cache is checked first
+    if (WE==2'b01) begin //Read instruction so cache is checked first
         if(cache_data[152]) begin //so if V is 1 //137
             if(cache_data[151:128]==A[31:8]) begin //compare tag
                 //use byte offset to determine which byte to output within the word
@@ -170,7 +172,7 @@ always_comb begin //new instruction comes with new clk cycle, so flagMiss can st
             assign RD4 = {ram_array[A_RD4+3],ram_array[A_RD4+2],ram_array[A_RD4+1],ram_array[A_RD4]};
         end
     end
-    else begin //if write enable then don't do anything, rewrite value in positive clock edge
+    else begin //if write enable (10) or nothing (00) then don't do anything, rewrite value in positive clock edge
         assign RD = 32'b0;
         assign flagMiss = 1'b0; //so it doesn't rewrite
 
@@ -191,7 +193,7 @@ end
 
 always_ff @(posedge clk) begin 
     //synchronous write
-    if (WE) begin //if writing to RAM then also write to cache so that cache value is updated
+    if (WE==2'b10) begin //if writing to RAM then also write to cache so that cache value is updated
             case (dataType)
                 2'b00: begin //write word to mem location given by A
                     ram_array[A] <= WD[7:0]; //LS Byte
@@ -262,7 +264,7 @@ always_ff @(posedge clk) begin
                 default: $display("No dataType selected. Please choose word, byte or halfword.");
             endcase
     end
-    else begin //if !WE then check flag as we must be reading so flag must've been evaluated
+    else if (WE==2'b01) begin //if WE==2'b01 then read operation so check flag as we must be reading so flag must've been evaluated
         //This is temporal locality, so most recent accessed/fetched data from main mem is stored in cache
         //Add spatial locality, so copy neighbouring data into cache
         if (flagMiss) begin //Write to cache if miss
@@ -270,6 +272,7 @@ always_ff @(posedge clk) begin
             cache_array[A[7:4]] <= {1'b1, A[31:8], RD4, RD3, RD2, RD1};  
         end
     end
+    //else, do nothing 
 end
 
 //For debugging
