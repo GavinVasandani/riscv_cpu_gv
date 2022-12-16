@@ -144,6 +144,9 @@ All of the proof for contribution can be seen in commits and the respective fold
 ---
 ## Cache 
   In the cache block, I helped [Gavin](gavin.md) with debugging the cache by testing it with my testbench which we had access to since it was a branch of the main. I also noticed [a bug](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/389aa31b30a7ea1b3ecae87960eebc13914b3922) in the initial version, we assumed that using !WE would allow us to capture all cases where there was a read operation, but this isn't the case because during operations like add, sub, lsl and all the others, WE was 0. To circumvent this issue, I suggested that we make MemWrite a 2 bit number (00 - nothing, 01 - read, 10 - write).
+  1. [Gaussian distribution](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/blob/pipeline_with_cache/tests/cache-reference.mp4)
+   
+  For more details on navigating to the cache branch, look at the [Documentation](../README.md)
 
 ---
 ## Reflection and possible improvements:
