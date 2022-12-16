@@ -4,7 +4,7 @@
 ---
 - ## Breakdown of tasks:
     - PC block, Instruction memory, Pipelining, Code for F1 light, Debugging, Testing and Verification, Documentation : **Arnav Kohli**
-    - ALU Block, Register Files, Data memory (including unit testing suites) : **Gavin Vasandani**
+    - ALU Block, Register Files, Data memory and cache (including unit testing suites) : **Gavin Vasandani**
     - Control Block, Sign extension block, Pipelining: **Xuhan Pan**
     - Final CPU Assembly, Pipelining: **Junyi Wu**
 
@@ -16,7 +16,7 @@
 |[regfileALU.sv](rtl/riscv-alu/regfileALU.sv)             |               |      :star:       |           |           |
 |[regfile_ALU_tb.cpp](rtl/riscv-alu/regFile_ALU_tb.cpp)        |               |      :star:       |           |           |
 |[ram.sv](rtl/riscv-alu/ram.sv)                    |      :o:      |      :star:       |           |           |
-|ram_cache.sv (in the cache branch)              |               |      :star:       |           |           |
+|ram_cache_spatial.sv (in the cache branch)              |               |      :star:       |           |           |
 |[control.sv](rtl/riscv-final-controlunit/control.sv)        |      :o:      |                   |           |   :star:  |
 |[ext.sv](rtl/riscv-final-controlunit/ext.sv)           |      :o:      |                   |   :o:     |   :star:  |
 |[control_tb.cpp](rtl/riscv-final-controlunit/control_tb.cpp)    |               |                   |           |   :star:  |
@@ -77,7 +77,13 @@
   git checkout pp-reference
   ```
 
-  And for the cache branch (reference program test, since only the ram is changing) type:
+  To navigate to the cache branch:
+  ```bash
+  git checkout cache
+  ```
+  Follow test instructions to test reference program on single cycle design with cache.
+  
+  To test reference program in pipelined processor with cache (reference program test, since only the ram is changing) type:
   ```bash
   git checkout pipeline_with_cache
   ```
