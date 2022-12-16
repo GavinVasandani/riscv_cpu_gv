@@ -175,14 +175,14 @@ int main(int argc, char **argv, char **env) {
     top->ALUSrc = 1; //we want to add immediate (offset) to rs1 to get effective address, assign 0 if adding value from 2 registers
     top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
     top->ALU_ctrl = 0000; //add operation
-    top->MemWrite = 0x1; //Writing to RAM
+    top->MemWrite = 10; //Writing to RAM
     top->dataType = 01; //Writing byte
     top->SrcSel = 1; //irelevant as we aren't writing to rd so no effect
     top->newPC = 0x0; //irelevant as we aren't writing to rd so no effect
     top->JumpSel = 0; //irelevant as we aren't writing to rd so no effect
     //Expected: 0003 is A which is sent to RAM, WD is 5 so RAM[0003] = 5
     //Also cache is empty so cache at address A[7:2] where A = 0003 = 00011, so at cache[000] = 1000...(tag)000005(data)
-    //3C is byte and is written in RAM and cache
+    //1 is byte and is written in RAM and cache
 
     for (i=0; i<300; i++){
 
