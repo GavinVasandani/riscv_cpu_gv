@@ -74,7 +74,13 @@
   git checkout sc-reference
   ```
 
-  And for the cache branch type:
+  To test the reference program on pipeline type:
+  ```bash
+  git checkout pp-reference
+  ```
+
+
+  And for the cache branch (reference program test, since only the ram is changing) type:
   ```bash
   git checkout pipeline_with_cache
   ```
