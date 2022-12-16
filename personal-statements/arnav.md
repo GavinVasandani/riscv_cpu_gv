@@ -58,7 +58,7 @@ All of the proof for contribution can be seen in commits and the respective fold
   Apart from the instruction memory block, I handled design verification and testing for the single cycle CPU. To test the CPU, I used the src folder under rtl to write code in assembly. The code was written to be a part of the F1 program but also simultaneously allow me to test the basic instructions needed by the CPU in order to implement the F1 program. These were: XOR, Shifts, Add/Sub, Branch, JAL and JALR. A more detailed explanation as to why and where these were used in particular:
 
 
-  - [**fsm.s :**](../rtl/src/myprog/fsm.s) This program would switch the lights on sequentially till all it would reach a state where all 8 light on the LED array were turned on, at which it would wait a fixed amount of time before turning all of them off.
+  - [**fsm.s :**](../rtl/src/myprog/fsm.s) This program would switch the lights on sequentially till it reached the state where all 8 lights in the LED array were turned on, at which point it would wait a fixed amount of time before turning all of them off.
     1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
     2. **lightloop** initiated the switching on of the array of LED lights.
     3. **checkdelay** would hold the state when all the lights were on till the contents of register **a5** (the delay register) reached 0.
