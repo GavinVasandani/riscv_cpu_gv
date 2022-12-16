@@ -1,6 +1,7 @@
 ---
 
-# Contribution:
+# Contribution: 
+###### By : Gavin Vasandani - gv220 - 01860884
 
 ## [ALU](rtl/riscv-alu/regfileALU.sv)
 
