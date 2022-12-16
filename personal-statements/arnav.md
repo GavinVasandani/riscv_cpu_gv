@@ -55,10 +55,10 @@ All of the proof for contribution can be seen in commits and the respective fold
     Note that the assignment is asynchronous as per the specification.
     
 - ### Testing and verification:
-  Apart from the instruction memory block, I handled design verification and testing for the single cycle CPU. To test the CPU, I used the src folder under rtl to write code in assembly. The code was written to be a part of the F1 program but also simultaneously allow me to test the three basic instructions needed by the CPU in order to implement the F1 program. These were: XOR, Shifts, Add/Sub, Branch, JAL and JALR. A more detailed explanation as to why and where these were used in particular:
+  Apart from the instruction memory block, I handled design verification and testing for the single cycle CPU. To test the CPU, I used the src folder under rtl to write code in assembly. The code was written to be a part of the F1 program but also simultaneously allow me to test the basic instructions needed by the CPU in order to implement the F1 program. These were: XOR, Shifts, Add/Sub, Branch, JAL and JALR. A more detailed explanation as to why and where these were used in particular:
 
 
-  - [**fsm.s :**](../rtl/src/myprog/fsm.s) This program would switch the lights on sequentially till all it would reach a state where all 8 light on the LED array were turned on, at which it would wait a fixed amount of time before turning all of them off.
+  - [**fsm.s :**](../rtl/src/myprog/fsm.s) This program would switch the lights on sequentially till it reached the state where all 8 lights in the LED array were turned on, at which point it would wait a fixed amount of time before turning all of them off.
     1. The main label would set up **a5** and **t5** with the initial values. **a5** holds the value of the delay after the final state, and **t5** holds the value 1 for subtraction during the delay loop. 
     2. **lightloop** initiated the switching on of the array of LED lights.
     3. **checkdelay** would hold the state when all the lights were on till the contents of register **a5** (the delay register) reached 0.
@@ -70,13 +70,15 @@ All of the proof for contribution can be seen in commits and the respective fold
     3. The **jalr** operation just before the end label is equivalent to a **RET** and allows the program to return from the mloop subroutine once a6 has reached 0.
 
 
-  - [**F1.s :**](../tests/f1.s) This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A video is also shown in the folder, and steps to execute the code are explained in the Documentation. This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
+  - [**F1.s :**](../tests/f1.s) This program can be found in the "tests" folder. It is the code that executes the functionality of the F1 lights. A [video](../tests/sc-f1.mp4) is also shown in the folder, and steps to execute the code are explained in the [Documentation](../README.md). This program utilized the fsm and the clkdiv from the previous program in order to progress the state of the lights and allow for creation of a delay between each light respectively. The only new additions to the code were the randomizer, for which we used the lfsr explained in previous labs, a trigger register (**a7**) which would be used to determine when the light sequence is to be initiated.
     1. On start, the program would stay in the lfsr loop till a7 was fed with a value greater than zero (more details in the testbench for the code below).
-    2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant least bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly)
+    2. The lfsr loop used **&** functions in order to isolate the third bit, the fourth bit and the least significant three bits to perform the primitive polynomial function (note that the lfsr I used was 4 bit, since 7 bits would increase the delay time significantly). This was all done in **assembly** (and so in **software**), but a **hardware representation of this code** would be:
    
-    **insert picture of primitive polynomial here**
+  
+    ![primitive polynomial](../images-logbook/primpo.png)
 
-
+    NOTE: We have **not** implemented lfsr in **hardware**, this is just an illustration.
+    
     3. The isolated bits are placed in their own registers as can be seen in the code and would then be added to register **a1** before the branch check. If the branch was successful, **a1** would be stored back in **a5** which is the delay register. Otherwise, the lfsr loop would be executed and the LED array would be turned on sequentially.
     4. **mainclkdiv** was the subroutine which would execute the clkdiv function along with the **hold** label.
     5. **checkdelay** was executed after all 8 lights were turned on. As the name suggests, it would check the value of register **a5** and decrement it till it reached 0. 
@@ -138,6 +140,10 @@ All of the proof for contribution can be seen in commits and the respective fold
 
 
 ---
+## Cache 
+  In the cache block, I helped [Gavin](gavin.md) with debugging the cache by testing it with my testbench which we had access to since it was a branch of the main. I also noticed [a bug](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/389aa31b30a7ea1b3ecae87960eebc13914b3922) in the initial version, we assumed that using !WE would allow us to capture all cases where there was a read operation, but this isn't the case because during operations like add, sub, lsl and all the others, WE was 0. To circumvent this issue, I suggested that we make MemWrite a 2 bit number (00 - nothing, 01 - read, 10 - write).
+
+---
 ## Reflection and possible improvements:
 - In the fsm program, it is possible to save register t5 from being used at all by instead replacing the decrement with: 
     ```asm
@@ -165,6 +171,7 @@ All of the proof for contribution can be seen in commits and the respective fold
 14. [JALR input from ALU bug fix](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/7ecccb3ae8805b2316b9d7dcf36ab72e0e67abf2)
 15. [Renamed signals for ease in connecting during pipelining](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/74c4f6d3fb7976e54d12608639a7652e5115a191)
 16. [Ensured jump is read on the same cycle as execute](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/dc46ec40e186b8df67feb353696fa1ddc9a294bb)
+17. [Fixed MemWrite in Cache](https://github.com/EIE2-IAC-Labs/iac-riscv-cw-18/commit/389aa31b30a7ea1b3ecae87960eebc13914b3922)
 
 
 
