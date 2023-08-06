@@ -105,7 +105,7 @@ int main(int argc, char **argv, char **env) {
     top->ResultSrc = 1; //ReadData is being assigned to register a0, if doing addi instruction then ResultSrc = 0
     */
 
-   /**/
+    /*
     //jal rd, imm20
     //do jal a1, xxx
     //a1 expected to be newPC aka PC+4
@@ -123,6 +123,71 @@ int main(int argc, char **argv, char **env) {
     top->SrcSel = 0; //irrelevant
     top->newPC = 0xFFFF; //newPC value to store in rd (reg 1)
     top->JumpSel = 1; //select newPc (PC+4) to assign to register rd
+    */
+
+   /*
+    //Fetch from main memory:
+    //lw rd, imm(rs1), so:
+    //lw a2, 3(0x1) so a2 = mem[0x1+3], so rd = address of a2 (0x2), rs1 is address to reg a1 (0x1) that contains data val (1)
+    //immOp = 2, expected output is a2 reg = value at mem location 0x3 (6) but a2 is 000000....6
+    //at mem value 10000+3, it's a2 = mem[17h'10003], where a2 should = EE
+    top->clk = 1;
+    top->rs1 = 0x1; //0x01 address register contains value 1
+    top->rs2 = 0x7; //don't care
+    top->rd = 0x2; //address of reg to write to
+    top->regFileWen = 1; //writing to reg
+    top->trigger = 0;
+    top->ALUSrc = 1; //we want to add immediate (offset) to rs1 to get effective address, assign 0 if adding value from 2 registers
+    top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
+    top->ALU_ctrl = 0000; //add operation
+    top->MemWrite = 0; //Not writing to RAM
+    top->dataType = 00; //reading word
+    top->SrcSel = 1; //want ReadData value that's outputted from RAM
+    top->newPC = 0x0;
+    top->JumpSel = 0; //want ReadData value that's outputted from RAM
+    //We fetch data at memory address 0x04, but first we check cache:
+    //0x04 = A = 000000100, so set 0 cache (address of cache: A[7:4] = 0000).
+    //Cache data has V bit 0, so miss so read word from RAM and write word + neighbours to cache.
+    //mem[0x04] is byte, but we output word so: EE EE ED ED
+    //Cache is filled with next 4 words so: EE EE ED ED EC EC EB EA E9 E8 E7 E6 E5 E4 E3 E2
+    */
+
+
+
+    //Expected output: reg 2 has value EE and cache has EE
+    //0x04 is A, in binary the bits A[7:2] = 000001 which is cache[1] which stores 41 bit word.
+    //41 bit word has contents of mem[0x04 (entire word)] in cache_data[31:0].
+
+    
+    //Writing to main memory:
+    //sb rs2, imm(rs1)
+    //sb a2, 2(0x01) so mem[0x01+2] = a2, where a2 is data at register 2 given by address 0x02 so:
+    //load a2 with 5, assumed 0 indexing so 3rd value in reg is a2 given by 0x02
+    //expected value at 0x03 main memory is a2 value (5)
+    //rs1 + immOp, value @ rs2 directly sent to RAM
+    //rs1 in sw instruction is value stored at reg given by address rs1, so if a1 then 0x01 address and value at that register is used in mem[xxx + ImmOp]
+    top->clk = 1;
+    top->rs1 = 0x1; //0x01 address register contains value (10000)
+    top->rs2 = 0x2; //a2 address given by rs2, so store value at reg 2 into mem[], this value is 6
+    top->rd = 0x07; //don't care
+    top->regFileWen = 0; //not writing to reg
+    top->trigger = 0;
+    top->ALUSrc = 1; //we want to add immediate (offset) to rs1 to get effective address, assign 0 if adding value from 2 registers
+    top->ImmOp = 0x3; //offset from base given by ImmOp, assumed ImmOp is after sign extension so its 32 bits
+    top->ALU_ctrl = 0000; //add operation
+    top->MemWrite = 2; //Writing to RAM
+    top->dataType = 01; //Writing byte
+    top->SrcSel = 1; //irelevant as we aren't writing to rd so no effect
+    top->newPC = 0x0; //irelevant as we aren't writing to rd so no effect
+    top->JumpSel = 0; //irelevant as we aren't writing to rd so no effect
+    //Expected: 10003 is A which is sent to RAM, RAM[10003] is rewritten = a2 (6) which is byte.
+    //A = 10003 is 0000000000000001000000011, so cache set is 0, block is 0, 
+    //cache set is A[7:4] and block to be written to is A[3:2] within cache_array[A[7:4]]
+    //So some byte in the cache should be 6 unsign extended (word in this case)
+
+    //Expected: 0003 is A which is sent to RAM, WD is 5 so RAM[0003] = 5
+    //Also cache is empty so cache at address A[7:2] where A = 0003 = 00011, so at cache[000] = 1000...(tag)000005(data)
+    //1 is byte and is written in RAM and cache
 
     for (i=0; i<300; i++){
 
