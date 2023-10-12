@@ -1,3 +1,7 @@
+**RISC-V CPU:**
+==============================
+
+![RISC-V CPU](riscv_cpu_logo.png)
 
 - ## Branches:
   This repository has been split up into three branches. The current branch contains the code for the single cycle RISC-V CPU. The pipeline branch and the cache branch, as the names suggest are the stretched goals mentioned in the project brief.
